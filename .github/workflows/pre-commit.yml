@@ -1,9 +1,10 @@
 name: pre-commit
 
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
+  # pull_request:
+  # push:
+  #   branches: [main]
 
 concurrency:
   # SHA is added to the end if on `main` to let all main workflows run
