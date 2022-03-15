@@ -1,15 +1,18 @@
 name: 📦🚀 Build Installer - Linux DEB ARM64
 
 on:
-  push:
-    branches:
-      - 'long_lived/**'
-      - main
-      - 'release/**'
-  release:
-    types: [published]
-  pull_request:
-    branches:
+  workflow_dispatch:
+  # push:
+  #   tags:
+  #     - '**'
+  #   branches:
+  #     - 'long_lived/**'
+  #     - main
+  #     - 'release/**'
+  # release:
+  #   types: [published]
+  # pull_request:
+  #   branches:
       - '**'
 
 concurrency:
