@@ -1,5 +1,3 @@
-# flake8: noqa: F811, F401
-import asyncio
 import atexit
 import logging
 from secrets import token_bytes
@@ -8,7 +6,6 @@ from typing import List, Optional
 import pytest
 import pytest_asyncio
 
-from chia.consensus.block_record import BlockRecord
 from chia.consensus.blockchain import ReceiveBlockResult
 from chia.consensus.find_fork_point import find_fork_point_in_chain
 from chia.consensus.multiprocess_validation import PreValidationResult
@@ -25,7 +22,6 @@ from chia.util.hash import std_hash
 from chia.util.ints import uint8, uint32, uint64, uint128
 from tests.blockchain.blockchain_test_utils import (
     _validate_and_add_block,
-    _validate_and_add_block_multi_result,
     _validate_and_add_block_no_error,
 )
 from tests.setup_nodes import test_constants as test_constants_original
@@ -57,7 +53,7 @@ async def empty_blockchain(request):
 
 
 @pytest_asyncio.fixture(scope="function", params=[1, 2])
-async def empty_blockchain_original(request):
+async def empty_blockchain_with_original_constants(request):
     bc1, connection, db_path = await create_blockchain(test_constants_original, request.param)
     yield bc1
     await connection.close()
@@ -739,8 +735,8 @@ class TestFullNodeStore:
         await self.test_basic_store(empty_blockchain, True)
 
     @pytest.mark.asyncio
-    async def test_long_chain_slots(self, empty_blockchain_original, default_1000_blocks):
-        blockchain = empty_blockchain_original
+    async def test_long_chain_slots(self, empty_blockchain_with_original_constants, default_1000_blocks):
+        blockchain = empty_blockchain_with_original_constants
         store = FullNodeStore(test_constants_original)
         blocks = default_1000_blocks
         peak = None
