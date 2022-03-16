@@ -17,9 +17,9 @@ from chia.protocols.timelord_protocol import NewInfusionPointVDF
 from chia.types.blockchain_format.sized_bytes import bytes32
 from chia.types.unfinished_block import UnfinishedBlock
 from chia.util.block_cache import BlockCache
-from tests.block_tools import get_signage_point, create_block_tools
 from chia.util.hash import std_hash
 from chia.util.ints import uint8, uint32, uint64, uint128
+from tests.block_tools import get_signage_point, create_block_tools
 from tests.blockchain.blockchain_test_utils import (
     _validate_and_add_block,
     _validate_and_add_block_no_error,
@@ -43,7 +43,7 @@ bt = create_block_tools(constants=test_constants, keychain=keychain)
 log = logging.getLogger(__name__)
 
 
-@pytest_asyncio.fixture(scope="function", params=[1, 2])
+@pytest_asyncio.fixture(scope="function", params=[1, 2])  # xxxtest_constants_original.replace
 async def empty_blockchain(request):
     bc1, connection, db_path = await create_blockchain(test_constants, request.param)
     yield bc1
@@ -52,7 +52,7 @@ async def empty_blockchain(request):
     db_path.unlink()
 
 
-@pytest_asyncio.fixture(scope="function", params=[1, 2])
+@pytest_asyncio.fixture(scope="function", params=[1, 2])  # xxxtest_constants_original.replace
 async def empty_blockchain_with_original_constants(request):
     bc1, connection, db_path = await create_blockchain(test_constants_original, request.param)
     yield bc1
@@ -623,7 +623,7 @@ class TestFullNodeStore:
         for block in blocks:
             await _validate_and_add_block_no_error(blockchain, block)
 
-        log.warning(f"Starting loop")
+        log.warning("Starting loop")
         while True:
             log.warning("Looping")
             blocks = bt.get_consecutive_blocks(1, block_list_input=blocks, skip_slots=1)
