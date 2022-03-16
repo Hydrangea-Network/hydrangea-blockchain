@@ -113,9 +113,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_make_transaction(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_make_transaction(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_api = full_nodes[0]
         server_1 = full_node_api.full_node.server
         wallet_node, server_2 = wallets[0]
@@ -395,9 +395,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_make_transaction_with_fee(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_make_transaction_with_fee(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_1 = full_nodes[0]
         wallet_node, server_2 = wallets[0]
         wallet_node_2, server_3 = wallets[1]
@@ -462,9 +462,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_create_hit_max_send_amount(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_create_hit_max_send_amount(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_1 = full_nodes[0]
         wallet_node, server_2 = wallets[0]
         wallet_node_2, server_3 = wallets[1]
@@ -558,9 +558,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_prevent_fee_theft(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_prevent_fee_theft(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_1 = full_nodes[0]
         wallet_node, server_2 = wallets[0]
         wallet_node_2, server_3 = wallets[1]
@@ -643,9 +643,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_tx_reorg(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_tx_reorg(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_api = full_nodes[0]
         fn_server = full_node_api.full_node.server
         wallet_node, server_2 = wallets[0]
@@ -780,9 +780,9 @@ class TestWalletSimulator:
         [True, False],
     )
     @pytest.mark.asyncio
-    async def test_wallet_transaction_options(self, two_wallet_nodes_start_height_1, trusted, self_hostname):
+    async def test_wallet_transaction_options(self, two_wallet_nodes, trusted, self_hostname):
         num_blocks = 5
-        full_nodes, wallets = two_wallet_nodes_start_height_1
+        full_nodes, wallets = two_wallet_nodes
         full_node_api = full_nodes[0]
         server_1 = full_node_api.full_node.server
         wallet_node, server_2 = wallets[0]
