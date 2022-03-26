@@ -117,17 +117,17 @@ kwargs = dict(
     ],
     entry_points={
         "console_scripts": [
-            "chia = chia.cmds.chia:main",
-            "chia_wallet = chia.server.start_wallet:main",
-            "chia_full_node = chia.server.start_full_node:main",
-            "chia_harvester = chia.server.start_harvester:main",
-            "chia_farmer = chia.server.start_farmer:main",
-            "chia_introducer = chia.server.start_introducer:main",
-            "chia_crawler = chia.seeder.start_crawler:main",
-            "chia_seeder = chia.seeder.dns_server:main",
-            "chia_timelord = chia.server.start_timelord:main",
-            "chia_timelord_launcher = chia.timelord.timelord_launcher:main",
-            "chia_full_node_simulator = chia.simulator.start_simulator:main",
+            "hydrangea = chia.cmds.chia:main",
+            "hydrangea_wallet = chia.server.start_wallet:main",
+            "hydrangea_full_node = chia.server.start_full_node:main",
+            "hydrangea_harvester = chia.server.start_harvester:main",
+            "hydrangea_farmer = chia.server.start_farmer:main",
+            "hydrangea_introducer = chia.server.start_introducer:main",
+            "hydrangea_crawler = chia.seeder.start_crawler:main",
+            "hydrangea_seeder = chia.seeder.dns_server:main",
+            "hydrangea_timelord = chia.server.start_timelord:main",
+            "hydrangea_timelord_launcher = chia.timelord.timelord_launcher:main",
+            "hydrangea_full_node_simulator = chia.simulator.start_simulator:main",
         ]
     },
     package_data={
