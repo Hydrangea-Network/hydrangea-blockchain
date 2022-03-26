@@ -178,7 +178,7 @@ class TestOfferLifecycle:
             red_coins: List[Coin] = all_coins["red"]
             blue_coins: List[Coin] = all_coins["blue"]
 
-            # Create an XCH Offer for RED
+            # Create an XHG Offer for RED
             chia_requested_payments: Dict[Optional[bytes32], List[Payment]] = {
                 str_to_tail_hash("red"): [
                     Payment(acs_ph, 100, [b"memo"]),
@@ -194,7 +194,7 @@ class TestOfferLifecycle:
             chia_offer = Offer(chia_requested_payments, chia_secured_bundle)
             assert not chia_offer.is_valid()
 
-            # Create a RED Offer for XCH
+            # Create a RED Offer for XHG
             red_requested_payments: Dict[Optional[bytes32], List[Payment]] = {
                 None: [
                     Payment(acs_ph, 300, [b"red memo"]),
@@ -216,7 +216,7 @@ class TestOfferLifecycle:
             assert new_offer.get_requested_amounts() == {None: 700, str_to_tail_hash("red"): 300}
             assert new_offer.is_valid()
 
-            # Create yet another offer of BLUE for XCH and RED
+            # Create yet another offer of BLUE for XHG and RED
             blue_requested_payments: Dict[Optional[bytes32], List[Payment]] = {
                 None: [
                     Payment(acs_ph, 200, [b"blue memo"]),
@@ -246,14 +246,14 @@ class TestOfferLifecycle:
             assert new_offer.get_requested_amounts() == {None: 900, str_to_tail_hash("red"): 350}
             assert new_offer.summary() == (
                 {
-                    "xch": 1000,
+                    "xhg": 1000,
                     str_to_tail_hash("red").hex(): 350,
                     str_to_tail_hash("blue").hex(): 2000,
                 },
-                {"xch": 900, str_to_tail_hash("red").hex(): 350},
+                {"xhg": 900, str_to_tail_hash("red").hex(): 350},
             )
             assert new_offer.get_pending_amounts() == {
-                "xch": 1200,
+                "xhg": 1200,
                 str_to_tail_hash("red").hex(): 350,
                 str_to_tail_hash("blue").hex(): 3000,
             }

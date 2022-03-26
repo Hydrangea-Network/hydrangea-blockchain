@@ -824,7 +824,7 @@ class WebSocketServer:
 
     def _build_plotting_command_args(self, request: Any, ignoreCount: bool, index: int) -> List[str]:
         plotter: str = request.get("plotter", "chiapos")
-        command_args: List[str] = ["chia", "plotters", plotter]
+        command_args: List[str] = ["hydrangea", "plotters", plotter]
 
         command_args.extend(self._common_plotting_command_args(request, ignoreCount))
 

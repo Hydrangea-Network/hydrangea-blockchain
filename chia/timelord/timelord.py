@@ -251,7 +251,7 @@ class Timelord:
                     )
                 return None
 
-        timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
+        timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xhg_target_address"])
         if block.foliage.foliage_block_data.timelord_reward_puzzle_hash != timelord_reward_puzzle_hash:
             chance = random.randint(1, 100)
             if chance >= 10:
@@ -471,7 +471,7 @@ class Timelord:
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
 
-                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
+                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xhg_target_address"])
 
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
