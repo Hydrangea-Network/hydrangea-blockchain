@@ -32,7 +32,7 @@ def generate_cmd(ctx: click.Context):
     "--non-observer-derivation",
     "-d",
     help=(
-        "Show the first wallet address using non-observer derivation. Older Chia versions use "
+        "Show the first wallet address using non-observer derivation. Older Hydrangea versions use "
         "non-observer derivation when generating wallet addresses."
     ),
     default=False,
