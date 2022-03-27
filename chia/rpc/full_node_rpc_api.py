@@ -27,7 +27,7 @@ def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
 class FullNodeRpcApi:
     def __init__(self, service: FullNode):
         self.service = service
-        self.service_name = "chia_full_node"
+        self.service_name = "hydrangea_full_node"
         self.cached_blockchain_state: Optional[Dict] = None
 
     def get_routes(self) -> Dict[str, Callable]:

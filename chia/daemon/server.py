@@ -57,7 +57,7 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-service_plotter = "chia_plotter"
+service_plotter = "hydrangea_plotter"
 
 
 async def fetch(url: str):
@@ -90,17 +90,17 @@ class PlotEvent(str, Enum):
 # determine if application is a script file or frozen exe
 if getattr(sys, "frozen", False):
     name_map = {
-        "chia": "chia",
-        "chia_wallet": "start_wallet",
-        "chia_full_node": "start_full_node",
-        "chia_harvester": "start_harvester",
-        "chia_farmer": "start_farmer",
-        "chia_introducer": "start_introducer",
-        "chia_timelord": "start_timelord",
-        "chia_timelord_launcher": "timelord_launcher",
-        "chia_full_node_simulator": "start_simulator",
-        "chia_seeder": "start_seeder",
-        "chia_crawler": "start_crawler",
+        "hydrangea": "hydrangea",
+        "hydrangea_wallet": "start_wallet",
+        "hydrangea_full_node": "start_full_node",
+        "hydrangea_harvester": "start_harvester",
+        "hydrangea_farmer": "start_farmer",
+        "hydrangea_introducer": "start_introducer",
+        "hydrangea_timelord": "start_timelord",
+        "hydrangea_timelord_launcher": "timelord_launcher",
+        "hydrangea_full_node_simulator": "start_simulator",
+        "hydrangea_seeder": "start_seeder",
+        "hydrangea_crawler": "start_crawler",
     }
 
     def executable_for_service(service_name: str) -> str:
@@ -1254,7 +1254,7 @@ def launch_service(root_path: Path, service_command) -> Tuple[subprocess.Popen, 
     service_executable = executable_for_service(service_array[0])
     service_array[0] = service_executable
 
-    if service_command == "chia_full_node_simulator":
+    if service_command == "hydrangea_full_node_simulator":
         # Set the -D/--connect_to_daemon flag to signify that the child should connect
         # to the daemon to access the keychain
         service_array.append("-D")
@@ -1363,7 +1363,7 @@ async def async_run_daemon(root_path: Path, wait_for_unlock: bool = False) -> in
     # since it might be necessary to wait for the GUI to unlock the keyring first.
     chia_init(root_path, should_check_keys=(not wait_for_unlock))
     config = load_config(root_path, "config.yaml")
-    setproctitle("chia_daemon")
+    setproctitle("hydrangea_daemon")
     initialize_logging("daemon", config["logging"], root_path)
     lockfile = singleton(daemon_launch_lock_path(root_path))
     crt_path = root_path / config["daemon_ssl"]["private_crt"]

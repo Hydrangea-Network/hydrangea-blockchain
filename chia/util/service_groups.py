@@ -1,21 +1,21 @@
 from typing import KeysView, Generator
 
 SERVICES_FOR_GROUP = {
-    "all": "chia_harvester chia_timelord_launcher chia_timelord chia_farmer chia_full_node chia_wallet".split(),
-    "node": "chia_full_node".split(),
-    "harvester": "chia_harvester".split(),
-    "farmer": "chia_harvester chia_farmer chia_full_node chia_wallet".split(),
-    "farmer-no-wallet": "chia_harvester chia_farmer chia_full_node".split(),
-    "farmer-only": "chia_farmer".split(),
-    "timelord": "chia_timelord_launcher chia_timelord chia_full_node".split(),
-    "timelord-only": "chia_timelord".split(),
-    "timelord-launcher-only": "chia_timelord_launcher".split(),
-    "wallet": "chia_wallet".split(),
-    "introducer": "chia_introducer".split(),
-    "simulator": "chia_full_node_simulator".split(),
-    "crawler": "chia_crawler".split(),
-    "seeder": "chia_crawler chia_seeder".split(),
-    "seeder-only": "chia_seeder".split(),
+    "all": "hydrangea_harvester hydrangea_timelord_launcher hydrangea_timelord hydrangea_farmer hydrangea_full_node hydrangea_wallet".split(),
+    "node": "hydrangea_full_node".split(),
+    "harvester": "hydrangea_harvester".split(),
+    "farmer": "hydrangea_harvester hydrangea_farmer hydrangea_full_node hydrangea_wallet".split(),
+    "farmer-no-wallet": "hydrangea_harvester hydrangea_farmer hydrangea_full_node".split(),
+    "farmer-only": "hydrangea_farmer".split(),
+    "timelord": "hydrangea_timelord_launcher hydrangea_timelord hydrangea_full_node".split(),
+    "timelord-only": "hydrangea_timelord".split(),
+    "timelord-launcher-only": "hydrangea_timelord_launcher".split(),
+    "wallet": "hydrangea_wallet".split(),
+    "introducer": "hydrangea_introducer".split(),
+    "simulator": "hydrangea_full_node_simulator".split(),
+    "crawler": "hydrangea_crawler".split(),
+    "seeder": "hydrangea_crawler hydrangea_seeder".split(),
+    "seeder-only": "hydrangea_seeder".split(),
 }
 
 

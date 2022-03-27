@@ -1900,12 +1900,12 @@ relic. We will make a patch available for these systems shortly.
 - Implemented an RPC interface with JSON serialization for streamables - currently on port 8555.
 - Added details on how to contribute in CONTRIBUTING.md. Thanks @RichardLitt.
 - Added color logging
-- Now chia_harvester will periodically announce which plots it is currently farming and their k sizes.
+- Now hydrangea_harvester will periodically announce which plots it is currently farming and their k sizes.
 
 ### Changed
 
 - Moved the ssh UI to use RPC.
-- Changed the displayed process names for harvester, farmer, fullnode, timelords, and VDFs to to chia_full node, chia_harvester, etc. Fixed a bug that could cause inadvertent shutdown of other processes like an ongoing plotting session when new chia services were started.
+- Changed the displayed process names for harvester, farmer, fullnode, timelords, and VDFs to to chia_full node, hydrangea_harvester, etc. Fixed a bug that could cause inadvertent shutdown of other processes like an ongoing plotting session when new chia services were started.
 - Clarified the minimum version of boost required to build timelord/VDFs. Hat tip @AdrianScott
 - Consensus and related documentation moved to the repository wiki.
 
