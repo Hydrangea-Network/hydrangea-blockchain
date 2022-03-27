@@ -189,7 +189,7 @@ jobs:
         INSTALL_PYTHON_VERSION: ${{ matrix.python-version }}
       run: sh install.sh -a
 
-    - name: Run chia --help
+    - name: Run hydrangea --help
       run: |
         . ./activate
-        chia --help
+        hydrangea --help
