@@ -140,7 +140,7 @@ class Farmer:
         return await keychain_proxy.get_all_private_keys()
 
     async def setup_keys(self) -> bool:
-        no_keys_error_str = "No keys exist. Please run 'chia keys generate' or open the UI."
+        no_keys_error_str = "No keys exist. Please run 'hydrangea keys generate' or open the UI."
         self.all_root_sks: List[PrivateKey] = [sk for sk, _ in await self.get_all_private_keys()]
         self._private_keys = [master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
             master_sk_to_pool_sk(sk) for sk in self.all_root_sks

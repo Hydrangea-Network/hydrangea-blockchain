@@ -27,11 +27,11 @@ for setuptools_scm/PEP 440 reasons.
 ### Fixed
 
 - Improved config.yaml update concurrency to prevent some cases of the wrong pool being used for a PlotNFT.
-- Fixed `chia keys show` displaying non-observer-derived wallet address.
+- Fixed `hydrangea keys show` displaying non-observer-derived wallet address.
 - Fixed `plotnft claim` returning an error.
 - Fixed invalid DB commit that prevented rollback of coin store changes.
 - Fixed locking issue with `PlotManager.plots` that caused high lookup times on plots.
-- Fixed exception when `chia keys migrate` is run without needing migration.
+- Fixed exception when `hydrangea keys migrate` is run without needing migration.
 - Fixed farmer rewards dialog (GUI).
 - Fixed display of pool payout address (GUI).
 - Fixed display of harvesters status when harvesters are restarted (GUI).
@@ -66,7 +66,7 @@ for setuptools_scm/PEP 440 reasons.
 - Added new RPC, get_version, to the daemon to return the version of Chia (Thanks @dkackman).
 - Added new config.yaml setting, reserved_cores, to specify how many cores Chia will not use when launching process pools. Using 0 will allow Chia to use all cores for process pools. Set the default to 0 to allow Chia to use all cores. This can result in faster syncing and better performance overall especially on lower-end CPUs like the Raspberry Pi4.
 - Added new RPC, get_logged_in_fingerprint, to the wallet to return the currently logged in fingerprint.
-- Added new CLI option, chia keys derive, to allow deriving any number of keys in various ways. This is particularly useful to do an exhaustive search for a given address using chia keys derive search.
+- Added new CLI option, hydrangea keys derive, to allow deriving any number of keys in various ways. This is particularly useful to do an exhaustive search for a given address using hydrangea keys derive search.
 - Div soft fork block height set to 2,300,000.
 - Added the ability to add an optional fee for creating and changing plot NFTs.
 - Added *multiprocessing_start_method:* entry in config.yaml that allows setting the python *start method* for multiprocessing (default is *spawn* on Windows & MacOS, *fork* on Unix).
@@ -81,7 +81,7 @@ for setuptools_scm/PEP 440 reasons.
 - CA certificate store update.
 - VDF, chiapos, and blspy workflows updated to support python 3.10 wheels.
 - We now store peers and peer information in a serialized format instead of sqlite. The new files are called peers.dat and wallet_peers.dat. New settings peers_file_path and wallet_peers_file_path added to config.yaml.
-- CLI option chia show will display the currently selected network (mainnet or testnet).
+- CLI option hydrangea show will display the currently selected network (mainnet or testnet).
 - CLI option chia plots check will display the Pool Contract Address for Portable (PlotNFT) plots.
 - Thanks to @cross for adding the ability to resolve IPv6 from hostnames in config.yaml. Added new config option prefer_ipv6 to toggle whether to resolve to IPv6 or IPv4. Default is false (IPv4).
 - The default timeout when syncing the node was increased from 10 seconds to 30 seconds to avoid timing out when syncing from slower peers.
@@ -106,13 +106,13 @@ for setuptools_scm/PEP 440 reasons.
 - Offer history limit has been fixed to show all offers now instead of limiting to just 49 offers.
 - Fixed issues with using madmax CLI options -w, -G, -2, -t and -d (Issue 9163) (thanks @randomisresistance and @lasers8oclockday1).
 - Fixed issues with CLI option –passhrase-file (Issue 9032) (thanks @moonlitbugs).
-- Fixed issues with displaying IPv6 address in CLI with chia show -c.
+- Fixed issues with displaying IPv6 address in CLI with hydrangea show -c.
 - Thanks to @chuwt for fix to looping logic during node synching.
 - Fixed the chia-blockchain RPM to set the permission of chrome-sandbox properly.
 - Fixed issues where the wallet code would not generate enough addresses when looking for coins, which can result in missed coins due to the address not being checked. Deprecated the config setting initial_num_public_keys_new_wallet. The config setting initial_num_public_keys is now used in all cases.
 - Thanks to @risner for fixes related to using colorlog.
 - Fixed issues in reading the pool_list from config if set to null.
-- Fixed display info in CLI chia show -c when No Info should be displayed.
+- Fixed display info in CLI hydrangea show -c when No Info should be displayed.
 - Thanks to @madMAx43v3r for fixes in chiapos related to a possible race condition when multiple threads call Verifier::ValidateProof.
 - Thanks to @PastaPastaPasta for some compiler warning fixes in bls-signatures.
 - Thanks to @random-zebra for fixing a bug in the bls-signature copy assignment operator.
@@ -154,7 +154,7 @@ This release also includes several important performance improvements as a resul
   - Increased BLS pairing cache.
 - Integrated the Bladebit plotter to CLI and GUI. Thanks @harold-b for all your hard work on this, and welcome again to the Chia Network team!
 - Added the Madmax plotter to CLI and GUI. Thanks @madMAx43v3r for your support!
-- Added option to configure your node to testnet using to `chia init --testnet`.
+- Added option to configure your node to testnet using to `hydrangea init --testnet`.
 
 ### Changed
 
@@ -321,7 +321,7 @@ submissions. Thanks to @RuiZhe for Chinese, Traditional; @HansCZ for Czech;
 ### Changed
 
 - Thanks @altendky for Correct * to ** kwargs unpacking in time_out_assert().
-- Thanks @altendky for changing the default to paginate to chia wallet get_transactions to address cases such as piping and output redirection to a file where the command previously just hung while waiting for the user to press c for the next page.
+- Thanks @altendky for changing the default to paginate to hydrangea wallet get_transactions to address cases such as piping and output redirection to a file where the command previously just hung while waiting for the user to press c for the next page.
 - Removed commented-out debug breakpoints.
 - Enabled Rust condition checker to add the ability to parse the output conditions from a  generator program in Rust. It also validates some of the conditions in Rust.
 - Switched IP address lookup to first use Chia's service ip.chia.net.
@@ -415,7 +415,7 @@ submissions. Thanks to @RuiZhe for Chinese, Traditional; @HansCZ for Czech;
 - Portable pooled plots are now available using our new plot NFT. These allow you to plot new plots to an NFT that can either self farm or join and leave pools. During development there were changes to the plot NFT so portable pool plots (those made with `-c` option to `chia plots create`) using code from before June 25th are invalid on mainnet.
 OG plots made before this release can continue to be farmed side by side with the new portable pool plots but can not join pools using the official pooling protocol. You can learn more as a farmer by checking out the [pool user guide](https://github.com/Chia-Network/chia-blockchain/wiki/Pooling-User-Guide). Pool operators and those wanting to understand how the official pooling protocol operates should check out our [pooling implementation reference repository](https://github.com/Chia-Network/pool-reference). If you plan to use plot NFT, all your farmers and harvesters must be on 1.2.0 to function properly for portable pool plots.
 - The exact commit after which Plot NFTs should be valid is the 89f7a4b3d6329493cd2b4bc5f346a819c99d3e7b commit (in which `pools.testnet9` branch was merged to main) or 5d62b3d1481c1e225d8354a012727ab263342c0a within the `pools.testnet9` branch.
-- `chia farm summary` and the GUI now use a new RPC endpoint to properly show plots for local and remote harvesters. This should address issues #6563, #5881, #3875, #1461.
+- `hydrangea farm summary` and the GUI now use a new RPC endpoint to properly show plots for local and remote harvesters. This should address issues #6563, #5881, #3875, #1461.
 - `chia configure` now supports command line updates to peer count and target peer count.
 - Thank you @gldecurtins for adding logging support for remote syslog.
 - Thanks to @maran and @Animazing for adding farmer and pool public key display to the RPC.
@@ -455,8 +455,8 @@ OG plots made before this release can continue to be farmed side by side with th
 
 - The delete plots button in the Windows GUI has been fixed and re-enabled.
 - Sometimes upon startup, the GUI takes a while to load the plots to display. We've made a temporary improvement that adds a "Refresh Plots" button whenever the GUI has not yet found plots.
-- Correctly display private key in `chia keys show`.
-- Thanks to @gldecurtins for removing a default printout of the private key mnemonic in `chia keys show`.
+- Correctly display private key in `hydrangea keys show`.
+- Thanks to @gldecurtins for removing a default printout of the private key mnemonic in `hydrangea keys show`.
 - Shutting down the full node is cleaner and manages uPnP better.
 - DNS introducer could fail.
 - Fixed a potential timelord bug that could lead to a chain stall.
@@ -465,7 +465,7 @@ OG plots made before this release can continue to be farmed side by side with th
 - Thank you to @ChiaMineJP for various improvements.
 - @asdf2014 removed some useless code in the wallet node API.
 - Thanks to @willi123yao for a fix to under development pool wallets.
-- `chia farm summary` better handles wallet errors.
+- `hydrangea farm summary` better handles wallet errors.
 - @Hoinor fixed formatting issues around the Chinese translation in the GUI.
 - Sometimes the GUI would stop refreshing certain fields.
 - We have better error handling for misbehaving peers from naive forks/clones.
@@ -536,7 +536,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 
 ### Changed
 
-- Secret wallet key is hidden by default in `chia keys show`. Use `chia keys show --show-mnemonic-seed` for private keys.
+- Secret wallet key is hidden by default in `hydrangea keys show`. Use `hydrangea keys show --show-mnemonic-seed` for private keys.
 - Performance improvement while parsing variable length field in transaction blocks.
 
 ### Fixed
@@ -695,7 +695,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 
 ### Fixed
 
-- An incorrect merge brought in unreleased features and broke `chia keys`.
+- An incorrect merge brought in unreleased features and broke `hydrangea keys`.
 - Omitted from the 1.0.2 changelog, we fixed one crash in harvester with the release of chiapos 1.0.0 as well.
 
 ## 1.0.2 Chia Blockchain 2021-03-30
@@ -711,9 +711,9 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 ### Changed
 
 - Wallet now uses a trusted node and, when syncing from that node, Wallet does not do as many validations.
-- @jespino changed `chia keys show` to require the `--show-mnemonic-seed` before it displays your 24 work private key mnemonic.
+- @jespino changed `hydrangea keys show` to require the `--show-mnemonic-seed` before it displays your 24 work private key mnemonic.
 - We decreased the size of the block cache in node to perform better with longer chains.
-- You can now add a private key mnemonic from a file with `chia keys show`.
+- You can now add a private key mnemonic from a file with `hydrangea keys show`.
 - @Flofie caught an error in CONTRIBUTING.md.
 - We no longer rely on aiter so it has been removed.
 - Keyring deprecated the use of OS_X in favor of MacOS.
@@ -734,7 +734,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 ### Added
 
 - There is now a simple progress bar on the GUI Plot page and when you view the log from the three dots on the right.
-- Users must now explicitly set the `--show-mnemonic-seed` flag to see their private keys when running `chia keys show`.
+- Users must now explicitly set the `--show-mnemonic-seed` flag to see their private keys when running `hydrangea keys show`.
 - We are now building Linux GUI installers. These should be considered beta quality for now.
 - Translations now available for German, Traditional Chinese, and Danish. Thanks to @Dravenex, @MaestroOnICe, @loudsyncro, @loppefaaret, @thirteenthd, @wong8888, @N418, and @swjz for all the translation help. You to can translate at our [Crowdin project](https://crowdin.com/project/chia-blockchain/).
 
@@ -788,7 +788,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Found and fixed another green flag related issue
 - Fixed an issue with weight proofs where all sub-epochs were sampled, and the size of the weight proof kept growing
 - Fixed an issue with install-gui.sh, where npm audit fix was failing. (Thanks @Depado!)
-- Migration with HYDRANGEA_ROOT set does not crash chia init
+- Migration with HYDRANGEA_ROOT set does not crash hydrangea init
 
 ## 1.0rc8 aka Release Candidate 8 - 2021-03-15
 
@@ -805,14 +805,14 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Harvester now catches another error class and continues to harvest. Thanks to @xorinox for this PR.
 - We now use a smaller weight proof sample size to ease the load on smaller machines when syncing.
 - Starting the GUI from Linux will now also error out if `npm run build` is run outside the venv. Huge thanks to @dkackman for that PR.
-- `chia farm summary` will now display TXHG or XHG as appropriate.
+- `hydrangea farm summary` will now display TXHG or XHG as appropriate.
 - We added more time to our API timeouts and improved logging around times outs.
 
 ### Fixed
 
 - We no longer use the transaction cache to look up transactions for new transactions as that was causing a wallet sync bug.
 - Sometimes the GUI would not pick up the fingerprint for the plotting key.
-- `chia farm summary` displayed some incorrect amounts.
+- `hydrangea farm summary` displayed some incorrect amounts.
 - Weight proofs were timing out.
 - Changes to farming rewards target addresses from the GUI were not being saved for restart correctly.
 - Signage points, recent deficit blocks, and slots for overflow challenge blocks had minor issues.
@@ -855,7 +855,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 ## Changed
 
 - Remove `chia plots "-s" "--stripe_size"` and the strip size setting in the Advanced section of the GUI. We now always use the best default of 64K for the GUI and cli.
-- `chia keys add` takes secret words a prompt on the command line or stdin instead of command line arguments for security.
+- `hydrangea keys add` takes secret words a prompt on the command line or stdin instead of command line arguments for security.
 - Version 1.0.1 of chiavdf was added. This brought MPIR on Windows to the most recent release. Additionally we removed inefficient ConvertIntegerToBytes() and ConvertBytesToInt() functions, use GMP library's mpz_export/mpz_import for big integers and simple helper functions for built-in integer types. The latter are taken from chiavdf. We now require compressed forms to be encoded canonically when deserializing. This should prevent potential grinding attacks where some non-canonical encodings of a compressed form could be used to change its hash and thus the next challenges derived from it. Canonically encoded compressed forms must be reduced and must produce the same string when deserialized and serialized again.
 - Version 1.0 of our BLS signature library is included. We brought Relic, gmp and MPIR up to their most recent releases. We again thank the Dash team for their fixes and improvements.
 - We now hand build Apple Silicon native binary wheels for all chia-blockchain dependencies and host them at [https://pypi.chia.net/simple](https://pypi.chia.net/simple). We are likely to hand build a MacOS ARM64 dmg available and certainly will for 1.0. You can install natively on M1 now with the `git clone` developer method today. Just make sure Python 3.9 is installed. `python3 --version` works.
@@ -883,8 +883,8 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 ## Fixed
 
 - The Farm page will now no longer get stuck at 50 TXHG farmed.
-- `chia farm` has had multiple bugs and spelling issues addressed. Thanks to @alfonsoperez, @soulmerge and @olivernyc for your contributions.
-- `chia wallet` had various bugs.
+- `hydrangea farm` has had multiple bugs and spelling issues addressed. Thanks to @alfonsoperez, @soulmerge and @olivernyc for your contributions.
+- `hydrangea wallet` had various bugs.
 - Various weight proof improvements.
 - Some users on Big Sur could not plot from the GUI as the log window would be stuck on "Loading."
 - We believe we have fixed the chain stall/confused Timelord bug from ~ 13:00 UTC 3/10/21. We've added additional recovery logic as well.
@@ -899,9 +899,9 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - The RC5 release is a new breaking change/hard fork blockchain. Plots and keys from previous chains will work fine on RC5 but balances of TXHG will not come forward.
 - We now support a "green flag" chain launch process. A new version of the software will poll download.chia.net/notify/ for a signed json file that will be the genesis block of the chain for that version. This will allow unattended start at mainnet.
 - Bluebox Timelords are back. These are Timelords most anyone can run. They search through the historical chain and find large proofs of times and compact them down to their smallest representation. This significantly speeds up syncing for newly started nodes. Currently this is only supported on Linux and MacOS x86_64 but we will expand that. Any desktop or server of any age will be fast enough to be a useful Bluebox Timelord.
-- Thanks to @jespino there is now `chia farm summary`. You can now get almost exactly the same farming information on the CLI as the GUI.
+- Thanks to @jespino there is now `hydrangea farm summary`. You can now get almost exactly the same farming information on the CLI as the GUI.
 - We have added Romanian to the GUI translations. Thank you to @bicilis on [Crowdin](https://crowdin.com/project/chia-blockchain). We also added a couple of additional target languages. Klingon anyone?
-- `chia wallet` now takes get_address to get a new wallet receive address from the CLI.
+- `hydrangea wallet` now takes get_address to get a new wallet receive address from the CLI.
 - `chia plots check` will list out all the failed plot filenames at the end of the report. Thanks for the PR go to @eFishCent.
 - Chialisp and the clvm have had the standard puzzle updated and we replaced `((c P A))` with `(a P A)`.
 
@@ -927,7 +927,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - Harvester would crash if it encountered more than 16,000 plot files or 256 directories.
 - Nodes that were interrupted by a network crash or standby on a laptop were not syncing upon reconnection in RC4.
 - Sync issues could stop syncing from restarting and could lead to a peer host that you could not remove.
-- Adding Click changed the behavior of `chia keys add -m`. The help now makes it clear that the 24 word mnemonic needs to be surrounded by a pair of quotes.
+- Adding Click changed the behavior of `hydrangea keys add -m`. The help now makes it clear that the 24 word mnemonic needs to be surrounded by a pair of quotes.
 - Python root CA certificates have issues so we have added the Mozilla certificate store via curl.se and use that to connect to backup.chia.net via https, for example.
 - The difficulty adjustment calculation was simplified.
 - All of the chia sub repositories that were attempting to build MacOS Universal wheels were only generating x86_64 wheels internally. We have moved back to only generating x86_64 MacOS wheels on CI.
@@ -952,7 +952,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - A new RPC api: /push_tx. Using this RPC, you can spend custom chialisp programs. You need to make a SpendBundle, which includes the puzzle reveal (chialisp), a solution (chialisp) and a signature.
 - You can now use the RPC apis to query the mempool.
 - There are now Swedish, Spanish, and Slovak translations. Huge thanks to @ordtrogen (Swedish), @jespino and @dvd101x (Spanish), and our own @seeden (Slovak). Also thanks were due to @f00b4r (Finnish), @A-Caccese (Italian), and @Bibop182 and @LeonidShamis (Russian). Quite a few more are almost complete and ready for inclusion. You can help translate and review translations at our [crowdin project](https://crowdin.com/project/chia-blockchain).
-- You can obtain a new wallet receive address on the command line with `chia wallet new_address`. Thanks to @jespino for this and a lot more in the next section below.
+- You can obtain a new wallet receive address on the command line with `hydrangea wallet new_address`. Thanks to @jespino for this and a lot more in the next section below.
 - You will now see Your Harvester Network in the GUI even if you have no plots.
 
 ### Changed
@@ -968,7 +968,7 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 - The application is now more aware of whether it is running a testnet or mainnet. This impacts wallet's display behavior and certain blockchain validation rules.
 - Interface improvements for `chia netspace`.
 - Now that aiosqlite included our upstream improvements we install version 0.17.0.
-- `chia init` only migrates release candidate directories. The versioned sub directories under `~/chia` will be going away before mainnet.
+- `hydrangea init` only migrates release candidate directories. The versioned sub directories under `~/chia` will be going away before mainnet.
 
 ### Fixed
 
@@ -1002,8 +1002,8 @@ Batch process weight proof epochs in groups of 900 to fit below May 2020 sqlite 
 
 - This is the first release in our release candidate series. There are still a few things that will change at the edges but the blockchain, clvm, and chialisp are in release form. We have one major change to chialisp/clvm that we have chosen to schedule for the next release as in this release we're breaking the way q/quote works. We also have one more revision to the VDF that will decrease the sizes of the proofs of time. We expect a few more releases in the release candidate series.
 - Installers will now be of the pattern ChiaSetup-0.2.1.exe. `0.2` is release candidate and the final `.1` is the first release candidate.
-- Use 'chia wallet get_transactions' in the command line to see your transactions.
-- 'chia wallet show' now shows your wallet's height.
+- Use 'hydrangea wallet get_transactions' in the command line to see your transactions.
+- 'hydrangea wallet show' now shows your wallet's height.
 - Last Attempted Proof is now above Latest Block Challenge on the Farm page of the GUI.
 - The GUI now detects duplicate plots and also only counts unique plots and unique plot size.
 - We have integrated with crowdin to make it easier to translate the GUI. Check out [Chia Blockchain GUI](https://crowdin.com/project/chia-blockchain) there.
@@ -1018,7 +1018,7 @@ validation was changed to allow blocks like these to be made. This will enable c
 - Sub blocks renamed to blocks, and blocks renamed to transaction blocks, everywhere. This effects the RPC, now
 all fields that referred to sub blocks are changed to blocks.
 - Base difficulty and weight have increased, so difficulty of "5" in the rc1 testnet will be equivalent to "21990232555520" in the previous testnet.
-- 'chia wallet send' now takes in TXHG or XHG as units instead of mojos.
+- 'hydrangea wallet send' now takes in TXHG or XHG as units instead of mojos.
 - Transactions have been further sped up.
 - The blockchain database has more careful validation.
 - The GUI is now using bech32m.
@@ -1037,10 +1037,10 @@ all fields that referred to sub blocks are changed to blocks.
 - We now use the rust version of clvm, clvm_rs, in preference to validate transactions. We have additionally published binary wheels or clvm_rs for all four platforms and all three supported python versions. The rust version is approximately 50 times faster than the python version used to validate on chain transactions in previous versions.
 - We have moved to compressed quadratic forms for VDFs. Using compressed representation of quadratic forms reduces their serialized size from 130 to 100 bytes (for forms with 1024-bit discriminant). This shrinks the size of VDF outputs and VDF proofs, and it's a breaking change as the compressed representation is not compatible with the older uncompressed (a, b) representation. Compressed forms are also used in calls to chiavdf and in timelord's communication with VDF clients. The form compression algorithm is based on ["Trustless Groups of Unknown Order with Hyperelliptic Curves"](https://eprint.iacr.org/2020/196) by Samuel Dobson, Steven D. Galbraith and Benjamin Smith.
 - Last Attempted Proof on the Farm tab of the GUI now shows hours:minutes:seconds instead of just hours:minutes. This makes it much easier to see that your farmer is responding to recent challenges at a glance.
-- You can now send and receive transactions with the command line. Try `chia wallet -h` to learn more. Also, `chia wallet` now requires a third argument of `show`, therefor you will use `chia wallet show` to see your wallet balance.
+- You can now send and receive transactions with the command line. Try `hydrangea wallet -h` to learn more. Also, `hydrangea wallet` now requires a third argument of `show`, therefor you will use `hydrangea wallet show` to see your wallet balance.
 - We have added the [Crowdin](https://crowdin.com/) translation platform to [chia blockchain gui](https://crowdin.com/project/chia-blockchain). We are still getting it fully set up, but helping to translate the GUI is going to be much easier.
 - Full Node > Connections in the GUI now shows the peak sub block height your connected peers believe they are at. A node syncing from you will not be at the true peak sub block height until it gets into sync.
-- `chia init -c [directory]` will create new TLS certificates signed by your CA located in `[directory]`. Use this feature to configure a new remote harvester. Type `chia init -h` to get instructions. Huge thanks to a very efficient @eFishCent for this quick and thorough pull request.
+- `hydrangea init -c [directory]` will create new TLS certificates signed by your CA located in `[directory]`. Use this feature to configure a new remote harvester. Type `hydrangea init -h` to get instructions. Huge thanks to a very efficient @eFishCent for this quick and thorough pull request.
 - We build both MacOS x86_64 and MacOS universal wheels for chiapos, chiavdf, blpsy, and chiabip158 in Python 3.9. The universal build allows M1 Macs to run these dependencies in ARM64 native mode.
 - On first run in the GUI (or when there are no plot directories) there is now an "Add Plot Directories" on the Farm tab also.
 
@@ -1065,7 +1065,7 @@ all fields that referred to sub blocks are changed to blocks.
 - The GUI was incorrectly reporting the time frame that the netspace estimate it displays utilizes. It is technically 312.5 minutes, on average, over the trailing 1000 sub blocks.
 - Coloured coins were not working in the new consensus.
 - Some Haswell processors do not have certain AVX extensions and therefor would not run.
-- The cli wallet, `chia wallet`, was incorrectly displaying TXHG balances as if they were Coloured Coins.
+- The cli wallet, `hydrangea wallet`, was incorrectly displaying TXHG balances as if they were Coloured Coins.
 - We addressed [CVE-2020-28477](https://nvd.nist.gov/vuln/detail/CVE-2020-28477) in the GUI.
 - We made changes to CI to hopefully not repeat our skipped releases from the previous release cycle.
 
@@ -1131,9 +1131,9 @@ all fields that referred to sub blocks are changed to blocks.
 - On starting full node, the weight proof cache does not attempt to load all sub blocks. Startup times are noticeably improved though there remains a hesitation when validating the mempool. Our clvm Rust implementation, which will likely ship in the next release, will drop example processing times from 180 to 3 seconds.
 - Changes to weight proofs and sub block storage and cacheing required a new database schema. This will require a re-sync or obtaining a synced blockchain_v23.db.
 - clvm bytecode is now generated and confirmed that the checked-in clvm and ChiaLisp code matches the CI compiled code.
-- We have removed the '-r' flag from `chia` as it was being overridden in most cases by the `-r` for restart flag to `chia start`. Use `chia --root-path` instead.
+- We have removed the '-r' flag from `chia` as it was being overridden in most cases by the `-r` for restart flag to `hydrangea start`. Use `chia --root-path` instead.
 - `chia -h` now recommends `chia netspace -d 192` which is approximately one hours worth of sub blocks. Use `-d 1000` to get the same estimate of netspace as the RPC and GUI.
-- `chia show -c` now displays in MiB and the GUI has been changed to MiB to match.
+- `hydrangea show -c` now displays in MiB and the GUI has been changed to MiB to match.
 - `chia configure` now accepts the shorter `-upnp` and `-log-level` arguments also.
 - `chia plots check` now defaults to `-n 30` instead of `-n 1` - HT @eFishCent.
 - `chia plots create` now enforces a minimum of k=22. As a reminder, anything less than k=32 is just for testing and be careful extrapolating performance of a k less than 30 to a k=32 or larger.
@@ -1147,8 +1147,8 @@ all fields that referred to sub blocks are changed to blocks.
 - Inbound and outbound peer connection limits were not being honored.
 - Weight proofs were not correctly extending.
 - In some cases when closing a p2p connection to another node, there was an infinite "Closing" loop.
-- `chia show -c` was showing upload MiB in the download column and vice versa. @pyl and @psydafke deserves credit for insisting it was broken and @kd637xx for the PR assist.
-- `chia show` handles sub block 0 better.
+- `hydrangea show -c` was showing upload MiB in the download column and vice versa. @pyl and @psydafke deserves credit for insisting it was broken and @kd637xx for the PR assist.
+- `hydrangea show` handles sub block 0 better.
 
 ## [1.0beta22] aka Beta 1.22 - 2021-01-19
 
@@ -1169,7 +1169,7 @@ all fields that referred to sub blocks are changed to blocks.
 - Various fixes to improve node's ability to sync. There are still plenty of additional performance improvements coming for node so expect it to get easier to run on less powerful devices.
 - Wallet now handles large amounts of coins much better and generally syncs better.
 - Thanks to @nup002 for the PR to use scientific notation in the logs for address_manager.select_peer timings.
-- `chia show -h` now correctly states that you use the first 8 characters of the node id to remove a node on the cli.
+- `hydrangea show -h` now correctly states that you use the first 8 characters of the node id to remove a node on the cli.
 - Thank you to @wallentx for adding better help for `chia configure --enable-upnp`.
 - Pull requests from forks won't have failures on CI.
 
@@ -1192,7 +1192,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 - Weight proofs were failing to verify contributing to a chain stall. This release gets things moving again but nodes are using too much CPU and can pause/lag at times. This may resolve as people upgrade to Beta 21.
 - A toxic combination of transaction limits set too high and a non performant clvm kept the chain stalled. A faster rust implementation of clvm is already nearing completion.
-- `chia netspace -s` would not correctly look up the start block height by block hash. Additionally netspace now flips to PiB above 1024 TiB. To compare netspace to `chia show` of the GUI use `chia netspace -d 1000` as `chia netspace` defaults to `-d 192` which is one hour.
+- `chia netspace -s` would not correctly look up the start block height by block hash. Additionally netspace now flips to PiB above 1024 TiB. To compare netspace to `hydrangea show` of the GUI use `chia netspace -d 1000` as `chia netspace` defaults to `-d 192` which is one hour.
 
 ## [1.0beta20] aka Beta 1.20 - 2021-01-14
 
@@ -1229,7 +1229,7 @@ all fields that referred to sub blocks are changed to blocks.
 - You can now plot in parallel using the GUI. A known limitation is that you can't yet specify that you want 4 sets of two parallel plots. Each parallel plot added starts immediately parallel. We will continue to improve this.
 - The GUI now warns if you attempt to create a plot smaller than k=32.
 - Added Chinese language localization (zh-cn). A big thank you to @goomario for their pull request!
-- You can now specify which private key to use for `chia plots create`. After obtaining the fingerprint from `chia keys show`, try `chia plots create -a FINGERPRINT`. Thanks to @eFishCent for this pull request!
+- You can now specify which private key to use for `chia plots create`. After obtaining the fingerprint from `hydrangea keys show`, try `chia plots create -a FINGERPRINT`. Thanks to @eFishCent for this pull request!
 - We use a faster hash to prime function for chiavdf from the current release of gmp-6.2.1 which we have upgraded chiavdf and blspy to support.
 - There is a new cli command - `chia configure`. This allows you to update certain configuration details like log level in config.yaml from the command line. This is particularly useful in containerization and linux automation. Try `chia configure -h`. Note that if chia services are running and you issue this command you will have to restart them for changes to take effect but you can use this command in the venv when no services are running or call it directly by path in the venv without activating the venv. Expect the options for this command to expand.
 - We now fully support Python 3.9.
@@ -1252,7 +1252,7 @@ all fields that referred to sub blocks are changed to blocks.
 - Peer disconnect messages are now set to log level INFO down from WARNING.
 - chiavdf now allows passing in input to a VDF for new consensus.
 - sha256tree has been removed from Chialisp.
-- `chia show -s` has been refactored to support the new consensus.
+- `hydrangea show -s` has been refactored to support the new consensus.
 - `chia netspace` has been refactored for new consensus.
 - aiohttp, clvm-tools, colorlog, concurrent-log-handler, keyring, cryptography, and sortedcontainers have been upgraded to their current versions.
 - Tests now place a cache of blocks and plots in the ~/.chia/ directory to speed up total testing time.
@@ -1267,7 +1267,7 @@ all fields that referred to sub blocks are changed to blocks.
 - blspy was bumped to 0.3.1 which now correctly supports the aggsig of no signatures and is built with gmp-6.2.1.
 - Fixed a plotter crash after pulling a disk without ejecting it first.
 - `sh install.sh` now works properly on Linux Mint.
-- `chia show -s` now is less brain dead when a node is initially starting to sync.
+- `hydrangea show -s` now is less brain dead when a node is initially starting to sync.
 
 ## [1.0beta18] aka Beta 1.18 - 2020-12-03
 
@@ -1418,14 +1418,14 @@ all fields that referred to sub blocks are changed to blocks.
 - Coloured coins have been updated to simplify them, remove 'a', and stop using an 'auditor'.
 - clvm has been significantly changed to support the new coloured coins implementation.
 - Bumped cryptography to 3.1. Cryptography is now publishing ARM64 binary wheels to PyPi so Raspberry Pi installs should be even easier.
-- `chia init` now automatically discovers previous releases in each new release.
+- `hydrangea init` now automatically discovers previous releases in each new release.
 
 ### Fixed
 
-- `chia show -w` should now more reliably work. Wallet balances should be more often correct.
+- `hydrangea show -w` should now more reliably work. Wallet balances should be more often correct.
 - View -> Developer -> Developer Tools now correctly opens the developer tools. Thank you to @roxaaams for this pull request!
 - Fixed 'Receive Address' typo in Wallet. Thanks @meurtn on Keybase.
-- Fixed a typo in `chia show -w` with thanks to @pyl on Keybase.
+- Fixed a typo in `hydrangea show -w` with thanks to @pyl on Keybase.
 - In Windows the start menu item is now Chia Network and the icon in Add/Remove is updated.
 
 ## [1.0beta11] aka Beta 1.11 - 2020-08-24
@@ -1445,7 +1445,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 - kOffsetSize should have been 10 bits and not 9. This was causing plots, especially larger plots, to fail with "Error 0". This bug was introduced in Beta 8 with the new plot file format.
 - A bug in aiosqlite was causing tests to hang - especially on the ci. This may also have been causing wallet database corruption.
-- `chia show -w` now correctly outputs all wallet types and balances from the local wallet.
+- `hydrangea show -w` now correctly outputs all wallet types and balances from the local wallet.
 
 ## [1.0beta10] aka Beta 1.10 - 2020-08-18
 
@@ -1454,7 +1454,7 @@ all fields that referred to sub blocks are changed to blocks.
 - Meet our new Rate Limited wallet. You can now fund a wallet from an Admin wallet that will set how many coins can be spent over a given range of blocks for a given User wallet. Once combined with on chain wallet recovery, this makes it much easier to secure your "spending money" wallet so that if it is compromised you have time to get most of the funds back before an attacker can steal them all. This wallet should be considered alpha in this release as additional fixes and functionality will be coming in subsequent releases.
 - We've added unhardened HD keys to bls-signatures for the smart wallets that need them. We've added significant cross project testing to our BLS implementation.
 - The python implementation of bls-signatures is now current to the new specification.
-- `chia show -b` now returns plot public key and pool public key for each block.
+- `hydrangea show -b` now returns plot public key and pool public key for each block.
 - Added cbor2 binary wheels for ARM64 to the Chia simple site. Raspberry Pi should be just a little easier to install.
 
 ### Changed
@@ -1469,7 +1469,7 @@ all fields that referred to sub blocks are changed to blocks.
 ### Fixed
 
 - Proof of space plotting now correctly calculates the total working space used in the `-t` directory.
-- `chia show -w` now displays a message when balances cannot be displayed instead of throwing an error. Thanks to @freddiecoleman for this fix!
+- `hydrangea show -w` now displays a message when balances cannot be displayed instead of throwing an error. Thanks to @freddiecoleman for this fix!
 - Fix issue with shutting down full node (full node processes remained open, and caused a spinner when launching Chia)
 - Various code review alerts for comparing to a wider type in chiapos were fixed. Additionally, unused code was removed from chiapos
 - Benchmarking has been re-enabled in bls-signatures.
@@ -1480,9 +1480,9 @@ all fields that referred to sub blocks are changed to blocks.
 
 ### Added
 
-- See wallet balances in command line: `chia show -w`
+- See wallet balances in command line: `hydrangea show -w`
 - Retry opening invalid plots every 20 minutes (so you can copy a large plot into a plot directory.)
-- We've added `chia keys sign` and `chia keys verify` to allow farmers to certify their ownership of keys.
+- We've added `hydrangea keys sign` and `hydrangea keys verify` to allow farmers to certify their ownership of keys.
 - Windows BLS Signature library now uses libsodium for additional security.
 - You can now backup and restore Smart Wallet metadata.
 - Binary wheels for ARM64/aarch64 also build for python 3.7.
@@ -1492,7 +1492,7 @@ all fields that referred to sub blocks are changed to blocks.
 
 ### Changed
 
-- `chia start wallet-server` changed to `chia start wallet`, for consistency.
+- `hydrangea start wallet-server` changed to `hydrangea start wallet`, for consistency.
 - All data size units are clarified to displayed in GiB instead of GB (powers of 1024 instead of 1000.)
 - Better error messages for restoring wallet from mnemonic.
 
@@ -1638,7 +1638,7 @@ relic. We will make a patch available for these systems shortly.
 - The command line plotter now supports specifying it's memory buffer size.
 - Test plots for the simulation and testing harness now go into `~/.chia/test-plots/`
 - We have completely refactored all networking code towards making each Chia service use the same default networking infrastructure and move to websockets as the default networking wire protocol.
-- We added additional improvements and more RPCs to the start daemon and various services to continue to make chia start/stop reliable cross platform.
+- We added additional improvements and more RPCs to the start daemon and various services to continue to make hydrangea start/stop reliable cross platform.
 - The install.sh script now discovers if it's running on Ubuntu less than 20.04 and correctly upgrades node.js to the current stable version.
 - For GitHub ci builds of the Windows installer, editbin.exe is more reliably found.
 - All installer ci builds now obtain version information automatically from setuptools_scm and convert it to an installer version number that is appropriate for the platform and type of release (dev versus release.)
@@ -1660,10 +1660,10 @@ relic. We will make a patch available for these systems shortly.
 - Windows and MacOS now have one click installers that then send users to a GUI on both platforms to farm or use their wallets. Windows is built on GitHub Actions and MacOS is also built on Azure Pipelines so as to build on Mojave.
 - You can see and control your farmer, harvester, and plotter from the GUI on Windows, MacOS, and Linux.
 - Create plots and see the plotting log from a GUI on Windows, MacOS, and Linux.
-- You can now create or import private keys with a 24 word mnemonic, both in the UI and 'chia keys' command line.
+- You can now create or import private keys with a 24 word mnemonic, both in the UI and 'hydrangea keys' command line.
 - You can delete and change active keys from the GUI and cli.
 - We added a new keychain system that replaces keys.yaml, and migrates existing users from keys.yaml. It utilizes each OS's keychain for slightly more secure key storage.
-- We added a `chia keys` command line program, to see, add, and remove private keys.
+- We added a `hydrangea keys` command line program, to see, add, and remove private keys.
 - We added RPC servers and RPC client implementations for Farmer and Harvester. The new UI uses these for additional information and functionality.
 - We added total network storage space estimation to the node RPC at the `/get_network_space` endpoint instead of only being available in the cli. The RPC endpoint takes two block header hashes and estimates space between those header hashes.
 - Logs now autorotate. Once the debug.log reaches 20MB it is compressed and archived keeping 7 historical 20MB logs.
@@ -1710,8 +1710,8 @@ relic. We will make a patch available for these systems shortly.
 
 ### Changed
 
-- `chia init` properly migrates from previous versions including the k>=32 workaround. Additionally, the farming target key is checked to make sure that it is the valid and correct public key format.
-- We have implemented a workaround for the `chia start` issues some were having upon crash or reboot. We will be rebuilding start and stop to be robust across platforms.
+- `hydrangea init` properly migrates from previous versions including the k>=32 workaround. Additionally, the farming target key is checked to make sure that it is the valid and correct public key format.
+- We have implemented a workaround for the `hydrangea start` issues some were having upon crash or reboot. We will be rebuilding start and stop to be robust across platforms.
 - This release re-includes `chia-start-harvester`.
 - Coloured coins now have a prefix to help identify them. When sending transactions, the new prefix is incompatible with older clients.
 - The user interface now refers to chia coins with their correct currency code of XHG.
@@ -1725,7 +1725,7 @@ relic. We will make a patch available for these systems shortly.
 
 ### Deprecated
 
-- We have made significant changes to the full node database to make it more reliable and quicker to restart. This requires re-syncing the current chain. If you use `chia init` then sync on first start will happen automatically. "\$HYDRANGEA_ROOT" users will need to delete `$HYDRANGEA_ROOT/db/*` before starting Beta 1.5. This also fixes the simulation issue in Beta 1.4 where tips could go "back in time."
+- We have made significant changes to the full node database to make it more reliable and quicker to restart. This requires re-syncing the current chain. If you use `hydrangea init` then sync on first start will happen automatically. "\$HYDRANGEA_ROOT" users will need to delete `$HYDRANGEA_ROOT/db/*` before starting Beta 1.5. This also fixes the simulation issue in Beta 1.4 where tips could go "back in time."
 
 ### Known issues
 
@@ -1741,8 +1741,8 @@ relic. We will make a patch available for these systems shortly.
 - We made some speed improvements that positively affected all platforms while trying to increase plotting speed in Windows.
 - The graphical Full Node display now shows the expected finish times of each of the prospective chain tips.
 - Now you can run estimates of the total space currently farming the network. Try `chia netspace -d 12` to run an estimate over the last 12 blocks which is approximately 1 hour.
-- We’ve added TLS authentication for incoming farmer connections. TLS certs and keys are generated during chia init and only full nodes with your keys will be able to connect to your Farmer. Also, Harvester, Timelord, and Wallet will now not accept incoming connections which reduces the application attack surface.
-- The node RPC has a new endpoint get_header_by_height which allows you to retrieve the block header from a block height. Try `chia show -bh 1000` to see the block header hash of block 1000. You can then look up the block details with `chia show -b f655e1a9f7f8c89a703e40d9ce82ae33508badaf7b37fa1a56cad27926b5e936` which will look up a block by it's header hash.
+- We’ve added TLS authentication for incoming farmer connections. TLS certs and keys are generated during hydrangea init and only full nodes with your keys will be able to connect to your Farmer. Also, Harvester, Timelord, and Wallet will now not accept incoming connections which reduces the application attack surface.
+- The node RPC has a new endpoint get_header_by_height which allows you to retrieve the block header from a block height. Try `hydrangea show -bh 1000` to see the block header hash of block 1000. You can then look up the block details with `hydrangea show -b f655e1a9f7f8c89a703e40d9ce82ae33508badaf7b37fa1a56cad27926b5e936` which will look up a block by it's header hash.
 - Our Windows binaries check the processor they are about to run on at runtime and choose the best processor optimizations for our [MPIR](http://mpir.org/) VDF dependency on Windows.
 - Most of the content of README.md and INSTALL.md have been moved to the [repository wiki](https://github.com/Chia-Network/chia-blockchain/wiki) and placed in [INSTALL](https://github.com/Chia-Network/chia-blockchain/wiki/INSTALL) and [Quick Start Guide](https://github.com/Chia-Network/chia-blockchain/wiki/Quick-Start-Guide)
 - Harvester is now asynchronous and will better be able to look up more plots spread across more physical drives.
@@ -1750,13 +1750,13 @@ relic. We will make a patch available for these systems shortly.
 
 ### Changed
 
-- Most scripts have been removed in favor of chia action commands. You can run `chia version` or `chia start node` for example. Just running `chia` will show you more options. However `chia-create-plots` continues to use the hyphenated form. Also it's now `chia generate keys` as another example.
-- Chia start commands like `chia start farmer` and `chia stop node` now keep track of process IDs in a run/ directory in your configuration directory. `chia stop` is unlikely to work on Windows native for now. If `chia start -r node` doesn't work you can force the run/ directory to be reset with `chia start -f node`.
+- Most scripts have been removed in favor of chia action commands. You can run `chia version` or `hydrangea start node` for example. Just running `chia` will show you more options. However `chia-create-plots` continues to use the hyphenated form. Also it's now `chia generate keys` as another example.
+- Hydrangea start commands like `hydrangea start farmer` and `chia stop node` now keep track of process IDs in a run/ directory in your configuration directory. `chia stop` is unlikely to work on Windows native for now. If `hydrangea start -r node` doesn't work you can force the run/ directory to be reset with `hydrangea start -f node`.
 - We suggest you take a look at our [Upgrading documentation](https://github.com/Chia-Network/chia-blockchain/wiki/Updating-beta-software) if you aren't performing a new install.
 - blspy now has libsodium included in the MacOS and Linux binary wheels.
 - miniupnpc and setprotitle were dynamically checked for an installed at runtime. Removed those checks and we rely upon the install tools installing them before first run.
 - Windows wheels that the Windows Installer packages are also available in the ci Artifacts in a .zip file.
-- The script `chia start wallet-gui` has been chaned to `chia start wallet` which launches but the GUI and server on MacOS and Linux. `chia start wallet-server` remains for WSL 2 and Windows native.
+- The script `hydrangea start wallet-gui` has been chaned to `hydrangea start wallet` which launches but the GUI and server on MacOS and Linux. `hydrangea start wallet-server` remains for WSL 2 and Windows native.
 
 ### Deprecated
 
@@ -1778,11 +1778,11 @@ relic. We will make a patch available for these systems shortly.
 - Windows, WSL 2, Linux and MacOS installation is significantly streamlined. There is a new Windows installer for the Wallet GUI (huge thanks to @dkackman).
 - All installs can now be from the source repository or just the binary dependencies on WSL 2, most modern Linuxes, and MacOS Catalina. Binary support is for both Python 3.7 and 3.8.
 - There is a new migration tool to move from Beta1 (or 2) to Beta3. It should move everything except your plots.
-- There is a new command `chia init` that will migrate files and generate your initial configuration. If you want to use the Wallet or farm, you will also have to `chia-generate-keys`. You can read step by step instructions for [upgrading from a previous beta release](https://github.com/Chia-Network/chia-blockchain/wiki/Updating-beta-software). If you've set `$HYDRANGEA_ROOT` you will have to make sure your existing configuration remains compatible manually.
+- There is a new command `hydrangea init` that will migrate files and generate your initial configuration. If you want to use the Wallet or farm, you will also have to `chia-generate-keys`. You can read step by step instructions for [upgrading from a previous beta release](https://github.com/Chia-Network/chia-blockchain/wiki/Updating-beta-software). If you've set `$HYDRANGEA_ROOT` you will have to make sure your existing configuration remains compatible manually.
 - Wallet has improved paper wallet recovery support.
 - We now also support restoring old wallets with only the wallet_sk and wallet_target. Beta3's Wallet will re-sync from scratch.
 - We've made lots of little improvements that should speed up node syncing
-- We added full block lookup to `chia show`.
+- We added full block lookup to `hydrangea show`.
 
 ### Changed
 
@@ -1837,7 +1837,7 @@ relic. We will make a patch available for these systems shortly.
 ### Removed
 
 - The Beta release is not compatible with the history of the Alpha blockchain and we will be ceasing support of the Alpha chain approximately two weeks after the release of this Beta. However, your plots and keys are fully compatible with the Beta chain. Please save your plot keys! Examples of how to save your keys and upgrade to the Beta are available on the [repo wiki](https://github.com/Chia-Network/chia-blockchain/wiki).
-- The ssh ui and web ui are removed in favor of the cli ui and the Electron GUI. To mimic the ssh ui try `chia show -s -c` and try `chia show --help` for usage instructions.
+- The ssh ui and web ui are removed in favor of the cli ui and the Electron GUI. To mimic the ssh ui try `hydrangea show -s -c` and try `hydrangea show --help` for usage instructions.
 - We have removed the inkfish vdf implementation and replaced it with the pybind11 C++ version.
 
 ### Known Issues

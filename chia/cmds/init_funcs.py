@@ -75,7 +75,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         keychain = Keychain()
     all_sks = keychain.get_all_private_keys()
     if len(all_sks) == 0:
-        print("No keys are present in the keychain. Generate them with 'chia keys generate'")
+        print("No keys are present in the keychain. Generate them with 'hydrangea keys generate'")
         return None
 
     with lock_and_load_config(new_root, "config.yaml") as config:
@@ -452,13 +452,13 @@ def chia_init(
     if os.environ.get("HYDRANGEA_ROOT", None) is not None:
         print(
             f"warning, your HYDRANGEA_ROOT is set to {os.environ['HYDRANGEA_ROOT']}. "
-            f"Please unset the environment variable and run chia init again\n"
+            f"Please unset the environment variable and run hydrangea init again\n"
             f"or manually migrate config.yaml"
         )
 
     print(f"Chia directory {root_path}")
     if root_path.is_dir() and Path(root_path / "config" / "config.yaml").exists():
-        # This is reached if HYDRANGEA_ROOT is set, or if user has run chia init twice
+        # This is reached if HYDRANGEA_ROOT is set, or if user has run hydrangea init twice
         # before a new update.
         if testnet:
             configure(
@@ -537,6 +537,6 @@ def chia_init(
             set_db_version(connection, 2)
 
     print("")
-    print("To see your keys, run 'chia keys show --show-mnemonic-seed'")
+    print("To see your keys, run 'hydrangea keys show --show-mnemonic-seed'")
 
     return 0

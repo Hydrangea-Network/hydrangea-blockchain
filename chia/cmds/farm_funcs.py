@@ -212,9 +212,9 @@ async def summary(
         print("Farming")
 
     if amounts is not None:
-        print(f"Total chia farmed: {amounts['farmed_amount'] / units['chia']}")
-        print(f"User transaction fees: {amounts['fee_amount'] / units['chia']}")
-        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['chia']}")
+        print(f"Total hydrangea farmed: {amounts['farmed_amount'] / units['hydrangea']}")
+        print(f"User transaction fees: {amounts['fee_amount'] / units['hydrangea']}")
+        print(f"Block rewards: {(amounts['farmer_reward_amount'] + amounts['pool_reward_amount']) / units['hydrangea']}")
         print(f"Last height farmed: {amounts['last_height_farmed']}")
 
     class PlotStats:
@@ -273,8 +273,8 @@ async def summary(
 
     if amounts is None:
         if wallet_not_running:
-            print("For details on farmed rewards and fees you should run 'chia start wallet' and 'chia wallet show'")
+            print("For details on farmed rewards and fees you should run 'hydrangea start wallet' and 'hydrangea wallet show'")
         elif wallet_not_ready:
-            print("For details on farmed rewards and fees you should run 'chia wallet show'")
+            print("For details on farmed rewards and fees you should run 'hydrangea wallet show'")
     else:
-        print("Note: log into your key using 'chia wallet show' to see rewards for each key")
+        print("Note: log into your key using 'hydrangea wallet show' to see rewards for each key")

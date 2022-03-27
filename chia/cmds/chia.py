@@ -48,7 +48,7 @@ def monkey_patch_click() -> None:
 
 @click.group(
     help=f"\n  Manage chia blockchain infrastructure ({__version__})\n",
-    epilog="Try 'chia start node', 'chia netspace -d 192', or 'chia show -s'",
+    epilog="Try 'hydrangea start node', 'chia netspace -d 192', or 'hydrangea show -s'",
     context_settings=CONTEXT_SETTINGS,
 )
 @click.option("--root-path", default=DEFAULT_ROOT_PATH, help="Config file root", type=click.Path(), show_default=True)
@@ -113,7 +113,7 @@ def version_cmd() -> None:
     help="If the keyring is passphrase-protected, the daemon will wait for an unlock command before accessing keys",
     default=False,
     is_flag=True,
-    hidden=True,  # --wait-for-unlock is only set when launched by chia start <service>
+    hidden=True,  # --wait-for-unlock is only set when launched by hydrangea start <service>
 )
 @click.pass_context
 def run_daemon_cmd(ctx: click.Context, wait_for_unlock: bool) -> None:

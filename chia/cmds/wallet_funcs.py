@@ -209,11 +209,11 @@ async def send(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> 
         tx = await wallet_client.get_transaction(str(wallet_id), tx_id)
         if len(tx.sent_to) > 0:
             print(f"Transaction submitted to nodes: {tx.sent_to}")
-            print(f"Do chia wallet get_transaction -f {fingerprint} -tx 0x{tx_id} to get status")
+            print(f"Do hydrangea wallet get_transaction -f {fingerprint} -tx 0x{tx_id} to get status")
             return None
 
     print("Transaction not yet submitted to nodes")
-    print(f"Do 'chia wallet get_transaction -f {fingerprint} -tx 0x{tx_id}' to get status")
+    print(f"Do 'hydrangea wallet get_transaction -f {fingerprint} -tx 0x{tx_id}' to get status")
 
 
 async def get_address(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
@@ -301,7 +301,7 @@ async def make_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: in
                     with open(pathlib.Path(filepath), "w") as file:
                         file.write(offer.to_bech32())
                     print(f"Created offer with ID {trade_record.trade_id}")
-                    print(f"Use chia wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view status")
+                    print(f"Use hydrangea wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view status")
                 else:
                     print("Error creating offer")
 
@@ -364,7 +364,7 @@ async def print_trade_record(record, wallet_client: WalletRpcClient, summaries: 
         await print_offer_summary(cat_name_resolver, requested)
         print("Pending Outbound Balances:")
         await print_offer_summary(cat_name_resolver, outbound_balances, has_fee=(fees > 0))
-        print(f"Included Fees: {fees / units['chia']}")
+        print(f"Included Fees: {fees / units['hydrangea']}")
     print("---------------")
 
 
@@ -438,14 +438,14 @@ async def take_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: in
     await print_offer_summary(cat_name_resolver, offered)
     print("  REQUESTED:")
     await print_offer_summary(cat_name_resolver, requested)
-    print(f"Included Fees: {Decimal(offer.bundle.fees()) / units['chia']}")
+    print(f"Included Fees: {Decimal(offer.bundle.fees()) / units['hydrangea']}")
 
     if not examine_only:
         confirmation = input("Would you like to take this offer? (y/n): ")
         if confirmation in ["y", "yes"]:
             trade_record = await wallet_client.take_offer(offer, fee=fee)
             print(f"Accepted offer with ID {trade_record.trade_id}")
-            print(f"Use chia wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view its status")
+            print(f"Use hydrangea wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view its status")
 
 
 async def cancel_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: int) -> None:
@@ -461,7 +461,7 @@ async def cancel_offer(args: dict, wallet_client: WalletRpcClient, fingerprint: 
         await wallet_client.cancel_offer(id, secure=secure, fee=fee)
         print(f"Cancelled offer with ID {trade_record.trade_id}")
         if secure:
-            print(f"Use chia wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view cancel status")
+            print(f"Use hydrangea wallet get_offers --id {trade_record.trade_id} -f {fingerprint} to view cancel status")
 
 
 def wallet_coin_unit(typ: WalletType, address_prefix: str) -> Tuple[str, int]:
@@ -539,7 +539,7 @@ async def get_wallet(wallet_client: WalletRpcClient, fingerprint: int = None) ->
     else:
         fingerprints = await wallet_client.get_public_keys()
     if len(fingerprints) == 0:
-        print("No keys loaded. Run 'chia keys generate' or import a key")
+        print("No keys loaded. Run 'hydrangea keys generate' or import a key")
         return None
     if len(fingerprints) == 1:
         fingerprint = fingerprints[0]
@@ -616,7 +616,7 @@ async def execute_with_wallet(
         if isinstance(e, aiohttp.ClientConnectorError):
             print(
                 f"Connection error. Check if the wallet is running at {wallet_rpc_port}. "
-                "You can run the wallet via:\n\tchia start wallet"
+                "You can run the wallet via:\n\thydrangea start wallet"
             )
         else:
             print(f"Exception from 'wallet' {e}")
