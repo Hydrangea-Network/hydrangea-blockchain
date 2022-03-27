@@ -19,10 +19,10 @@ from typing import Any, List, Optional, Tuple, Type, Union
 # WARNING: Changing the default passphrase will prevent passphrase-less users from accessing
 # their existing keys. Using a new default passphrase requires migrating existing users to
 # the new passphrase.
-DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE = "$ chia passphrase set # all the cool kids are doing it!"
+DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE = "$ hydrangea passphrase set # all the cool kids are doing it!"
 
-MASTER_PASSPHRASE_SERVICE_NAME = "Chia Passphrase"
-MASTER_PASSPHRASE_USER_NAME = "Chia Passphrase"
+MASTER_PASSPHRASE_SERVICE_NAME = "Hydrangea passphrase"
+MASTER_PASSPHRASE_USER_NAME = "Hydrangea passphrase"
 
 
 LegacyKeyring = Union[MacKeyring, WinKeyring, CryptFileKeyring]
@@ -377,7 +377,7 @@ class KeyringWrapper:
                 "passphrase."
             )
             print(
-                "Would you like to set a master passphrase now? Use 'chia passphrase set' to change the passphrase.\n"
+                "Would you like to set a master passphrase now? Use 'hydrangea passphrase set' to change the passphrase.\n"
             )
 
             response = prompt_yes_no("Set keyring master passphrase? (y/n) ")
@@ -394,7 +394,7 @@ class KeyringWrapper:
                 )
             else:
                 print(
-                    "Will skip setting a master passphrase. Use 'chia passphrase set' to set the master passphrase.\n"
+                    "Will skip setting a master passphrase. Use 'hydrangea passphrase set' to set the master passphrase.\n"
                 )
         else:
             import colorama

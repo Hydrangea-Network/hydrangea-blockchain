@@ -86,4 +86,4 @@ Write-Output "https://github.com/Chia-Network/chia-blockchain/wiki/Quick-Start-G
 Write-Output ""
 Write-Output "To install the GUI type '.\Install-gui.ps1' after '.\venv\scripts\Activate.ps1'."
 Write-Output ""
-Write-Output "Type '.\venv\Scripts\Activate.ps1' and then 'chia init' to begin."
+Write-Output "Type '.\venv\Scripts\Activate.ps1' and then 'hydrangea init' to begin."

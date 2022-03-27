@@ -397,7 +397,7 @@ class WebSocketServer:
                     else:
                         self.log.debug("Skipping legacy key migration (previously attempted).")
                 except Exception:
-                    self.log.exception("Failed to migrate keys silently. Run `chia keys migrate` manually.")
+                    self.log.exception("Failed to migrate keys silently. Run `hydrangea keys migrate` manually.")
 
                 # Inform the GUI of keyring status changes
                 self.keyring_status_changed(await self.keyring_status(), "wallet_ui")
