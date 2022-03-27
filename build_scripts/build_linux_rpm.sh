@@ -8,10 +8,10 @@ if [ ! "$1" ]; then
 elif [ "$1" = "amd64" ]; then
 	#PLATFORM="$1"
 	REDHAT_PLATFORM="x86_64"
-	DIR_NAME="chia-blockchain-linux-x64"
+	DIR_NAME="hydrangea-blockchain-linux-x64"
 else
 	#PLATFORM="$1"
-	DIR_NAME="chia-blockchain-linux-arm64"
+	DIR_NAME="hydrangea-blockchain-linux-arm64"
 fi
 
 pip install setuptools_scm
@@ -70,9 +70,9 @@ cd packages/gui || exit
 cp package.json package.json.orig
 jq --arg VER "$CHIA_INSTALLER_VERSION" '.version=$VER' package.json > temp.json && mv temp.json package.json
 
-electron-packager . chia-blockchain --asar.unpack="**/daemon/**" --platform=linux \
---icon=src/assets/img/Chia.icns --overwrite --app-bundle-id=net.chia.blockchain \
---appVersion=$CHIA_INSTALLER_VERSION --executable-name=chia-blockchain
+electron-packager . hydrangea-blockchain --asar.unpack="**/daemon/**" --platform=linux \
+--icon=src/assets/img/Chia.icns --overwrite --app-bundle-id=net.hydrangea.blockchain \
+--appVersion=$CHIA_INSTALLER_VERSION --executable-name=hydrangea-blockchain
 LAST_EXIT_CODE=$?
 
 # reset the package.json to the original
@@ -105,7 +105,7 @@ if [ "$REDHAT_PLATFORM" = "x86_64" ]; then
 
   electron-installer-redhat --src dist/$DIR_NAME/ --dest final_installer/ \
   --arch "$REDHAT_PLATFORM" --options.version $CHIA_INSTALLER_VERSION \
-  --license ../LICENSE --options.bin chia-blockchain --options.name chia-blockchain
+  --license ../LICENSE --options.bin hydrangea-blockchain --options.name hydrangea-blockchain
   LAST_EXIT_CODE=$?
   if [ "$LAST_EXIT_CODE" -ne 0 ]; then
 	  echo >&2 "electron-installer-redhat failed!"
