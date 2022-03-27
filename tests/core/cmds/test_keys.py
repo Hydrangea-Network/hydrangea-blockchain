@@ -202,7 +202,7 @@ class TestKeysCommands:
 
     def test_show(self, keyring_with_one_key):
         """
-        Test that the `chia keys show` command shows the correct key.
+        Test that the `hydrangea keys show` command shows the correct key.
         """
 
         keychain = keyring_with_one_key
@@ -217,7 +217,7 @@ class TestKeysCommands:
 
     def test_show_mnemonic(self, keyring_with_one_key):
         """
-        Test that the `chia keys show --show-mnemonic-seed` command shows the key's mnemonic seed.
+        Test that the `hydrangea keys show --show-mnemonic-seed` command shows the key's mnemonic seed.
         """
 
         keychain = keyring_with_one_key
@@ -367,7 +367,7 @@ class TestKeysCommands:
 
     def test_generate_and_print(self):
         """
-        Test the `chia keys generate_and_print` command.
+        Test the `hydrangea keys generate_and_print` command.
         """
 
         runner = CliRunner()
@@ -378,7 +378,7 @@ class TestKeysCommands:
 
     def test_sign(self, keyring_with_one_key):
         """
-        Test the `chia keys sign` command.
+        Test the `hydrangea keys sign` command.
         """
 
         message: str = "hello world"
@@ -411,7 +411,7 @@ class TestKeysCommands:
 
     def test_sign_non_observer(self, keyring_with_one_key):
         """
-        Test the `chia keys sign` command with a non-observer key.
+        Test the `hydrangea keys sign` command with a non-observer key.
         """
 
         message: str = "hello world"
@@ -483,7 +483,7 @@ class TestKeysCommands:
 
     def test_verify(self):
         """
-        Test the `chia keys verify` command.
+        Test the `hydrangea keys verify` command.
         """
 
         message: str = "hello world"
@@ -504,7 +504,7 @@ class TestKeysCommands:
 
     def test_derive_search(self, tmp_path, keyring_with_one_key):
         """
-        Test the `chia keys derive search` command, searching a public and private key
+        Test the `hydrangea keys derive search` command, searching a public and private key
         """
 
         keychain = keyring_with_one_key
@@ -562,7 +562,7 @@ class TestKeysCommands:
 
     def test_derive_search_wallet_address(self, tmp_path, keyring_with_one_key):
         """
-        Test the `chia keys derive search` command, searching for a wallet address
+        Test the `hydrangea keys derive search` command, searching for a wallet address
         """
 
         keychain = keyring_with_one_key
@@ -610,7 +610,7 @@ class TestKeysCommands:
 
     def test_derive_search_failure(self, tmp_path, keyring_with_one_key):
         """
-        Test the `chia keys derive search` command with a failing search.
+        Test the `hydrangea keys derive search` command with a failing search.
         """
 
         keychain = keyring_with_one_key
@@ -649,7 +649,7 @@ class TestKeysCommands:
 
     def test_derive_search_hd_path(self, tmp_path, empty_keyring, mnemonic_seed_file):
         """
-        Test the `chia keys derive search` command, searching under a provided HD path.
+        Test the `hydrangea keys derive search` command, searching under a provided HD path.
         """
 
         keychain = empty_keyring
@@ -699,7 +699,7 @@ class TestKeysCommands:
 
     def test_derive_wallet_address(self, tmp_path, keyring_with_one_key):
         """
-        Test the `chia keys derive wallet-address` command, generating a couple of wallet addresses.
+        Test the `hydrangea keys derive wallet-address` command, generating a couple of wallet addresses.
         """
 
         keychain = keyring_with_one_key
@@ -757,7 +757,7 @@ class TestKeysCommands:
 
     def test_derive_child_keys(self, tmp_path, keyring_with_one_key):
         """
-        Test the `chia keys derive child-keys` command, generating a couple of derived keys.
+        Test the `hydrangea keys derive child-keys` command, generating a couple of derived keys.
         """
 
         keychain = keyring_with_one_key
@@ -835,7 +835,7 @@ class TestKeysCommands:
 
     def test_migration_not_needed(self, tmp_path, setup_keyringwrapper, monkeypatch):
         """
-        Test the `chia keys migrate` command when no migration is necessary
+        Test the `hydrangea keys migrate` command when no migration is necessary
         """
 
         def mock_keychain_needs_migration() -> bool:
@@ -864,7 +864,7 @@ class TestKeysCommands:
 
     def test_migration_full(self, tmp_path, setup_legacy_keyringwrapper):
         """
-        Test the `chia keys migrate` command when a full migration is needed
+        Test the `hydrangea keys migrate` command when a full migration is needed
         """
 
         legacy_keyring = KeyringWrapper.get_shared_instance().legacy_keyring
