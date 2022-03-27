@@ -72,7 +72,7 @@ class Service:
         # when we start this service as a component of an existing process,
         # don't change its proctitle
         if running_new_process:
-            proctitle_name = f"chia_{service_name_prefix}{service_name}"
+            proctitle_name = f"hydrangea_{service_name_prefix}{service_name}"
             setproctitle(proctitle_name)
 
         self._log = logging.getLogger(service_name)
