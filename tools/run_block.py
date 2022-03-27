@@ -11,7 +11,7 @@ curl --insecure --cert $config_root/config/ssl/full_node/private_full_node.crt \
      -d '{ "header_hash": "'$hash'" }' -H "Content-Type: application/json" \
      -X POST https://localhost:$port/get_block
 
-$ca_root is the directory containing your current Chia config files
+$ca_root is the directory containing your current Hydrangea config files
 $hash is the header_hash of the [BlockRecord](../chia/consensus/block_record.py)
 $port is the Full Node RPC API port
 ```

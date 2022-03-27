@@ -201,7 +201,7 @@ if [ ! "$CI" ]; then
   npm audit fix || true
   npm run build
 
-  # Set modified output of `chia version` to version property of GUI's package.json
+  # Set modified output of `hydrangea version` to version property of GUI's package.json
   python ../installhelper.py
 else
   echo "Skipping node.js in install.sh on MacOS ci."

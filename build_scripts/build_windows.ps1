@@ -40,7 +40,7 @@ if (-not (Test-Path env:CHIA_INSTALLER_VERSION)) {
   $env:CHIA_INSTALLER_VERSION = '0.0.0'
   Write-Output "WARNING: No environment variable CHIA_INSTALLER_VERSION set. Using 0.0.0"
   }
-Write-Output "Chia Version is: $env:CHIA_INSTALLER_VERSION"
+Write-Output "Hydrangea version is: $env:CHIA_INSTALLER_VERSION"
 Write-Output "   ---"
 
 Write-Output "Checking if madmax exists"

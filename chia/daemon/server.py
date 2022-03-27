@@ -1138,7 +1138,7 @@ class WebSocketServer:
         if self.websocket_runner is not None:
             await self.websocket_runner.cleanup()
         self.shutdown_event.set()
-        log.info("chia daemon exiting")
+        log.info("hydrangea daemon exiting")
 
     async def register_service(self, websocket: WebSocketResponse, request: Dict[str, Any]) -> Dict[str, Any]:
         self.log.info(f"Register service {request}")
