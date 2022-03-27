@@ -128,11 +128,11 @@ Set-Location -Path "packages\gui" -PassThru
 Write-Output "   ---"
 Write-Output "Increase the stack for chia command for (chia plots create) chiapos limitations"
 # editbin.exe needs to be in the path
-editbin.exe /STACK:8000000 daemon\chia.exe
+editbin.exe /STACK:8000000 daemon\hydrangea.exe
 Write-Output "   ---"
 
 $packageVersion = "$env:CHIA_INSTALLER_VERSION"
-$packageName = "Chia-$packageVersion"
+$packageName = "Hydrangea-$packageVersion"
 
 Write-Output "packageName is $packageName"
 
@@ -147,7 +147,7 @@ Write-Output "   ---"
 
 Write-Output "   ---"
 Write-Output "electron-packager"
-electron-packager . Chia --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\chia.ico --app-version=$packageVersion
+electron-packager . Hydrangea --asar.unpack="**\daemon\**" --overwrite --icon=.\src\assets\img\chia.ico --app-version=$packageVersion
 Write-Output "   ---"
 
 Write-Output "   ---"
@@ -161,8 +161,8 @@ If ($env:HAS_SECRET) {
    Write-Output "   ---"
    Write-Output "Add timestamp and verify signature"
    Write-Output "   ---"
-   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\ChiaSetup-$packageVersion.exe
-   signtool.exe verify /v /pa .\release-builds\windows-installer\ChiaSetup-$packageVersion.exe
+   signtool.exe timestamp /v /t http://timestamp.comodoca.com/ .\release-builds\windows-installer\HydrangeaSetup-$packageVersion.exe
+   signtool.exe verify /v /pa .\release-builds\windows-installer\HydrangeaSetup-$packageVersion.exe
    }   Else    {
    Write-Output "Skipping timestamp and verify signatures - no authorization to install certificates"
 }
@@ -172,7 +172,7 @@ git status
 Write-Output "   ---"
 Write-Output "Moving final installers to expected location"
 Write-Output "   ---"
-Copy-Item ".\Chia-win32-x64" -Destination "$env:GITHUB_WORKSPACE\chia-blockchain-gui\" -Recurse
+Copy-Item ".\Hydrangea-win32-x64" -Destination "$env:GITHUB_WORKSPACE\chia-blockchain-gui\" -Recurse
 Copy-Item ".\release-builds" -Destination "$env:GITHUB_WORKSPACE\chia-blockchain-gui\" -Recurse
 
 Write-Output "   ---"

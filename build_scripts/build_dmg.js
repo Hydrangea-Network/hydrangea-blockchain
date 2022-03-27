@@ -44,7 +44,7 @@ async function main(opts) {
     console.log('Finished');
 }
 
-const appName = 'Chia';
+const appName = 'Hydrangea';
 const dmgIcon = '../chia-blockchain-gui/packages/gui/src/assets/img/Chia.icns';
 const dmgBackground = './assets/dmg/background.tiff';
 const outputDir = './final_installer';
