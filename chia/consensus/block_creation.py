@@ -8,9 +8,9 @@ from blspy import G1Element, G2Element
 from chiabip158 import PyBIP158
 
 from chia.consensus.block_record import BlockRecord
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_base_timelord_fee, calculate_pool_reward
+from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_base_timelord_fee, calculate_community_reward, calculate_pool_reward, calculate_staking_reward
 from chia.consensus.blockchain_interface import BlockchainInterface
-from chia.consensus.coinbase import create_farmer_coin, create_pool_coin, create_timelord_coin
+from chia.consensus.coinbase import create_community_coin, create_farmer_coin, create_pool_coin, create_staking_coin, create_timelord_coin
 from chia.consensus.constants import ConsensusConstants
 from chia.consensus.cost_calculator import NPCResult
 from chia.full_node.mempool_check_conditions import get_name_puzzle_conditions
@@ -160,7 +160,18 @@ def create_foliage(
             pool_coin = create_pool_coin(
                 curr.height, curr.pool_puzzle_hash, calculate_pool_reward(curr.height), constants.GENESIS_CHALLENGE
             )
-
+            community_coin = create_community_coin(
+                curr.height,
+                constants.GENESIS_PRE_FARM_COMMUNITY_PUZZLE_HASH,
+                calculate_community_reward(curr.height),
+                constants.GENESIS_CHALLENGE,
+            )
+            staking_coin = create_staking_coin(
+                curr.height,
+                constants.GENESIS_PRE_FARM_STAKING_PUZZLE_HASH,
+                calculate_staking_reward(curr.height),
+                constants.GENESIS_CHALLENGE,
+            )
             farmer_coin = create_farmer_coin(
                 curr.height,
                 curr.farmer_puzzle_hash,
@@ -174,7 +185,7 @@ def create_foliage(
                 constants.GENESIS_CHALLENGE
             )
             assert curr.header_hash == prev_transaction_block.header_hash
-            reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
+            reward_claims_incorporated += [pool_coin, community_coin, staking_coin, farmer_coin, timelord_coin]
 
             if curr.height > 0:
                 curr = blocks.block_record(curr.prev_hash)
@@ -184,6 +195,18 @@ def create_foliage(
                         curr.height,
                         curr.pool_puzzle_hash,
                         calculate_pool_reward(curr.height),
+                        constants.GENESIS_CHALLENGE,
+                    )
+                    community_coin = create_community_coin(
+                        curr.height,
+                        constants.GENESIS_PRE_FARM_COMMUNITY_PUZZLE_HASH,
+                        calculate_community_reward(curr.height),
+                        constants.GENESIS_CHALLENGE,
+                    )
+                    staking_coin = create_staking_coin(
+                        curr.height,
+                        constants.GENESIS_PRE_FARM_STAKING_PUZZLE_HASH,
+                        calculate_staking_reward(curr.height),
                         constants.GENESIS_CHALLENGE,
                     )
                     farmer_coin = create_farmer_coin(
@@ -198,7 +221,7 @@ def create_foliage(
                         calculate_base_timelord_fee(curr.height),
                         constants.GENESIS_CHALLENGE,
                     )
-                    reward_claims_incorporated += [pool_coin, farmer_coin, timelord_coin]
+                    reward_claims_incorporated += [pool_coin, community_coin, staking_coin, farmer_coin, timelord_coin]
                     curr = blocks.block_record(curr.prev_hash)
         additions.extend(reward_claims_incorporated.copy())
         for coin in additions:
