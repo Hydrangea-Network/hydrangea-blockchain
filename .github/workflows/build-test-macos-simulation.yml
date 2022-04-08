@@ -1,7 +1,7 @@
 #
 # THIS FILE IS GENERATED. SEE https://github.com/Chia-Network/chia-blockchain/tree/main/tests#readme
 #
-name: MacOS core-full_node-stores Tests
+name: MacOS simulation Tests
 
 on:
   workflow_dispatch:
@@ -21,9 +21,9 @@ concurrency:
 
 jobs:
   build:
-    name: MacOS core-full_node-stores Tests
+    name: MacOS simulation Tests
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       max-parallel: 4
@@ -32,7 +32,7 @@ jobs:
         os: [macOS-latest]
     env:
       CHIA_ROOT: ${{ github.workspace }}/.chia/mainnet
-      JOB_FILE_NAME: tests_${{ matrix.os }}_python-${{ matrix.python-version }}_core-full_node-stores
+      JOB_FILE_NAME: tests_${{ matrix.os }}_python-${{ matrix.python-version }}_simulation
 
     steps:
     - name: Checkout Code
@@ -81,12 +81,24 @@ jobs:
         brew install boost
         sh install.sh -d
 
-# Omitted installing Timelord
+    - name: Install Ubuntu dependencies
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt-get install software-properties-common
+        sudo add-apt-repository ppa:deadsnakes/ppa
+        sudo apt-get update
+        sudo apt-get install python${{ matrix.python-version }}-venv python${{ matrix.python-version }}-distutils git -y
 
-    - name: Test core-full_node-stores code with pytest
+    - name: Install timelord
       run: |
         . ./activate
-        venv/bin/coverage run --rcfile=.coveragerc ./venv/bin/py.test tests/core/full_node/stores/test_*.py --durations=10  -n 4 -m "not benchmark"
+        sh install-timelord.sh
+        ./vdf_bench square_asm 400000
+
+    - name: Test simulation code with pytest
+      run: |
+        . ./activate
+        venv/bin/coverage run --rcfile=.coveragerc ./venv/bin/py.test tests/simulation/test_*.py --durations=10  -n 0 -m "not benchmark"
 
     - name: Process coverage data
       run: |

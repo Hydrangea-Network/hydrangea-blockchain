@@ -1,7 +1,7 @@
 #
 # THIS FILE IS GENERATED. SEE https://github.com/Chia-Network/chia-blockchain/tree/main/tests#readme
 #
-name: MacOS core-full_node-stores Tests
+name: MacOS core-full_node-full_sync Tests
 
 on:
   workflow_dispatch:
@@ -21,9 +21,9 @@ concurrency:
 
 jobs:
   build:
-    name: MacOS core-full_node-stores Tests
+    name: MacOS core-full_node-full_sync Tests
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       max-parallel: 4
@@ -32,7 +32,7 @@ jobs:
         os: [macOS-latest]
     env:
       CHIA_ROOT: ${{ github.workspace }}/.chia/mainnet
-      JOB_FILE_NAME: tests_${{ matrix.os }}_python-${{ matrix.python-version }}_core-full_node-stores
+      JOB_FILE_NAME: tests_${{ matrix.os }}_python-${{ matrix.python-version }}_core-full_node-full_sync
 
     steps:
     - name: Checkout Code
@@ -83,10 +83,10 @@ jobs:
 
 # Omitted installing Timelord
 
-    - name: Test core-full_node-stores code with pytest
+    - name: Test core-full_node-full_sync code with pytest
       run: |
         . ./activate
-        venv/bin/coverage run --rcfile=.coveragerc ./venv/bin/py.test tests/core/full_node/stores/test_*.py --durations=10  -n 4 -m "not benchmark"
+        venv/bin/coverage run --rcfile=.coveragerc ./venv/bin/py.test tests/core/full_node/full_sync/test_*.py --durations=10  -n 4 -m "not benchmark"
 
     - name: Process coverage data
       run: |
