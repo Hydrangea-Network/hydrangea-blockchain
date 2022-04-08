@@ -67,7 +67,7 @@ class DummyLegacyKeyring(KeyringBackend):
 
 @pytest.fixture(scope="function")
 def empty_keyring():
-    with TempKeyring(user="user-chia-1.8", service="chia-user-chia-1.8") as keychain:
+    with TempKeyring(user="user-hydrangea-1.8", service="hydrangea-user-hydrangea-1.8") as keychain:
         yield keychain
         KeyringWrapper.cleanup_shared_instance()
 
