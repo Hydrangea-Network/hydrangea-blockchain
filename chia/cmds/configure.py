@@ -98,7 +98,7 @@ def configure(
         if testnet:
             if testnet == "true" or testnet == "t":
                 print("Setting Testnet")
-                testnet_port = "58444"
+                testnet_port = "58255"
                 testnet_introducer = "introducer-testnet10.chia.net"
                 testnet_dns_introducer = "dns-introducer-testnet10.chia.net"
                 bootstrap_peers = ["testnet10-node.chia.net"]
@@ -142,7 +142,7 @@ def configure(
 
             elif testnet == "false" or testnet == "f":
                 print("Setting Mainnet")
-                mainnet_port = "8444"
+                mainnet_port = "8255"
                 mainnet_introducer = "introducer.chia.net"
                 mainnet_dns_introducer = "dns-introducer.chia.net"
                 bootstrap_peers = ["node.chia.net"]
