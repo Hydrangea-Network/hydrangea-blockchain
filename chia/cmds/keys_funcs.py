@@ -26,6 +26,7 @@ from chia.wallet.derive_keys import (
     master_sk_to_wallet_sk,
     master_sk_to_wallet_sk_unhardened,
 )
+from chia.wallet.derive_chives_keys import chives_master_sk_to_farmer_sk, chives_master_sk_to_pool_sk
 
 
 def unlock_keyring() -> None:
@@ -153,8 +154,15 @@ def show_all_keys(show_mnemonic: bool, non_observer_derivation: bool):
         print(
             "Farmer public key (m/12381/8444/0/0):",
             master_sk_to_farmer_sk(sk).get_g1(),
+            "\nFarmer public key (m/12381/9699/0/0):",
+            chives_master_sk_to_farmer_sk(sk).get_g1(),
         )
-        print("Pool public key (m/12381/8444/1/0):", master_sk_to_pool_sk(sk).get_g1())
+        print(
+            "Pool public key (m/12381/8444/1/0):",
+            master_sk_to_pool_sk(sk).get_g1(),
+            "\nPool public key (m/12381/9699/1/0):",
+            chives_master_sk_to_pool_sk(sk).get_g1(),
+        )
         first_wallet_sk: PrivateKey = (
             master_sk_to_wallet_sk(sk, uint32(0))
             if non_observer_derivation

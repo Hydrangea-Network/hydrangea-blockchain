@@ -16,6 +16,7 @@ from chia.util.ints import uint16, uint64
 from chia.util.misc import VersionedBlob
 from chia.util.streamable import Streamable, streamable
 from chia.wallet.derive_keys import master_sk_to_local_sk
+from chia.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -63,8 +64,10 @@ class CacheEntry:
         else:
             assert isinstance(pool_public_key_or_puzzle_hash, bytes32)
             pool_contract_puzzle_hash = pool_public_key_or_puzzle_hash
-
-        local_sk = master_sk_to_local_sk(local_master_sk)
+        if prover.get_size() >= 32:
+            local_sk = master_sk_to_local_sk(local_master_sk)
+        else:
+            local_sk = chives_master_sk_to_local_sk(local_master_sk)
 
         plot_public_key: G1Element = ProofOfSpace.generate_plot_public_key(
             local_sk.get_g1(), farmer_public_key, pool_contract_puzzle_hash is not None
