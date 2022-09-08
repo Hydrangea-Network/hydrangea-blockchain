@@ -16,6 +16,7 @@ from chia.types.blockchain_format.sized_bytes import bytes32
 from chia.util.bech32m import decode_puzzle_hash
 from chia.util.keychain import Keychain
 from chia.wallet.derive_keys import master_sk_to_farmer_sk, master_sk_to_local_sk, master_sk_to_pool_sk
+from chia.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -189,9 +190,14 @@ async def create_plots(
         # The plot public key is the combination of the harvester and farmer keys
         # New plots will also include a taproot of the keys, for extensibility
         include_taproot: bool = keys.pool_contract_puzzle_hash is not None
-        plot_public_key = ProofOfSpace.generate_plot_public_key(
-            master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
-        )
+        if args.size >= 32:
+            plot_public_key = ProofOfSpace.generate_plot_public_key(
+                master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
+            )
+        else:
+            plot_public_key = ProofOfSpace.generate_plot_public_key(
+                chives_master_sk_to_local_sk(sk).get_g1(), keys.farmer_public_key, include_taproot
+            )
 
         # The plot id is based on the harvester, farmer, and pool keys
         if keys.pool_public_key is not None:

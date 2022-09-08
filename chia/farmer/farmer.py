@@ -51,6 +51,12 @@ from chia.wallet.derive_keys import (
     master_sk_to_pool_sk,
     match_address_to_sk,
 )
+from chia.wallet.derive_chives_keys import (
+    chives_find_authentication_sk,
+    chives_find_owner_sk,
+    chives_master_sk_to_farmer_sk,
+    chives_master_sk_to_pool_sk,
+)
 from chia.wallet.puzzles.singleton_top_layer import SINGLETON_MOD
 
 singleton_mod_hash = SINGLETON_MOD.get_tree_hash()
@@ -142,7 +148,9 @@ class Farmer:
             return False
 
         self._private_keys = [master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
-            master_sk_to_pool_sk(sk) for sk in self.all_root_sks
+            master_sk_to_pool_sk(sk) for sk in self.all_root_sks] + [
+            chives_master_sk_to_farmer_sk(sk) for sk in self.all_root_sks] + [
+            chives_master_sk_to_pool_sk(sk) for sk in self.all_root_sks] + [
         ]
 
         if len(self.get_public_keys()) == 0:
@@ -423,6 +431,10 @@ class Farmer:
         auth_sk: Optional[PrivateKey] = find_authentication_sk(self.all_root_sks, pool_config.owner_public_key)
         if auth_sk is not None:
             self.authentication_keys[pool_config.p2_singleton_puzzle_hash] = auth_sk
+        else:
+            auth_sk: Optional[PrivateKey] = chives_find_authentication_sk(self.all_root_sks, pool_config.owner_public_key)
+            if auth_sk is not None:
+                self.authentication_keys[pool_config.p2_singleton_puzzle_hash] = auth_sk
         return auth_sk
 
     async def update_pool_state(self):
@@ -514,6 +526,10 @@ class Farmer:
                             owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = find_owner_sk(
                                 self.all_root_sks, pool_config.owner_public_key
                             )
+                            if owner_sk_and_index is None:
+                                owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = chives_find_owner_sk(
+                                    self.all_root_sks, pool_config.owner_public_key
+                                )
                             assert owner_sk_and_index is not None
                             post_response = await self._pool_post_farmer(
                                 pool_config, authentication_token_timeout, owner_sk_and_index[0]
@@ -538,6 +554,10 @@ class Farmer:
                             owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = find_owner_sk(
                                 self.all_root_sks, pool_config.owner_public_key
                             )
+                            if owner_sk_and_index is None:
+                                owner_sk_and_index: Optional[Tuple[PrivateKey, uint32]] = chives_find_owner_sk(
+                                        self.all_root_sks, pool_config.owner_public_key
+                                    )
                             assert owner_sk_and_index is not None
                             await self._pool_put_farmer(
                                 pool_config, authentication_token_timeout, owner_sk_and_index[0]

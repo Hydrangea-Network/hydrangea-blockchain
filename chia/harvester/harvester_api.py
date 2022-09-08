@@ -21,6 +21,7 @@ from chia.types.blockchain_format.sized_bytes import bytes32
 from chia.util.api_decorators import api_request
 from chia.util.ints import uint8, uint32, uint64
 from chia.wallet.derive_keys import master_sk_to_local_sk
+from chia.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 
 class HarvesterAPI:
@@ -261,7 +262,10 @@ class HarvesterAPI:
                 farmer_public_key,
                 local_master_sk,
             ) = parse_plot_info(plot_info.prover.get_memo())
-            local_sk = master_sk_to_local_sk(local_master_sk)
+            if plot_info.prover.get_size() >= 32:
+                local_sk = master_sk_to_local_sk(local_master_sk)
+            else:
+                local_sk = chives_master_sk_to_local_sk(local_master_sk)
 
         if isinstance(pool_public_key_or_puzzle_hash, G1Element):
             include_taproot = False
