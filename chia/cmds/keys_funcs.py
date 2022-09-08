@@ -26,6 +26,7 @@ from chia.wallet.derive_keys import (
     master_sk_to_wallet_sk,
     master_sk_to_wallet_sk_unhardened,
 )
+from chia.wallet.derive_chives_keys import chives_master_sk_to_farmer_sk, chives_master_sk_to_pool_sk
 
 
 def unlock_keyring() -> None:
@@ -159,6 +160,8 @@ def show_all_keys(root_path: Path, show_mnemonic: bool, non_observer_derivation:
         key["master_pk"] = bytes(key_data.public_key).hex()
         key["farmer_pk"] = bytes(master_sk_to_farmer_sk(sk).get_g1()).hex()
         key["pool_pk"] = bytes(master_sk_to_pool_sk(sk).get_g1()).hex()
+        key["chives_farmer_pk"] = bytes(chives_master_sk_to_farmer_sk(sk).get_g1()).hex()
+        key["chives_pool_pk"] = bytes(chives_master_sk_to_pool_sk(sk).get_g1()).hex()
         first_wallet_sk: PrivateKey = (
             master_sk_to_wallet_sk(sk, uint32(0))
             if non_observer_derivation
@@ -187,6 +190,8 @@ def show_all_keys(root_path: Path, show_mnemonic: bool, non_observer_derivation:
             print("Master public key (m):", key["master_pk"])
             print("Farmer public key (m/12381/8444/0/0):", key["farmer_pk"])
             print("Pool public key (m/12381/8444/1/0):", key["pool_pk"])
+            print("Chives Farmer public key (m/12381/8444/0/0):", key["chives_farmer_pk"])
+            print("Chives Pool public key (m/12381/8444/1/0):", key["chives_pool_pk"])
             print(f"First wallet address{' (non-observer)' if key['non_observer'] else ''}: {key['wallet_address']}")
             if show_mnemonic:
                 print("Master private key (m):", key["master_sk"])

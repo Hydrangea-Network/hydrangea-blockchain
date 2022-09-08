@@ -42,6 +42,7 @@ from chia.wallet.derive_keys import (
     _derive_path,
     _derive_path_unhardened,
 )
+from chia.wallet.derive_chives_keys import chives_master_sk_to_pool_sk
 from chia.cmds.configure import configure
 
 _all_private_node_names: List[str] = [
@@ -87,7 +88,8 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         return None
 
     with lock_and_load_config(new_root, "config.yaml") as config:
-        pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
+        pool_child_pubkeys = [master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks] + [
+            chives_master_sk_to_pool_sk(sk).get_g1() for sk, _ in all_sks]
         all_targets = []
         stop_searching_for_farmer = "xch_target_address" not in config["farmer"]
         stop_searching_for_pool = "xch_target_address" not in config["pool"]
