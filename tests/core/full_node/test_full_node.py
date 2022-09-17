@@ -1438,7 +1438,7 @@ class TestFullNodeProtocol:
 
         peer = await connect_and_get_peer(server_1, server_2, self_hostname)
         res = await full_node_1.new_signage_point_or_end_of_sub_slot(
-            fnp.NewSignagePointOrEndOfSubSlot(None, sp.cc_vdf.challenge, uint8(11), sp.rc_vdf.challenge), peer
+            fnp.NewSignagePointOrEndOfSubSlot(None, sp.cc_vdf.challenge, uint8(11), sp.rc_vdf.challenge, sp.timelord_puzzle_hash), peer
         )
         assert res.type == ProtocolMessageTypes.request_signage_point_or_end_of_sub_slot.value
         assert fnp.RequestSignagePointOrEndOfSubSlot.from_bytes(res.data).index_from_challenge == uint8(11)
@@ -1504,11 +1504,11 @@ class TestFullNodeProtocol:
 
         # Submits the signage point, cannot add because don't have block
         await full_node_1.respond_signage_point(
-            fnp.RespondSignagePoint(4, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof), peer
+            fnp.RespondSignagePoint(4, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof, sp.timelord_puzzle_hash), peer
         )
         # Should not add duplicates to cache though
         await full_node_1.respond_signage_point(
-            fnp.RespondSignagePoint(4, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof), peer
+            fnp.RespondSignagePoint(4, sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof, sp.timelord_puzzle_hash), peer
         )
         assert full_node_1.full_node.full_node_store.get_signage_point(sp.cc_vdf.output.get_hash()) is None
         assert len(full_node_1.full_node.full_node_store.future_sp_cache[sp.rc_vdf.challenge]) == 1

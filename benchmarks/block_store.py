@@ -132,6 +132,9 @@ async def run_add_block_benchmark(version: int):
                 pool_target,
                 rand_g2() if has_pool_pk else None,  # pool_signature
                 rand_hash(),  # farmer_reward_puzzle_hash
+                rand_hash(),  # staking_reward_puzzle_hash
+                rand_hash(),  # community_reward_puzzle_hash
+                rand_hash(),  # timelord_reward_puzzle_hash
                 bytes32([0] * 32),  # extension_data
             )
 
@@ -201,6 +204,9 @@ async def run_add_block_benchmark(version: int):
                 sub_slot_iters,
                 rand_hash(),  # pool_puzzle_hash
                 rand_hash(),  # farmer_puzzle_hash
+                rand_hash(),  # staking_puzzle_hash
+                rand_hash(),  # community_puzzle_hash
+                rand_hash(),  # timelord_puzzle_hash
                 required_iters,
                 deficit,
                 deficit == 16,

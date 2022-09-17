@@ -341,7 +341,7 @@ class TestRpc:
             # Add the last block
             await full_node_api_1.full_node.respond_block(full_node_protocol.RespondBlock(blocks[-1]))
             await full_node_api_1.respond_signage_point(
-                full_node_protocol.RespondSignagePoint(uint8(4), sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof), peer
+                full_node_protocol.RespondSignagePoint(uint8(4), sp.cc_vdf, sp.cc_proof, sp.rc_vdf, sp.rc_proof, sp.timelord_puzzle_hash), peer
             )
 
             assert full_node_api_1.full_node.full_node_store.get_signage_point(sp.cc_vdf.output.get_hash()) is not None

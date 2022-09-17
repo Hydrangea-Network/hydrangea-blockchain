@@ -126,6 +126,9 @@ def rand_full_block() -> FullBlock:
         rand_g2(),
         rand_hash(),
         rand_hash(),
+        rand_hash(),
+        rand_hash(),
+        rand_hash(),
     )
 
     foliage = Foliage(

@@ -1324,7 +1324,7 @@ def get_signage_point(
     normalized_to_identity_cc_sp: bool = False,
 ) -> SignagePoint:
     if signage_point_index == 0:
-        return SignagePoint(None, None, None, None)
+        return SignagePoint(None, None, None, None, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
     sp_iters = calculate_sp_iters(constants, sub_slot_iters, signage_point_index)
     overflow = is_overflow_block(constants, signage_point_index)
     sp_total_iters = uint128(
@@ -1369,7 +1369,7 @@ def get_signage_point(
             sp_iters,
             True,
         )
-    return SignagePoint(cc_sp_vdf, cc_sp_proof, rc_sp_vdf, rc_sp_proof)
+    return SignagePoint(cc_sp_vdf, cc_sp_proof, rc_sp_vdf, rc_sp_proof, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
 
 
 def finish_block(
@@ -1733,6 +1733,9 @@ def create_test_foliage(
     blocks: BlockchainInterface,
     total_iters_sp: uint128,
     timestamp: uint64,
+    staking_reward_puzzlehash: bytes32,
+    community_reward_puzzlehash: bytes32,
+    timelord_reward_puzzlehash: bytes32,
     farmer_reward_puzzlehash: bytes32,
     pool_target: PoolTarget,
     get_plot_signature: Callable[[bytes32, G1Element], G2Element],
@@ -1754,6 +1757,9 @@ def create_test_foliage(
         total_iters_sp: total iters at the signage point
         timestamp: timestamp to put into the foliage block
         farmer_reward_puzzlehash: where to pay out farming reward
+        staking_reward_puzzlehash: where to pay out staking reward
+        community_reward_puzzlehash: where to pay out community reward
+        timelord_reward_puzzlehash: where to pay out timelord reward
         pool_target: where to pay out pool reward
         get_plot_signature: retrieve the signature corresponding to the plot public key
         get_pool_signature: retrieve the signature corresponding to the pool public key
@@ -1793,6 +1799,9 @@ def create_test_foliage(
         pool_target,
         pool_target_signature,
         farmer_reward_puzzlehash,
+        staking_reward_puzzlehash,
+        community_reward_puzzlehash,
+        timelord_reward_puzzlehash,
         extension_data,
     )
 
@@ -2048,7 +2057,7 @@ def create_test_unfinished_block(
                     curr = blocks.block_record(curr.prev_hash)
                 assert curr.finished_reward_slot_hashes is not None
                 rc_sp_hash = curr.finished_reward_slot_hashes[-1]
-        signage_point = SignagePoint(None, None, None, None)
+        signage_point = SignagePoint(None, None, None, None, constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH)
 
     cc_sp_signature: Optional[G2Element] = get_plot_signature(
         cc_sp_hash,
