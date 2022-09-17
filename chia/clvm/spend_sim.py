@@ -24,8 +24,20 @@ from chia.full_node.coin_store import CoinStore
 from chia.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
 from chia.consensus.constants import ConsensusConstants
 from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.consensus.coinbase import create_pool_coin, create_farmer_coin
-from chia.consensus.block_rewards import calculate_pool_reward, calculate_base_farmer_reward
+from chia.consensus.coinbase import (
+    create_pool_coin,
+    create_farmer_coin,
+    create_staking_coin,
+    create_community_coin,
+    create_timelord_coin,
+)
+from chia.consensus.block_rewards import (
+    calculate_pool_reward,
+    calculate_base_farmer_reward,
+    calculate_staking_reward,
+    calculate_community_reward,
+    calculate_timelord_reward,
+)
 from chia.consensus.cost_calculator import NPCResult
 
 """
@@ -196,8 +208,31 @@ class SpendSim:
             uint64(calculate_base_farmer_reward(next_block_height) + fees),
             self.defaults.GENESIS_CHALLENGE,
         )
+        staking_coin: Coin = create_staking_coin(
+            next_block_height,
+            puzzle_hash,
+            calculate_staking_reward(next_block_height),
+            self.defaults.GENESIS_CHALLENGE,
+        )
+        community_coin: Coin = create_community_coin(
+            next_block_height,
+            puzzle_hash,
+            calculate_community_reward(next_block_height),
+            self.defaults.GENESIS_CHALLENGE,
+        )
+        timelord_coin: Coin = create_timelord_coin(
+            next_block_height,
+            puzzle_hash,
+            calculate_timelord_reward(next_block_height),
+            self.defaults.GENESIS_CHALLENGE,
+        )
         await self.mempool_manager.coin_store._add_coin_records(
-            [self.new_coin_record(pool_coin, True), self.new_coin_record(farmer_coin, True)]
+            [self.new_coin_record(pool_coin, True),
+            self.new_coin_record(farmer_coin, True),
+            self.new_coin_record(staking_coin, True),
+            self.new_coin_record(community_coin, True),
+            self.new_coin_record(timelord_coin, True),
+            ]
         )
 
         # Coin store gets updated
@@ -226,7 +261,12 @@ class SpendSim:
         generator: Optional[BlockGenerator] = await self.generate_transaction_generator(generator_bundle)
         self.block_records.append(
             SimBlockRecord.create(
-                [pool_coin, farmer_coin],
+                [pool_coin,
+                farmer_coin,
+                staking_coin,
+                community_coin,
+                timelord_coin,
+                ],
                 next_block_height,
                 self.timestamp,
             )

@@ -253,6 +253,8 @@ timelord_launcher:
 
 
 timelord:
+  # Inactivity reset timeout
+  active_time_threshold: 60
   # The timelord server (if run) will run on this port
   port: 8250
   # Provides a list of VDF clients expected to connect to this timelord.

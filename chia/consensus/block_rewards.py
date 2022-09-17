@@ -4,7 +4,7 @@ from chia.util.ints import uint32, uint64
 _mojo_per_hydrangea = 1000000000000
 _prefarm = 21000000
 _blocks_per_year = 1681920  # 32 * 6 * 24 * 365
-_block_reward = 125 # 125 Hydrangea are awarded per block
+_block_reward = 125 # 125 Hydrangea are awarded per block + 0.1% to the TimeLord
 _farmer_fraction = (10 / _block_reward)
 _pool_fraction = (90 / _block_reward)
 _community_fraction = (20 / _block_reward)
@@ -58,8 +58,8 @@ def calculate_base_farmer_reward(height: uint32) -> uint64:
     """
     return _calculate_reward(_farmer_fraction, height)
 
-def calculate_base_timelord_fee(height: uint32) -> uint64:
+def calculate_timelord_reward(height: uint32) -> uint64:
     """
-    Returns the base timelord reward at a certain block height.
+    Returns the timelord reward at a certain block height.
     """
     return _calculate_reward(_timelord_fraction, height)

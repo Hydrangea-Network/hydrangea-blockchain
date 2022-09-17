@@ -754,7 +754,21 @@ def validate_unfinished_header_block(
         ):
             return None, ValidationError(Err.INVALID_PREFARM)
     else:
-        # 20b. If pospace has a pool pk, heck pool target signature. Should not check this for genesis block.
+        # 20a.1 Check staking and community puzzle hashes for every blockk.
+        if (
+            header_block.foliage.foliage_block_data.staking_reward_puzzle_hash
+            != constants.GENESIS_PRE_FARM_STAKING_PUZZLE_HASH
+        ):
+            log.error(f"Staking target {header_block.foliage.foliage_block_data.staking_reward_puzzle_hash} hb {header_block}")
+            return None, ValidationError(Err.INVALID_PREFARM)
+        if (
+            header_block.foliage.foliage_block_data.community_reward_puzzle_hash
+            != constants.GENESIS_PRE_FARM_COMMUNITY_PUZZLE_HASH
+        ):
+            log.error(f"Community target {header_block.foliage.foliage_block_data.community_reward_puzzle_hash} hb {header_block}")
+            return None, ValidationError(Err.INVALID_PREFARM)
+
+        # 20b. If pospace has a pool pk, check pool target signature. Should not check this for genesis block.
         if header_block.reward_chain_block.proof_of_space.pool_public_key is not None:
             assert header_block.reward_chain_block.proof_of_space.pool_contract_puzzle_hash is None
             if not AugSchemeMPL.verify(

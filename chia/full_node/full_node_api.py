@@ -593,6 +593,7 @@ class FullNodeAPI:
                     and sp.cc_proof is not None
                     and sp.rc_vdf is not None
                     and sp.rc_proof is not None
+                    and sp.timelord_puzzle_hash is not None
                 )
                 full_node_response = full_node_protocol.RespondSignagePoint(
                     request.index_from_challenge,
@@ -600,6 +601,7 @@ class FullNodeAPI:
                     sp.cc_proof,
                     sp.rc_vdf,
                     sp.rc_proof,
+                    sp.timelord_puzzle_hash,
                 )
                 return make_msg(ProtocolMessageTypes.respond_signage_point, full_node_response)
             else:
@@ -649,6 +651,7 @@ class FullNodeAPI:
                     request.challenge_chain_proof,
                     request.reward_chain_vdf,
                     request.reward_chain_proof,
+                    request.timelord_reward_puzzle_hash,
                 ),
             )
 
@@ -1072,6 +1075,7 @@ class FullNodeAPI:
             request.challenge_chain_sp_proof,
             request.reward_chain_sp_vdf,
             request.reward_chain_sp_proof,
+            request.timelord_reward_puzzlehash,
         )
         await self.respond_signage_point(full_node_message, peer)
 

@@ -392,6 +392,7 @@ class TestFullNodeStore:
             blocks[1].challenge_chain_sp_proof,
             blocks[1].reward_chain_block.reward_chain_sp_vdf,
             blocks[1].reward_chain_sp_proof,
+            blocks[1].foliage.foliage_block_data.timelord_reward_puzzle_hash,
         )
         assert not store.new_signage_point(
             blocks[1].reward_chain_block.signage_point_index,
