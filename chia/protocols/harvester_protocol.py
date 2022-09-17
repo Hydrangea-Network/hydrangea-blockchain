@@ -40,6 +40,7 @@ class NewSignagePointHarvester(Streamable):
     signage_point_index: uint8
     sp_hash: bytes32
     pool_difficulties: List[PoolDifficulty]
+    timelord_reward_puzzlehash: bytes32
 
 
 @streamable

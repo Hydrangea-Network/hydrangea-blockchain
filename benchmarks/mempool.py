@@ -60,6 +60,9 @@ def fake_block_record(block_height: uint32, timestamp: uint64) -> BlockRecord:
         uint64(0),  # sub_slot_iters
         bytes32(b"d" * 32),  # pool_puzzle_hash
         bytes32(b"e" * 32),  # farmer_puzzle_hash
+        bytes32(b"d" * 32),  # staking_puzzle_hash
+        bytes32(b"d" * 32),  # community_puzzle_hash
+        bytes32(b"d" * 32),  # timelord_puzzle_hash
         uint64(0),  # required_iters
         uint8(0),  # deficit
         False,  # overflow

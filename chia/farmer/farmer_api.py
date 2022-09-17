@@ -467,6 +467,7 @@ class FarmerAPI:
                 new_signage_point.signage_point_index,
                 new_signage_point.challenge_chain_sp,
                 pool_difficulties,
+                new_signage_point.timelord_puzzle_hash,
             )
 
             msg = make_msg(ProtocolMessageTypes.new_signage_point_harvester, message)
