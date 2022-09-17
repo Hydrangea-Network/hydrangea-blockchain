@@ -39,6 +39,7 @@ from chia.util.config import process_config_start_method
 from chia.util.ints import uint8, uint16, uint32, uint64, uint128
 from chia.util.setproctitle import getproctitle, setproctitle
 from chia.util.streamable import Streamable, streamable
+from chia.util.bech32m import decode_puzzle_hash
 
 log = logging.getLogger(__name__)
 
@@ -478,12 +479,14 @@ class Timelord:
                     # This proof is on an outdated challenge, so don't use it
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
+                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
                     dataclasses.replace(cc_info, number_of_iterations=iters_from_sub_slot_start),
                     cc_proof,
                     rc_info,
                     rc_proof,
+                    timelord_reward_puzzle_hash,
                 )
                 if self._server is not None:
                     msg = make_msg(ProtocolMessageTypes.new_signage_point_vdf, response)
@@ -853,7 +856,7 @@ class Timelord:
         else:
             # If there were no failures recently trigger a reset after 60 seconds of no activity.
             # Signage points should be every 9 seconds
-            active_time_threshold = 60
+            active_time_threshold = self.config.get("active_time_threshold", 60)
         if time.time() - self.last_active_time > active_time_threshold:
             log.error(f"Not active for {active_time_threshold} seconds, restarting all chains")
             await self._reset_chains()
