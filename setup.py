@@ -72,10 +72,10 @@ dev_dependencies = [
 
 kwargs = dict(
     name="chia-blockchain",
-    author="Mariano Sorgente",
-    author_email="mariano@chia.net",
+    author="Hydrangea Network",
+    author_email="hello@hydrangea.website",
     description="Chia blockchain full node, farmer, timelord, and wallet.",
-    url="https://chia.net/",
+    url="https://hydrangea.website/",
     license="Apache License",
     python_requires=">=3.7, <4",
     keywords="chia blockchain node",
