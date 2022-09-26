@@ -662,14 +662,14 @@ class WalletStateManager:
         return None, None
 
     async def filter_spam(self, new_coin_state: List[CoinState]) -> List[CoinState]:
-        xch_spam_amount = self.config.get("xch_spam_amount", 1000000)
+        xhg_spam_amount = self.config.get("xhg_spam_amount", 1000000)
 
         # No need to filter anything if the filter is set to 1 or 0 mojos
-        if xch_spam_amount <= 1:
+        if xhg_spam_amount <= 1:
             return new_coin_state
 
         spam_filter_after_n_txs = self.config.get("spam_filter_after_n_txs", 200)
-        small_unspent_count = await self.coin_store.count_small_unspent(xch_spam_amount)
+        small_unspent_count = await self.coin_store.count_small_unspent(xhg_spam_amount)
 
         # if small_unspent_count > spam_filter_after_n_txs:
         filtered_cs: List[CoinState] = []
@@ -680,7 +680,7 @@ class WalletStateManager:
             if (
                 cs.created_height is not None
                 and cs.spent_height is None
-                and cs.coin.amount < xch_spam_amount
+                and cs.coin.amount < xhg_spam_amount
                 and (cs.coin.puzzle_hash in is_standard_wallet_phs or await self.is_standard_wallet_tx(cs))
             ):
                 is_standard_wallet_phs.add(cs.coin.puzzle_hash)

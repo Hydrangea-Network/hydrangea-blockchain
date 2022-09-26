@@ -6,43 +6,43 @@ from chia.wallet.util.address_type import AddressType, ensure_valid_address, is_
 
 
 @pytest.mark.parametrize("prefix", [None])
-def test_xch_hrp_for_default_config(config_with_address_prefix: Dict[str, Any]) -> None:
+def test_xhg_hrp_for_default_config(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
-    assert AddressType.XCH.hrp(config) == "xch"
+    assert AddressType.XHG.hrp(config) == "xhg"
 
 
-@pytest.mark.parametrize("prefix", ["txch"])
-def test_txch_hrp_for_testnet(config_with_address_prefix: Dict[str, Any]) -> None:
+@pytest.mark.parametrize("prefix", ["txhg"])
+def test_txhg_hrp_for_testnet(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
-    assert AddressType.XCH.hrp(config) == "txch"
+    assert AddressType.XHG.hrp(config) == "txhg"
 
 
 @pytest.mark.parametrize("prefix", [None])
-def test_is_valid_address_xch(config_with_address_prefix: Dict[str, Any]) -> None:
+def test_is_valid_address_xhg(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     valid = is_valid_address(
-        "xch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd", allowed_types={AddressType.XCH}, config=config
+        "xhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd", allowed_types={AddressType.XHG}, config=config
     )
     assert valid is True
 
 
-@pytest.mark.parametrize("prefix", ["txch"])
-def test_is_valid_address_txch(config_with_address_prefix: Dict[str, Any]) -> None:
+@pytest.mark.parametrize("prefix", ["txhg"])
+def test_is_valid_address_txhg(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
-    # TXCH address validation requires a config
+    # TXHG address validation requires a config
     valid = is_valid_address(
-        "txch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7",
-        allowed_types={AddressType.XCH},
+        "txhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7",
+        allowed_types={AddressType.XHG},
         config=config,
     )
     assert valid is True
 
 
 @pytest.mark.parametrize("prefix", [None])
-def test_is_valid_address_xch_bad_address(config_with_address_prefix: Dict[str, Any]) -> None:
+def test_is_valid_address_xhg_bad_address(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     valid = is_valid_address(
-        "xch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8xxxxx", allowed_types={AddressType.XCH}, config=config
+        "xhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8xxxxx", allowed_types={AddressType.XHG}, config=config
     )
     assert valid is False
 
@@ -56,7 +56,7 @@ def test_is_valid_address_nft(config_with_address_prefix: Dict[str, Any]) -> Non
     assert valid is True
 
 
-@pytest.mark.parametrize("prefix", ["txch"])
+@pytest.mark.parametrize("prefix", ["txhg"])
 def test_is_valid_address_nft_with_testnet(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     valid = is_valid_address(
@@ -85,7 +85,7 @@ def test_is_valid_address_did(config_with_address_prefix: Dict[str, Any]) -> Non
     assert valid is True
 
 
-@pytest.mark.parametrize("prefix", ["txch"])
+@pytest.mark.parametrize("prefix", ["txhg"])
 def test_is_valid_address_did_with_testnet(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     valid = is_valid_address(
@@ -108,32 +108,32 @@ def test_is_valid_address_did_bad_address(config_with_address_prefix: Dict[str, 
 
 
 @pytest.mark.parametrize("prefix", [None])
-def test_ensure_valid_address_xch(config_with_address_prefix: Dict[str, Any]) -> None:
+def test_ensure_valid_address_xhg(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     address = ensure_valid_address(
-        "xch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd", allowed_types={AddressType.XCH}, config=config
+        "xhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd", allowed_types={AddressType.XHG}, config=config
     )
-    assert address == "xch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd"
+    assert address == "xhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8taffd"
 
 
-@pytest.mark.parametrize("prefix", ["txch"])
-def test_ensure_valid_address_txch(config_with_address_prefix: Dict[str, Any]) -> None:
+@pytest.mark.parametrize("prefix", ["txhg"])
+def test_ensure_valid_address_txhg(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     address = ensure_valid_address(
-        "txch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7",
-        allowed_types={AddressType.XCH},
+        "txhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7",
+        allowed_types={AddressType.XHG},
         config=config,
     )
-    assert address == "txch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7"
+    assert address == "txhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs2v6lg7"
 
 
 @pytest.mark.parametrize("prefix", [None])
-def test_ensure_valid_address_xch_bad_address(config_with_address_prefix: Dict[str, Any]) -> None:
+def test_ensure_valid_address_xhg_bad_address(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     with pytest.raises(ValueError):
         ensure_valid_address(
-            "xch1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8xxxxx",
-            allowed_types={AddressType.XCH},
+            "xhg1mnr0ygu7lvmk3nfgzmncfk39fwu0dv933yrcv97nd6pmrt7fzmhs8xxxxx",
+            allowed_types={AddressType.XHG},
             config=config,
         )
 
@@ -184,4 +184,4 @@ def test_ensure_valid_address_did_bad_address(config_with_address_prefix: Dict[s
 def test_ensure_valid_address_bad_length(config_with_address_prefix: Dict[str, Any]) -> None:
     config = config_with_address_prefix
     with pytest.raises(ValueError):
-        ensure_valid_address("xch1qqqqqqqqqqqqqqqqwygzk5", allowed_types={AddressType.XCH}, config=config)
+        ensure_valid_address("xhg1qqqqqqqqqqqqqqqqwygzk5", allowed_types={AddressType.XHG}, config=config)

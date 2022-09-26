@@ -6,13 +6,13 @@ from chia.util.config import selected_network_address_prefix
 
 
 class AddressType(Enum):
-    XCH = "xch"
+    XHG = "xhg"
     NFT = "nft"
     DID = "did:chia:"
 
     def hrp(self, config: Dict[str, Any]) -> str:
-        if self == AddressType.XCH:
-            # Special case to map XCH to the current network's address prefix
+        if self == AddressType.XHG:
+            # Special case to map XHG to the current network's address prefix
             return selected_network_address_prefix(config)
         return self.value
 

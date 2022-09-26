@@ -307,26 +307,26 @@ class TestConfig:
     @pytest.mark.parametrize("prefix", [None])
     def test_selected_network_address_prefix_default_config(self, config_with_address_prefix: Dict[str, Any]) -> None:
         """
-        Temp config.yaml created using a default config. address_prefix is defaulted to "xch"
+        Temp config.yaml created using a default config. address_prefix is defaulted to "xhg"
         """
         config = config_with_address_prefix
         prefix = selected_network_address_prefix(config)
-        assert prefix == "xch"
+        assert prefix == "xhg"
 
-    @pytest.mark.parametrize("prefix", ["txch"])
+    @pytest.mark.parametrize("prefix", ["txhg"])
     def test_selected_network_address_prefix_testnet_config(self, config_with_address_prefix: Dict[str, Any]) -> None:
         """
-        Temp config.yaml created using a modified config. address_prefix is set to "txch"
+        Temp config.yaml created using a modified config. address_prefix is set to "txhg"
         """
         config = config_with_address_prefix
         prefix = selected_network_address_prefix(config)
-        assert prefix == "txch"
+        assert prefix == "txhg"
 
     def test_selected_network_address_prefix_config_dict(self, default_config_dict: Dict[str, Any]) -> None:
         """
-        Modified config dictionary has address_prefix set to "customxch"
+        Modified config dictionary has address_prefix set to "customxhg"
         """
         config = default_config_dict
-        config["network_overrides"]["config"][config["selected_network"]]["address_prefix"] = "customxch"
+        config["network_overrides"]["config"][config["selected_network"]]["address_prefix"] = "customxhg"
         prefix = selected_network_address_prefix(config)
-        assert prefix == "customxch"
+        assert prefix == "customxhg"

@@ -569,7 +569,7 @@ class NFTWallet:
             name,
         )
 
-    async def create_tandem_xch_tx(
+    async def create_tandem_xhg_tx(
         self, fee: uint64, announcement_to_assert: Optional[Announcement] = None
     ) -> TransactionRecord:
         chia_coins = await self.standard_wallet.select_coins(fee)
@@ -696,7 +696,7 @@ class NFTWallet:
 
         if fee > 0:
             announcement_to_make = nft_coin.coin.name()
-            chia_tx = await self.create_tandem_xch_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
+            chia_tx = await self.create_tandem_xhg_tx(fee, Announcement(nft_coin.coin.name(), announcement_to_make))
         else:
             announcement_to_make = None
             chia_tx = None
@@ -856,7 +856,7 @@ class NFTWallet:
                     coin_amount_needed = abs(amount) + royalty_amount
                 offered_coins: Set[Coin] = await wallet.get_coins_to_offer(asset, coin_amount_needed, min_coin_amount)
                 if len(offered_coins) == 0:
-                    raise ValueError(f"Did not have asset ID {asset.hex() if asset is not None else 'XCH'} to offer")
+                    raise ValueError(f"Did not have asset ID {asset.hex() if asset is not None else 'XHG'} to offer")
                 offered_coins_by_asset[asset] = offered_coins
                 all_offered_coins.update(offered_coins)
 
@@ -866,7 +866,7 @@ class NFTWallet:
         )
         announcements_to_assert = Offer.calculate_announcements(notarized_payments, driver_dict)
         for asset, payments in royalty_payments.items():
-            if asset is None:  # xch offer
+            if asset is None:  # xhg offer
                 offer_puzzle = OFFER_MOD
                 royalty_ph = OFFER_MOD_HASH
             else:
@@ -934,7 +934,7 @@ class NFTWallet:
                         # Create a coin_spend for the royalty payout from OFFER MOD
                         # ((nft_launcher_id . ((ROYALTY_ADDRESS, royalty_amount, memos))))
                         inner_royalty_sol = Program.to([(launcher_id, [payment.as_condition_args()])])
-                        if asset is None:  # xch offer
+                        if asset is None:  # xhg offer
                             offer_puzzle = OFFER_MOD
                             royalty_ph = OFFER_MOD_HASH
                         else:
@@ -952,7 +952,7 @@ class NFTWallet:
                                             if cs.coin.name() == royalty_coin.parent_coin_info
                                         )
                                         break
-                        if asset is None:  # If XCH
+                        if asset is None:  # If XHG
                             royalty_sol = inner_royalty_sol
                         else:
                             # call our drivers to solve the puzzle
