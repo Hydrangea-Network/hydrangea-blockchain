@@ -1108,7 +1108,7 @@ class TestWalletSync:
         # Create a new NFT and send it to the farmer's NFT wallet
         metadata = Program.to(
             [
-                ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
+                ("u", ["https://www.chia.net/img/branding/hydrangea-logo.svg"]),
                 ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
             ]
         )

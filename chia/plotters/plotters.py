@@ -50,7 +50,7 @@ class Options(Enum):
     BLADEBIT_ALTERNATE = 34
 
 
-chia_plotter_options = [
+hydrangea_plotter_options = [
     Options.TMP_DIR,
     Options.TMP_DIR2,
     Options.K,
@@ -472,7 +472,7 @@ def call_plotters(root_path: Path, args):
     plotters = argparse.ArgumentParser("hydrangea plotters", description="Available options.")
     subparsers = plotters.add_subparsers(help="Available options", dest="plotter")
 
-    build_parser(subparsers, root_path, chia_plotter_options, "chiapos", "Chiapos Plotter")
+    build_parser(subparsers, root_path, hydrangea_plotter_options, "chiapos", "Chiapos Plotter")
     build_parser(subparsers, root_path, madmax_plotter_options, "madmax", "Madmax Plotter")
     build_parser(subparsers, root_path, bladebit_plotter_options, "bladebit", "Bladebit Plotter")
     build_parser(subparsers, root_path, bladebit2_plotter_options, "bladebit2", "Bladebit2 Plotter")

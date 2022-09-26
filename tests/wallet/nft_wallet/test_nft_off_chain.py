@@ -70,7 +70,7 @@ def make_a_new_ownership_layer_puzzle() -> Tuple[Program, Program]:
 
 def create_test_full_puzzle() -> Program:
     metadata = [
-        ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
+        ("u", ["https://www.chia.net/img/branding/hydrangea-logo.svg"]),
         ("h", 0xD4584AD463139FA8C0D9F68F4B59F185),
         ("mu", ["https://bafybeigzcazxeu7epmm4vtkuadrvysv74lbzzbl2evphtae6k57yhgynp4.ipfs.nftstorage.link/6590.json"]),
         ("mh", 0x6A9CB99B7B9A987309E8DD4FD14A7CA2423858585DA68CC9EC689669DD6DD6AB),

@@ -33,7 +33,7 @@ def init_cmd(ctx: click.Context, create_certs: str, fix_ssl_permissions: bool, t
     - Run `hydrangea init -c [directory]` on your remote harvester,
       where [directory] is the the copy of your Farming Machine CA directory
     - Get more details on remote harvester on Hydrangea wiki:
-      https://github.com/Chia-Network/hydrangea-blockchain/wiki/Farming-on-many-machines
+      https://github.com/Hydrangea-Network/hydrangea-blockchain/wiki/Farming-on-many-machines
     """
     from pathlib import Path
     from .init_funcs import init

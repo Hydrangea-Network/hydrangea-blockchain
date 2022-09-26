@@ -128,9 +128,9 @@ jobs:
           coverage xml --rcfile=.coveragerc --data-file coverage-reports/.coverage -o coverage-reports/coverage.xml
           coverage html --rcfile=.coveragerc --data-file coverage-reports/.coverage --directory coverage-reports/html/
 
-      - name: Coverage report (chia/)
+      - name: Coverage report (hydrangea/)
         run: |
-          coverage report --rcfile=.coveragerc --data-file coverage-reports/.coverage --include='chia/*' --show-missing | tee coverage-reports/coverage-chia-stdout
+          coverage report --rcfile=.coveragerc --data-file coverage-reports/.coverage --include='hydrangea/*' --show-missing | tee coverage-reports/coverage-hydrangea-stdout
 
       - name: Coverage report (tests/)
         run: |

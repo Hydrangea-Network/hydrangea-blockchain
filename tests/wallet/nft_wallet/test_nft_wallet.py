@@ -130,7 +130,7 @@ async def test_nft_wallet_creation_automatically(two_wallet_nodes: Any, trusted:
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
+            ("u", ["https://www.chia.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -225,7 +225,7 @@ async def test_nft_wallet_creation_and_transfer(two_wallet_nodes: Any, trusted: 
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
+            ("u", ["https://www.chia.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -381,7 +381,7 @@ async def test_nft_wallet_rpc_creation_and_list(two_wallet_nodes: Any, trusted: 
             "wallet_id": nft_wallet_0_id,
             "artist_address": ph,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
         }
     )
 
@@ -499,7 +499,7 @@ async def test_nft_wallet_rpc_update_metadata(two_wallet_nodes: Any, trusted: An
             "wallet_id": nft_wallet_0_id,
             "artist_address": ph,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
         }
     )
 
@@ -521,7 +521,7 @@ async def test_nft_wallet_rpc_update_metadata(two_wallet_nodes: Any, trusted: An
     assert coin["chain_info"] == disassemble(
         Program.to(
             [
-                ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
+                ("u", ["https://www.chia.net/img/branding/hydrangea-logo.svg"]),
                 ("h", hexstr_to_bytes("0xD4584AD463139FA8C0D9F68F4B59F185")),
                 ("mu", []),
                 ("lu", []),
@@ -560,7 +560,7 @@ async def test_nft_wallet_rpc_update_metadata(two_wallet_nodes: Any, trusted: An
     assert coin["mint_height"] > 0
     uris = coin["data_uris"]
     assert len(uris) == 1
-    assert "https://www.hydrangea.net/img/branding/hydrangea-logo.svg" in uris
+    assert "https://www.chia.net/img/branding/hydrangea-logo.svg" in uris
     assert len(coin["metadata_uris"]) == 1
     assert "http://metadata" == coin["metadata_uris"][0]
     assert len(coin["license_uris"]) == 0
@@ -689,7 +689,7 @@ async def test_nft_with_did_wallet_creation(two_wallet_nodes: Any, trusted: Any)
         {
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
             "target_address": encode_puzzle_hash(nft_ph, "txhg"),
         }
     )
@@ -742,7 +742,7 @@ async def test_nft_with_did_wallet_creation(two_wallet_nodes: Any, trusted: Any)
     did_nft = coins[0].to_json_dict()
     assert did_nft["mint_height"] > 0
     assert did_nft["supports_did"]
-    assert did_nft["data_uris"][0] == "https://www.hydrangea.net/img/branding/hydrangea-logo.svg"
+    assert did_nft["data_uris"][0] == "https://www.chia.net/img/branding/hydrangea-logo.svg"
     assert did_nft["data_hash"] == "0xD4584AD463139FA8C0D9F68F4B59F185".lower()
     assert did_nft["owner_did"][2:] == hex_did_id
     # Check unassigned NFT
@@ -839,7 +839,7 @@ async def test_nft_rpc_mint(two_wallet_nodes: Any, trusted: Any) -> None:
         {
             "wallet_id": nft_wallet_0_id,
             "hash": data_hash_param,
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
             "license_uris": license_uris,
             "license_hash": license_hash,
             "meta_hash": meta_hash,
@@ -950,7 +950,7 @@ async def test_nft_transfer_nft_with_did(two_wallet_nodes: Any, trusted: Any) ->
         {
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
             "fee": fee,
             "did_id": hmr_did_id,
         }
@@ -1104,8 +1104,8 @@ async def test_update_metadata_for_nft_did(two_wallet_nodes: Any, trusted: Any) 
         {
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
-            "mu": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
+            "mu": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
             "did": hex_did_id,
         }
     )
@@ -1163,7 +1163,7 @@ async def test_update_metadata_for_nft_did(two_wallet_nodes: Any, trusted: Any) 
     assert coin["mint_height"] > 0
     uris = coin["data_uris"]
     assert len(uris) == 1
-    assert "https://www.hydrangea.net/img/branding/hydrangea-logo.svg" in uris
+    assert "https://www.chia.net/img/branding/hydrangea-logo.svg" in uris
     assert len(coin["metadata_uris"]) == 1
     assert "http://metadata" == coin["metadata_uris"][0]
     assert len(coin["license_uris"]) == 0
@@ -1234,8 +1234,8 @@ async def test_nft_set_did(two_wallet_nodes: Any, trusted: Any) -> None:
         {
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
-            "mu": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
+            "mu": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
             "did_id": "",
         }
     )
@@ -1386,8 +1386,8 @@ async def test_set_nft_status(two_wallet_nodes: Any, trusted: Any) -> None:
         {
             "wallet_id": nft_wallet_0_id,
             "hash": "0xD4584AD463139FA8C0D9F68F4B59F185",
-            "uris": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
-            "mu": ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+            "uris": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
+            "mu": ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
         }
     )
     assert resp.get("success")

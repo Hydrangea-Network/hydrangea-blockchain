@@ -152,8 +152,8 @@ kwargs = dict(
     long_description_content_type="text/markdown",
     zip_safe=False,
     project_urls={
-        "Source": "https://github.com/Chia-Network/hydrangea-blockchain/",
-        "Changelog": "https://github.com/Chia-Network/hydrangea-blockchain/blob/main/CHANGELOG.md",
+        "Source": "https://github.com/Hydrangea-Network/hydrangea-blockchain/",
+        "Changelog": "https://github.com/Hydrangea-Network/hydrangea-blockchain/blob/main/CHANGELOG.md",
     },
 )
 

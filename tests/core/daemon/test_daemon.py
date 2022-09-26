@@ -154,7 +154,7 @@ def mock_daemon_with_services():
             "my_refrigerator": Service(True),
             "the_river": Service(True),
             "your_nose": Service(False),
-            "chia_plotter": [Service(True), Service(True)],
+            "hydrangea_plotter": [Service(True), Service(True)],
         },
         connections={},
     )
@@ -166,7 +166,7 @@ def mock_daemon_with_services_and_connections():
     return Daemon(
         services={
             "my_refrigerator": Service(True),
-            "chia_plotter": [Service(True), Service(True)],
+            "hydrangea_plotter": [Service(True), Service(True)],
             "apple": Service(True),
         },
         connections={

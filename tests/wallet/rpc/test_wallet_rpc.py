@@ -889,7 +889,7 @@ async def test_nft_endpoints(wallet_rpc_environment: WalletRpcTestEnvironment):
         None,
         None,
         "0xD4584AD463139FA8C0D9F68F4B59F185",
-        ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
+        ["https://www.chia.net/img/branding/hydrangea-logo.svg"],
     )
     assert res["success"]
 

@@ -250,6 +250,6 @@ jobs:
 
     - uses: chia-network/actions/activate-venv@main
 
-    - name: Run chia --help
+    - name: Run hydrangea --help
       run: |
-        chia --help
+        hydrangea --help

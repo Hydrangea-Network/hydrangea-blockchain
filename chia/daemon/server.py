@@ -50,7 +50,7 @@ except ModuleNotFoundError:
 
 log = logging.getLogger(__name__)
 
-service_plotter = "chia_plotter"
+service_plotter = "hydrangea_plotter"
 
 
 async def fetch(url: str):

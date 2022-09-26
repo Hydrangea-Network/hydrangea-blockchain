@@ -70,7 +70,7 @@ jobs:
         python3 -m venv ../venv
         . ../venv/bin/activate
         pip3 install setuptools_scm
-        echo "::set-output name=CHIA_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
+        echo "::set-output name=HYDRANGEA_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
         deactivate
 
     - name: Test for secrets access
@@ -145,18 +145,18 @@ jobs:
     - name: Prepare GUI cache
       id: gui-ref
       run: |
-        gui_ref=$(git submodule status chia-blockchain-gui | sed -e 's/^ //g' -e 's/ chia-blockchain-gui.*$//g')
+        gui_ref=$(git submodule status hydrangea-blockchain-gui | sed -e 's/^ //g' -e 's/ hydrangea-blockchain-gui.*$//g')
         echo "${gui_ref}"
         echo "::set-output name=GUI_REF::${gui_ref}"
-        echo "rm -rf ./chia-blockchain-gui"
-        rm -rf ./chia-blockchain-gui
+        echo "rm -rf ./hydrangea-blockchain-gui"
+        rm -rf ./hydrangea-blockchain-gui
 
     - name: Cache GUI
       uses: actions/cache@v3
       id: cache-gui
       with:
-        path: ./chia-blockchain-gui
-        key: ${{ runner.os }}-deb-chia-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
+        path: ./hydrangea-blockchain-gui
+        key: ${{ runner.os }}-deb-hydrangea-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
 
     - if: steps.cache-gui.outputs.cache-hit != 'true'
       name: Build GUI
@@ -167,7 +167,7 @@ jobs:
 
     - name: Build .deb package
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
         ldd --version
         cd ./build_scripts
@@ -176,7 +176,7 @@ jobs:
     - name: Upload Linux artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: chia-installers-linux-deb-intel
+        name: hydrangea-installers-linux-deb-intel
         path: ${{ github.workspace }}/build_scripts/final_installer/
 
     - name: Configure AWS Credentials
@@ -190,55 +190,55 @@ jobs:
     - name: Upload to s3
       if: steps.check_secrets.outputs.HAS_SECRET
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
         GIT_SHORT_HASH=$(echo "${GITHUB_SHA}" | cut -c1-8)
-        CHIA_DEV_BUILD=${CHIA_INSTALLER_VERSION}-$GIT_SHORT_HASH
-        echo "CHIA_DEV_BUILD=$CHIA_DEV_BUILD" >>$GITHUB_ENV
-        aws s3 cp "$GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb" "s3://download.chia.net/dev/chia-blockchain_${CHIA_DEV_BUILD}_amd64.deb"
-        aws s3 cp "$GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb" "s3://download.chia.net/dev/chia-blockchain-cli_${CHIA_DEV_BUILD}-1_amd64.deb"
+        HYDRANGEA_DEV_BUILD=${HYDRANGEA_INSTALLER_VERSION}-$GIT_SHORT_HASH
+        echo "HYDRANGEA_DEV_BUILD=$HYDRANGEA_DEV_BUILD" >>$GITHUB_ENV
+        aws s3 cp "$GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb" "s3://download.hydrangea.website/dev/hydrangea-blockchain_${HYDRANGEA_DEV_BUILD}_amd64.deb"
+        aws s3 cp "$GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb" "s3://download.hydrangea.website/dev/hydrangea-blockchain-cli_${HYDRANGEA_DEV_BUILD}-1_amd64.deb"
 
     - name: Create Checksums
       if: env.FULL_RELEASE == 'true' || github.ref == 'refs/heads/main'
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
         ls $GITHUB_WORKSPACE/build_scripts/final_installer/
-        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb > $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.sha256
-        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb > $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb.sha256
+        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb > $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.sha256
+        sha256sum $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb > $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb.sha256
         ls $GITHUB_WORKSPACE/build_scripts/final_installer/
 
     - name: Create .deb torrent
       if: env.FULL_RELEASE == 'true'
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb -o $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.torrent --webseed https://download.chia.net/install/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb
-        py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb -o $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb.torrent --webseed https://download.chia.net/install/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb
-        gh release upload $RELEASE_TAG $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.torrent
+        py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb -o $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.torrent --webseed https://download.hydrangea.website/install/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb
+        py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb -o $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb.torrent --webseed https://download.hydrangea.website/install/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb
+        gh release upload $RELEASE_TAG $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.torrent
 
     - name: Upload Dev Installer
       if: steps.check_secrets.outputs.HAS_SECRET && github.ref == 'refs/heads/main'
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb s3://download.chia.net/latest-dev/chia-blockchain_amd64_latest_dev.deb
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.sha256 s3://download.chia.net/latest-dev/chia-blockchain_amd64_latest_dev.deb.sha256
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb s3://download.chia.net/latest-dev/chia-blockchain-cli_amd64_latest_dev.deb
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb.sha256 s3://download.chia.net/latest-dev/chia-blockchain-cli_amd64_latest_dev.deb.sha256
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb s3://download.hydrangea.website/latest-dev/hydrangea-blockchain_amd64_latest_dev.deb
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.sha256 s3://download.hydrangea.website/latest-dev/hydrangea-blockchain_amd64_latest_dev.deb.sha256
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb s3://download.hydrangea.website/latest-dev/hydrangea-blockchain-cli_amd64_latest_dev.deb
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb.sha256 s3://download.hydrangea.website/latest-dev/hydrangea-blockchain-cli_amd64_latest_dev.deb.sha256
 
     - name: Upload Release Files
       if: steps.check_secrets.outputs.HAS_SECRET && env.FULL_RELEASE == 'true'
       env:
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb s3://download.chia.net/install/
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.sha256 s3://download.chia.net/install/
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb.torrent s3://download.chia.net/torrents/
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb s3://download.chia.net/install/
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb.sha256 s3://download.chia.net/install/
-        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/chia-blockchain-cli_${CHIA_INSTALLER_VERSION}-1_amd64.deb.torrent s3://download.chia.net/torrents/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb s3://download.hydrangea.website/install/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.sha256 s3://download.hydrangea.website/install/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb.torrent s3://download.hydrangea.website/torrents/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb s3://download.hydrangea.website/install/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb.sha256 s3://download.hydrangea.website/install/
+        aws s3 cp $GITHUB_WORKSPACE/build_scripts/final_installer/hydrangea-blockchain-cli_${HYDRANGEA_INSTALLER_VERSION}-1_amd64.deb.torrent s3://download.hydrangea.website/torrents/
 
     - name: Get tag name
       if: startsWith(github.ref, 'refs/tags/')
@@ -251,17 +251,17 @@ jobs:
       if: env.RELEASE == 'true'
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+        HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
       run: |
         gh release upload \
           $RELEASE_TAG \
-          build_scripts/final_installer/chia-blockchain_${CHIA_INSTALLER_VERSION}_amd64.deb
+          build_scripts/final_installer/hydrangea-blockchain_${HYDRANGEA_INSTALLER_VERSION}_amd64.deb
 
     - name: Mark installer complete
       if: steps.check_secrets.outputs.HAS_SECRET && env.FULL_RELEASE == 'true'
       run: |
-        curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"chia_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/build-linux-deb
+        curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"hydrangea_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/build-linux-deb
 
     - name: Remove working files to exclude from cache
       run: |
-        rm -rf ./chia-blockchain-gui/packages/gui/daemon
+        rm -rf ./hydrangea-blockchain-gui/packages/gui/daemon

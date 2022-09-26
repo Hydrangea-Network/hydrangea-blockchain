@@ -34,12 +34,12 @@ jobs:
           - runs-on: macos-10.14
             name: intel
             file-suffix: ""
-            mac-package-name: "Chia-darwin-x64"
+            mac-package-name: "Hydrangea-darwin-x64"
             glue-name: "build-macos"
           # - runs-on: [MacOS, ARM64]
           #   name: m1
           #   file-suffix: "-arm64"
-          #   mac-package-name: "Chia-darwin-arm64"
+          #   mac-package-name: "Hydrangea-darwin-arm64"
           #   glue-name: "build-mac-m1"
 
     steps:
@@ -92,7 +92,7 @@ jobs:
           python3 -m venv ../venv
           . ../venv/bin/activate
           pip install setuptools_scm
-          echo "::set-output name=CHIA_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
+          echo "::set-output name=HYDRANGEA_INSTALLER_VERSION::$(python3 ./build_scripts/installer-version.py)"
           deactivate
 
       - name: Setup Python environment
@@ -150,18 +150,18 @@ jobs:
       - name: Prepare GUI cache
         id: gui-ref
         run: |
-          gui_ref=$(git submodule status chia-blockchain-gui | sed -e 's/^ //g' -e 's/ chia-blockchain-gui.*$//g')
+          gui_ref=$(git submodule status hydrangea-blockchain-gui | sed -e 's/^ //g' -e 's/ hydrangea-blockchain-gui.*$//g')
           echo "${gui_ref}"
           echo "::set-output name=GUI_REF::${gui_ref}"
-          echo "rm -rf ./chia-blockchain-gui"
-          rm -rf ./chia-blockchain-gui
+          echo "rm -rf ./hydrangea-blockchain-gui"
+          rm -rf ./hydrangea-blockchain-gui
 
       - name: Cache GUI
         uses: actions/cache@v3
         id: cache-gui
         with:
-          path: ./chia-blockchain-gui
-          key: ${{ runner.os }}-${{ matrix.os.name }}-chia-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
+          path: ./hydrangea-blockchain-gui
+          key: ${{ runner.os }}-${{ matrix.os.name }}-hydrangea-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
 
       - if: steps.cache-gui.outputs.cache-hit != 'true'
         name: Build GUI
@@ -172,7 +172,7 @@ jobs:
 
       - name: Build MacOS DMG
         env:
-          CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+          HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
           NOTARIZE: ${{ steps.check_secrets.outputs.HAS_APPLE_SECRET }}
           APPLE_NOTARIZE_USERNAME: "${{ secrets.APPLE_NOTARIZE_USERNAME }}"
           APPLE_NOTARIZE_PASSWORD: "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
@@ -185,7 +185,7 @@ jobs:
       - name: Upload MacOS artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: chia-installers-macos-dmg-${{ matrix.os.name }}
+          name: hydrangea-installers-macos-dmg-${{ matrix.os.name }}
           path: ${{ github.workspace }}/build_scripts/final_installer/
 
       - name: Install AWS CLI
@@ -200,7 +200,7 @@ jobs:
       - name: Create Checksums
         run: |
           ls
-          shasum -a 256 ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg > ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256
+          shasum -a 256 ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg > ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256
 
       - name: Upload to s3
         if: steps.check_secrets.outputs.HAS_AWS_SECRET
@@ -208,30 +208,30 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.INSTALLER_UPLOAD_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.INSTALLER_UPLOAD_SECRET }}
           AWS_REGION: us-west-2
-          CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+          HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
         run: |
           GIT_SHORT_HASH=$(echo "${GITHUB_SHA}" | cut -c1-8)
-          CHIA_DEV_BUILD=${CHIA_INSTALLER_VERSION}-$GIT_SHORT_HASH
-          echo "CHIA_DEV_BUILD=$CHIA_DEV_BUILD" >>$GITHUB_ENV
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.chia.net/dev/Chia-${CHIA_DEV_BUILD}${{ matrix.os.file-suffix }}.dmg
+          HYDRANGEA_DEV_BUILD=${HYDRANGEA_INSTALLER_VERSION}-$GIT_SHORT_HASH
+          echo "HYDRANGEA_DEV_BUILD=$HYDRANGEA_DEV_BUILD" >>$GITHUB_ENV
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.hydrangea.website/dev/Hydrangea-${HYDRANGEA_DEV_BUILD}${{ matrix.os.file-suffix }}.dmg
 
       - name: Create torrent
         if: env.FULL_RELEASE == 'true'
         run: |
-          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg -o ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent --webseed https://download.chia.net/install/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg
+          py3createtorrent -f -t udp://tracker.opentrackr.org:1337/announce ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg -o ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent --webseed https://download.hydrangea.website/install/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg
           ls ${{ github.workspace }}/build_scripts/final_installer/
-          gh release upload $RELEASE_TAG ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent
+          gh release upload $RELEASE_TAG ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent
 
       - name: Upload Dev Installer
         if: steps.check_secrets.outputs.HAS_AWS_SECRET && github.ref == 'refs/heads/main'
         env:
-          CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+          HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.INSTALLER_UPLOAD_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.INSTALLER_UPLOAD_SECRET }}
           AWS_REGION: us-west-2
         run: |
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.chia.net/latest-dev/Chia${{ matrix.os.file-suffix }}_latest_dev.dmg
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256 s3://download.chia.net/latest-dev/Chia${{ matrix.os.file-suffix }}_latest_dev.dmg.sha256
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.hydrangea.website/latest-dev/Hydrangea${{ matrix.os.file-suffix }}_latest_dev.dmg
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256 s3://download.hydrangea.website/latest-dev/Hydrangea${{ matrix.os.file-suffix }}_latest_dev.dmg.sha256
 
       - name: Upload Release Files
         if: steps.check_secrets.outputs.HAS_AWS_SECRET && env.FULL_RELEASE == 'true'
@@ -240,9 +240,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.INSTALLER_UPLOAD_SECRET }}
           AWS_REGION: us-west-2
         run: |
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.chia.net/install/
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256 s3://download.chia.net/install/
-          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Chia-${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent s3://download.chia.net/torrents/
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg s3://download.hydrangea.website/install/
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.sha256 s3://download.hydrangea.website/install/
+          aws s3 cp ${{ github.workspace }}/build_scripts/final_installer/Hydrangea-${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}${{ matrix.os.file-suffix }}.dmg.torrent s3://download.hydrangea.website/torrents/
 
       - name: Get tag name
         if: startsWith(github.ref, 'refs/tags/')
@@ -255,7 +255,7 @@ jobs:
         if: env.RELEASE == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHIA_INSTALLER_VERSION: ${{ steps.version_number.outputs.CHIA_INSTALLER_VERSION }}
+          HYDRANGEA_INSTALLER_VERSION: ${{ steps.version_number.outputs.HYDRANGEA_INSTALLER_VERSION }}
         run: |
           gh release upload \
             $RELEASE_TAG \
@@ -264,7 +264,7 @@ jobs:
       - name: Mark installer complete
         if: steps.check_secrets.outputs.HAS_SECRET && env.FULL_RELEASE == 'true'
         run: |
-          curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"chia_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/${{ matrix.os.glue-name }}
+          curl -s -XPOST -H "Authorization: Bearer ${{ secrets.GLUE_ACCESS_TOKEN }}" --data '{"hydrangea_ref": "${{ steps.tag-name.outputs.TAG_NAME }}"}' ${{ secrets.GLUE_API_URL }}/api/v1/${{ steps.tag-name.outputs.REPO_NAME }}/${{ steps.tag-name.outputs.TAG_NAME }}/success/${{ matrix.os.glue-name }}
 
       # We want to delete this no matter what happened in the previous steps (failures, success, etc)
       - name: Delete signing keychain
@@ -274,4 +274,4 @@ jobs:
 
       - name: Remove working files to exclude from cache
         run: |
-          rm -rf ./chia-blockchain-gui/packages/gui/daemon
+          rm -rf ./hydrangea-blockchain-gui/packages/gui/daemon

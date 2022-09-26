@@ -5,9 +5,9 @@ We are happy that you are taking a look at the code for Hydrangea, a proof of sp
 
 A lot of fascinating new cryptography and blockchain concepts are used and implemented here.
 This repo includes the code for the Hydrangea full node, farmer, and timelord (in hydrangea folder), which are all written in python.
-It also includes a verifiable delay function implementation that it imports from the [chiavdf repo](https://github.com/Chia-Network/chiavdf) (in c/c++), and a proof of space implementation that it imports from the [chiapos repo](https://github.com/Chia-Network/chiapos). BLS signatures are imported from the [bls-signatures repo](https://github.com/Chia-Network/bls-signatures) as blspy. There is an additional dependency on the [chiabip158 repo](https://github.com/Chia-Network/chiabip158). For major platforms, binary and source wheels are shipped to PyPI from each dependent repo. Then hydrangea-blockchain can pip install those from PyPI or they can be prepackaged as is done for the Windows installer. On unsupported platforms, pip will fall back to the source distributions, to be compiled locally.
+It also includes a verifiable delay function implementation that it imports from the [chiavdf repo](https://github.com/Hydrangea-Network/chiavdf) (in c/c++), and a proof of space implementation that it imports from the [chiapos repo](https://github.com/Hydrangea-Network/chiapos). BLS signatures are imported from the [bls-signatures repo](https://github.com/Hydrangea-Network/bls-signatures) as blspy. There is an additional dependency on the [chiabip158 repo](https://github.com/Hydrangea-Network/chiabip158). For major platforms, binary and source wheels are shipped to PyPI from each dependent repo. Then hydrangea-blockchain can pip install those from PyPI or they can be prepackaged as is done for the Windows installer. On unsupported platforms, pip will fall back to the source distributions, to be compiled locally.
 
-If you want to learn more about this project, read the [wiki](https://github.com/Chia-Network/hydrangea-blockchain/wiki), or check out the [green paper](https://www.hydrangea.net/assets/HydrangeaGreenPaper.pdf).
+If you want to learn more about this project, read the [wiki](https://github.com/Hydrangea-Network/hydrangea-blockchain/wiki), or check out the [green paper](https://www.hydrangea.website/assets/HydrangeaGreenPaper.pdf).
 
 ## Contributions
 
@@ -67,7 +67,7 @@ If you want verbose logging for tests, edit the `tests/pytest.ini` file.
 
 ## Pre-Commit
 
-We provide a [pre-commit configuration](https://github.com/Chia-Network/hydrangea-blockchain/blob/main/.pre-commit-config.yaml) which triggers several useful
+We provide a [pre-commit configuration](https://github.com/Hydrangea-Network/hydrangea-blockchain/blob/main/.pre-commit-config.yaml) which triggers several useful
 hooks (including linters/formatter) before each commit you make if you installed and set up [pre-commit](https://pre-commit.com/). This will help
 to reduce the time you spend on failed CI jobs.
 
