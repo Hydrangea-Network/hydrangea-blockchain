@@ -2,27 +2,27 @@ from typing import Any, Dict, List, Optional
 
 from clvm.casts import int_from_bytes
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR
-from chia.full_node.full_node import FullNode
-from chia.full_node.generator import setup_generator_args
-from chia.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
-from chia.rpc.rpc_server import Endpoint, EndpointResult
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.full_block import FullBlock
-from chia.types.generator_types import BlockGenerator
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.types.unfinished_header_block import UnfinishedHeaderBlock
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint32, uint64, uint128
-from chia.util.log_exceptions import log_exceptions
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
-from chia.wallet.puzzles.decompress_block_spends import DECOMPRESS_BLOCK_SPENDS
+from hydrangea.consensus.block_record import BlockRecord
+from hydrangea.consensus.pos_quality import UI_ACTUAL_SPACE_CONSTANT_FACTOR
+from hydrangea.full_node.full_node import FullNode
+from hydrangea.full_node.generator import setup_generator_args
+from hydrangea.full_node.mempool_check_conditions import get_puzzle_and_solution_for_coin
+from hydrangea.rpc.rpc_server import Endpoint, EndpointResult
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.full_block import FullBlock
+from hydrangea.types.generator_types import BlockGenerator
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.types.unfinished_header_block import UnfinishedHeaderBlock
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.ints import uint32, uint64, uint128
+from hydrangea.util.log_exceptions import log_exceptions
+from hydrangea.util.ws_message import WsRpcMessage, create_payload_dict
+from hydrangea.wallet.puzzles.decompress_block_spends import DECOMPRESS_BLOCK_SPENDS
 
 
 def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
@@ -33,7 +33,7 @@ def coin_record_dict_backwards_compat(coin_record: Dict[str, Any]):
 class FullNodeRpcApi:
     def __init__(self, service: FullNode):
         self.service = service
-        self.service_name = "chia_full_node"
+        self.service_name = "hydrangea_full_node"
         self.cached_blockchain_state: Optional[Dict] = None
 
     def get_routes(self) -> Dict[str, Endpoint]:

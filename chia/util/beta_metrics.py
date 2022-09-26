@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional
 
 import psutil
 
-from chia.util.config import load_config
+from hydrangea.util.config import load_config
 
 log = logging.getLogger("beta")
 

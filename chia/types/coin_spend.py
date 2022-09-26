@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import List
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import SerializedProgram, INFINITE_COST
-from chia.util.chain_utils import additions_for_solution, fee_for_solution
-from chia.util.streamable import Streamable, streamable
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import SerializedProgram, INFINITE_COST
+from hydrangea.util.chain_utils import additions_for_solution, fee_for_solution
+from hydrangea.util.streamable import Streamable, streamable
 
 
 @streamable

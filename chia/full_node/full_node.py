@@ -16,70 +16,70 @@ import aiosqlite
 import sqlite3
 from blspy import AugSchemeMPL
 
-import chia.server.ws_connection as ws  # lgtm [py/import-and-import-from]
-from chia.consensus.block_creation import unfinished_block_to_full_block
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.blockchain import Blockchain, ReceiveBlockResult, StateChangeSummary
-from chia.consensus.blockchain_interface import BlockchainInterface
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.cost_calculator import NPCResult
-from chia.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
-from chia.consensus.make_sub_epoch_summary import next_sub_epoch_summary
-from chia.consensus.multiprocess_validation import PreValidationResult
-from chia.consensus.pot_iterations import calculate_sp_iters
-from chia.full_node.block_store import BlockStore
-from chia.full_node.hint_management import get_hints_and_subscription_coin_ids
-from chia.full_node.lock_queue import LockQueue, LockClient
-from chia.full_node.bundle_tools import detect_potential_template_generator
-from chia.full_node.coin_store import CoinStore
-from chia.full_node.full_node_store import FullNodeStore, FullNodeStorePeakResult
-from chia.full_node.hint_store import HintStore
-from chia.full_node.mempool_manager import MempoolManager
-from chia.full_node.signage_point import SignagePoint
-from chia.full_node.sync_store import SyncStore
-from chia.full_node.weight_proof import WeightProofHandler
-from chia.protocols import farmer_protocol, full_node_protocol, timelord_protocol, wallet_protocol
-from chia.protocols.full_node_protocol import (
+import hydrangea.server.ws_connection as ws  # lgtm [py/import-and-import-from]
+from hydrangea.consensus.block_creation import unfinished_block_to_full_block
+from hydrangea.consensus.block_record import BlockRecord
+from hydrangea.consensus.blockchain import Blockchain, ReceiveBlockResult, StateChangeSummary
+from hydrangea.consensus.blockchain_interface import BlockchainInterface
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.consensus.cost_calculator import NPCResult
+from hydrangea.consensus.difficulty_adjustment import get_next_sub_slot_iters_and_difficulty
+from hydrangea.consensus.make_sub_epoch_summary import next_sub_epoch_summary
+from hydrangea.consensus.multiprocess_validation import PreValidationResult
+from hydrangea.consensus.pot_iterations import calculate_sp_iters
+from hydrangea.full_node.block_store import BlockStore
+from hydrangea.full_node.hint_management import get_hints_and_subscription_coin_ids
+from hydrangea.full_node.lock_queue import LockQueue, LockClient
+from hydrangea.full_node.bundle_tools import detect_potential_template_generator
+from hydrangea.full_node.coin_store import CoinStore
+from hydrangea.full_node.full_node_store import FullNodeStore, FullNodeStorePeakResult
+from hydrangea.full_node.hint_store import HintStore
+from hydrangea.full_node.mempool_manager import MempoolManager
+from hydrangea.full_node.signage_point import SignagePoint
+from hydrangea.full_node.sync_store import SyncStore
+from hydrangea.full_node.weight_proof import WeightProofHandler
+from hydrangea.protocols import farmer_protocol, full_node_protocol, timelord_protocol, wallet_protocol
+from hydrangea.protocols.full_node_protocol import (
     RequestBlocks,
     RespondBlock,
     RespondBlocks,
     RespondSignagePoint,
 )
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.wallet_protocol import CoinState, CoinStateUpdate
-from chia.server.node_discovery import FullNodePeers
-from chia.server.outbound_message import Message, NodeType, make_msg
-from chia.server.peer_store_resolver import PeerStoreResolver
-from chia.server.server import ChiaServer
-from chia.types.blockchain_format.classgroup import ClassgroupElement
-from chia.types.blockchain_format.pool_target import PoolTarget
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.blockchain_format.sub_epoch_summary import SubEpochSummary
-from chia.types.blockchain_format.vdf import CompressibleVDFField, VDFInfo, VDFProof
-from chia.types.coin_record import CoinRecord
-from chia.types.end_of_slot_bundle import EndOfSubSlotBundle
-from chia.types.full_block import FullBlock
-from chia.types.generator_types import BlockGenerator
-from chia.types.header_block import HeaderBlock
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.types.transaction_queue_entry import TransactionQueueEntry
-from chia.types.unfinished_block import UnfinishedBlock
-from chia.util import cached_bls
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.check_fork_next_block import check_fork_next_block
-from chia.util.condition_tools import pkm_pairs
-from chia.util.config import PEER_DB_PATH_KEY_DEPRECATED, process_config_start_method
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.errors import ConsensusError, Err, ValidationError
-from chia.util.ints import uint8, uint32, uint64, uint128
-from chia.util.path import path_from_root
-from chia.util.safe_cancel_task import cancel_task_safe
-from chia.util.profiler import profile_task
-from chia.util.memory_profiler import mem_profile_task
+from hydrangea.protocols.protocol_message_types import ProtocolMessageTypes
+from hydrangea.protocols.wallet_protocol import CoinState, CoinStateUpdate
+from hydrangea.server.node_discovery import FullNodePeers
+from hydrangea.server.outbound_message import Message, NodeType, make_msg
+from hydrangea.server.peer_store_resolver import PeerStoreResolver
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.types.blockchain_format.classgroup import ClassgroupElement
+from hydrangea.types.blockchain_format.pool_target import PoolTarget
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from hydrangea.types.blockchain_format.vdf import CompressibleVDFField, VDFInfo, VDFProof
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.end_of_slot_bundle import EndOfSubSlotBundle
+from hydrangea.types.full_block import FullBlock
+from hydrangea.types.generator_types import BlockGenerator
+from hydrangea.types.header_block import HeaderBlock
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.types.transaction_queue_entry import TransactionQueueEntry
+from hydrangea.types.unfinished_block import UnfinishedBlock
+from hydrangea.util import cached_bls
+from hydrangea.util.bech32m import encode_puzzle_hash
+from hydrangea.util.check_fork_next_block import check_fork_next_block
+from hydrangea.util.condition_tools import pkm_pairs
+from hydrangea.util.config import PEER_DB_PATH_KEY_DEPRECATED, process_config_start_method
+from hydrangea.util.db_wrapper import DBWrapper2
+from hydrangea.util.errors import ConsensusError, Err, ValidationError
+from hydrangea.util.ints import uint8, uint32, uint64, uint128
+from hydrangea.util.path import path_from_root
+from hydrangea.util.safe_cancel_task import cancel_task_safe
+from hydrangea.util.profiler import profile_task
+from hydrangea.util.memory_profiler import mem_profile_task
 from datetime import datetime
-from chia.util.db_synchronous import db_synchronous_on
-from chia.util.db_version import lookup_db_version, set_db_version_async
+from hydrangea.util.db_synchronous import db_synchronous_on
+from hydrangea.util.db_version import lookup_db_version, set_db_version_async
 
 
 # This is the result of calling peak_post_processing, which is then fed into peak_post_processing_2
@@ -96,7 +96,7 @@ class FullNode:
     initialized: bool
     root_path: Path
     config: Dict[str, Any]
-    _server: Optional[ChiaServer]
+    _server: Optional[HydrangeaServer]
     _shut_down: bool
     constants: ConsensusConstants
     pow_creation: Dict[bytes32, asyncio.Event]
@@ -147,7 +147,7 @@ class FullNode:
     _maybe_blockchain_lock_low_priority: Optional[LockClient]
 
     @property
-    def server(self) -> ChiaServer:
+    def server(self) -> HydrangeaServer:
         # This is a stop gap until the class usage is refactored such the values of
         # integral attributes are known at creation of the instance.
         if self._server is None:
@@ -380,7 +380,7 @@ class FullNode:
                                 self.db_wrapper.db_version = 2
                                 self.log.info("blockchain database is empty, configuring as v2")
                         except sqlite3.OperationalError:
-                            # it could be a database created with "chia init", which is
+                            # it could be a database created with "hydrangea init", which is
                             # empty except it has the database_version table
                             pass
 
@@ -514,7 +514,7 @@ class FullNode:
         if peak is not None:
             await self.weight_proof_handler.create_sub_epoch_segments()
 
-    def set_server(self, server: ChiaServer) -> None:
+    def set_server(self, server: HydrangeaServer) -> None:
         self._server = server
         dns_servers: List[str] = []
         network_name = self.config["selected_network"]
@@ -558,7 +558,7 @@ class FullNode:
         if self.state_changed_callback is not None:
             self.state_changed_callback(change, change_data)
 
-    async def short_sync_batch(self, peer: ws.WSChiaConnection, start_height: uint32, target_height: uint32) -> bool:
+    async def short_sync_batch(self, peer: ws.WSHydrangeaConnection, start_height: uint32, target_height: uint32) -> bool:
         """
         Tries to sync to a chain which is not too far in the future, by downloading batches of blocks. If the first
         block that we download is not connected to our chain, we return False and do an expensive long sync instead.
@@ -641,7 +641,7 @@ class FullNode:
         return True
 
     async def short_sync_backtrack(
-        self, peer: ws.WSChiaConnection, peak_height: uint32, target_height: uint32, target_unf_hash: bytes32
+        self, peer: ws.WSHydrangeaConnection, peak_height: uint32, target_height: uint32, target_unf_hash: bytes32
     ) -> bool:
         """
         Performs a backtrack sync, where blocks are downloaded one at a time from newest to oldest. If we do not
@@ -697,7 +697,7 @@ class FullNode:
             await asyncio.sleep(sleep_before)
         self._state_changed("peer_changed_peak")
 
-    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSChiaConnection) -> None:
+    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSHydrangeaConnection) -> None:
         """
         We have received a notification of a new peak from a peer. This happens either when we have just connected,
         or when the peer has updated their peak.
@@ -774,7 +774,7 @@ class FullNode:
             self._sync_task = asyncio.create_task(self._sync())
 
     async def send_peak_to_timelords(
-        self, peak_block: Optional[FullBlock] = None, peer: Optional[ws.WSChiaConnection] = None
+        self, peak_block: Optional[FullBlock] = None, peer: Optional[ws.WSHydrangeaConnection] = None
     ) -> None:
         """
         Sends current peak to timelords
@@ -849,7 +849,7 @@ class FullNode:
         else:
             return True
 
-    async def on_connect(self, connection: ws.WSChiaConnection) -> None:
+    async def on_connect(self, connection: ws.WSHydrangeaConnection) -> None:
         """
         Whenever we connect to another node / wallet, send them our current heads. Also send heads to farmers
         and challenges to timelords.
@@ -900,7 +900,7 @@ class FullNode:
             elif connection.connection_type is NodeType.TIMELORD:
                 await self.send_peak_to_timelords()
 
-    def on_disconnect(self, connection: ws.WSChiaConnection) -> None:
+    def on_disconnect(self, connection: ws.WSHydrangeaConnection) -> None:
         self.log.info(f"peer disconnected {connection.get_peer_logging()}")
         self._state_changed("close_connection")
         self._state_changed("sync_mode")
@@ -908,7 +908,7 @@ class FullNode:
             self.sync_store.peer_disconnected(connection.peer_node_id)
         self.remove_subscriptions(connection)
 
-    def remove_subscriptions(self, peer: ws.WSChiaConnection) -> None:
+    def remove_subscriptions(self, peer: ws.WSHydrangeaConnection) -> None:
         # Remove all ph | coin id subscription for this peer
         node_id = peer.peer_node_id
         if node_id in self.peer_puzzle_hash:
@@ -1036,13 +1036,13 @@ class FullNode:
             # TODO: disconnect from peer which gave us the heaviest_peak, if nobody has the peak
 
             peer_ids: Set[bytes32] = self.sync_store.get_peers_that_have_peak([heaviest_peak_hash])
-            peers_with_peak: List[ws.WSChiaConnection] = [
+            peers_with_peak: List[ws.WSHydrangeaConnection] = [
                 c for c in self.server.all_connections.values() if c.peer_node_id in peer_ids
             ]
 
             # Request weight proof from a random peer
             self.log.info(f"Total of {len(peers_with_peak)} peers with peak {heaviest_peak_height}")
-            weight_proof_peer: ws.WSChiaConnection = random.choice(peers_with_peak)
+            weight_proof_peer: ws.WSHydrangeaConnection = random.choice(peers_with_peak)
             self.log.info(
                 f"Requesting weight proof from peer {weight_proof_peer.peer_host} up to height"
                 f" {heaviest_peak_height}"
@@ -1112,17 +1112,17 @@ class FullNode:
     ) -> None:
         buffer_size = 4
         self.log.info(f"Start syncing from fork point at {fork_point_height} up to {target_peak_sb_height}")
-        peers_with_peak: List[ws.WSChiaConnection] = self.get_peers_with_peak(peak_hash)
+        peers_with_peak: List[ws.WSHydrangeaConnection] = self.get_peers_with_peak(peak_hash)
         fork_point_height = await check_fork_next_block(
             self.blockchain, fork_point_height, peers_with_peak, node_next_block_check
         )
         batch_size = self.constants.MAX_BLOCK_COUNT_PER_REQUESTS
 
         async def fetch_block_batches(
-            batch_queue: asyncio.Queue[Optional[Tuple[ws.WSChiaConnection, List[FullBlock]]]]
+            batch_queue: asyncio.Queue[Optional[Tuple[ws.WSHydrangeaConnection, List[FullBlock]]]]
         ) -> None:
             start_height, end_height = 0, 0
-            new_peers_with_peak: List[ws.WSChiaConnection] = peers_with_peak[:]
+            new_peers_with_peak: List[ws.WSHydrangeaConnection] = peers_with_peak[:]
             try:
                 for start_height in range(fork_point_height, target_peak_sb_height, batch_size):
                     end_height = min(target_peak_sb_height, start_height + batch_size)
@@ -1154,11 +1154,11 @@ class FullNode:
                 await batch_queue.put(None)
 
         async def validate_block_batches(
-            inner_batch_queue: asyncio.Queue[Optional[Tuple[ws.WSChiaConnection, List[FullBlock]]]]
+            inner_batch_queue: asyncio.Queue[Optional[Tuple[ws.WSHydrangeaConnection, List[FullBlock]]]]
         ) -> None:
             advanced_peak: bool = False
             while True:
-                res: Optional[Tuple[ws.WSChiaConnection, List[FullBlock]]] = await inner_batch_queue.get()
+                res: Optional[Tuple[ws.WSHydrangeaConnection, List[FullBlock]]] = await inner_batch_queue.get()
                 if res is None:
                     self.log.debug("done fetching blocks")
                     return None
@@ -1187,7 +1187,7 @@ class FullNode:
                 await self.send_peak_to_wallets()
                 self.blockchain.clean_block_record(end_height - self.constants.BLOCKS_CACHE_SIZE)
 
-        batch_queue_input: asyncio.Queue[Optional[Tuple[ws.WSChiaConnection, List[FullBlock]]]] = asyncio.Queue(
+        batch_queue_input: asyncio.Queue[Optional[Tuple[ws.WSHydrangeaConnection, List[FullBlock]]]] = asyncio.Queue(
             maxsize=buffer_size
         )
         fetch_task = asyncio.Task(fetch_block_batches(batch_queue_input))
@@ -1210,7 +1210,7 @@ class FullNode:
         )
         await self.server.send_to_all([msg], NodeType.WALLET)
 
-    def get_peers_with_peak(self, peak_hash: bytes32) -> List[ws.WSChiaConnection]:
+    def get_peers_with_peak(self, peak_hash: bytes32) -> List[ws.WSHydrangeaConnection]:
         peer_ids: Set[bytes32] = self.sync_store.get_peers_that_have_peak([peak_hash])
         if len(peer_ids) == 0:
             self.log.warning(f"Not syncing, no peers with header_hash {peak_hash} ")
@@ -1253,7 +1253,7 @@ class FullNode:
         for peer, changes in changes_for_peer.items():
             if peer not in self.server.all_connections:
                 continue
-            ws_peer: ws.WSChiaConnection = self.server.all_connections[peer]
+            ws_peer: ws.WSHydrangeaConnection = self.server.all_connections[peer]
             state = CoinStateUpdate(
                 state_change_summary.peak.height,
                 state_change_summary.fork_height,
@@ -1266,7 +1266,7 @@ class FullNode:
     async def receive_block_batch(
         self,
         all_blocks: List[FullBlock],
-        peer: ws.WSChiaConnection,
+        peer: ws.WSHydrangeaConnection,
         fork_point: Optional[uint32],
         wp_summaries: Optional[List[SubEpochSummary]] = None,
     ) -> Tuple[bool, Optional[StateChangeSummary]]:
@@ -1390,7 +1390,7 @@ class FullNode:
     async def signage_point_post_processing(
         self,
         request: full_node_protocol.RespondSignagePoint,
-        peer: ws.WSChiaConnection,
+        peer: ws.WSHydrangeaConnection,
         ip_sub_slot: Optional[EndOfSubSlotBundle],
     ) -> None:
         self.log.info(
@@ -1452,7 +1452,7 @@ class FullNode:
         self,
         block: FullBlock,
         state_change_summary: StateChangeSummary,
-        peer: Optional[ws.WSChiaConnection],
+        peer: Optional[ws.WSHydrangeaConnection],
     ) -> PeakPostProcessingResult:
         """
         Must be called under self.blockchain.lock. This updates the internal state of the full node with the
@@ -1569,7 +1569,7 @@ class FullNode:
     async def peak_post_processing_2(
         self,
         block: FullBlock,
-        peer: Optional[ws.WSChiaConnection],
+        peer: Optional[ws.WSHydrangeaConnection],
         state_change_summary: StateChangeSummary,
         ppp_result: PeakPostProcessingResult,
     ) -> None:
@@ -1648,7 +1648,7 @@ class FullNode:
     async def respond_block(
         self,
         respond_block: full_node_protocol.RespondBlock,
-        peer: Optional[ws.WSChiaConnection] = None,
+        peer: Optional[ws.WSHydrangeaConnection] = None,
         raise_on_disconnected: bool = False,
     ) -> Optional[Message]:
         """
@@ -1853,7 +1853,7 @@ class FullNode:
     async def respond_unfinished_block(
         self,
         respond_unfinished_block: full_node_protocol.RespondUnfinishedBlock,
-        peer: Optional[ws.WSChiaConnection],
+        peer: Optional[ws.WSHydrangeaConnection],
         farmed_block: bool = False,
         block_bytes: Optional[bytes] = None,
     ) -> None:
@@ -2047,7 +2047,7 @@ class FullNode:
         self._state_changed("unfinished_block")
 
     async def new_infusion_point_vdf(
-        self, request: timelord_protocol.NewInfusionPointVDF, timelord_peer: Optional[ws.WSChiaConnection] = None
+        self, request: timelord_protocol.NewInfusionPointVDF, timelord_peer: Optional[ws.WSHydrangeaConnection] = None
     ) -> Optional[Message]:
         # Lookup unfinished blocks
         unfinished_block: Optional[UnfinishedBlock] = self.full_node_store.get_unfinished_block(
@@ -2150,7 +2150,7 @@ class FullNode:
         return None
 
     async def respond_end_of_sub_slot(
-        self, request: full_node_protocol.RespondEndOfSubSlot, peer: ws.WSChiaConnection
+        self, request: full_node_protocol.RespondEndOfSubSlot, peer: ws.WSHydrangeaConnection
     ) -> Tuple[Optional[Message], bool]:
 
         fetched_ss = self.full_node_store.get_sub_slot(request.end_of_slot_bundle.challenge_chain.get_hash())
@@ -2246,7 +2246,7 @@ class FullNode:
         self,
         transaction: SpendBundle,
         spend_name: bytes32,
-        peer: Optional[ws.WSChiaConnection] = None,
+        peer: Optional[ws.WSHydrangeaConnection] = None,
         test: bool = False,
         tx_bytes: Optional[bytes] = None,
     ) -> Tuple[MempoolInclusionStatus, Optional[Err]]:
@@ -2473,7 +2473,7 @@ class FullNode:
         if self._server is not None:
             await self.server.send_to_all([msg], NodeType.FULL_NODE)
 
-    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSChiaConnection) -> None:
+    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSHydrangeaConnection) -> None:
         is_fully_compactified = await self.block_store.is_fully_compactified(request.header_hash)
         if is_fully_compactified is None or is_fully_compactified:
             return None
@@ -2492,7 +2492,7 @@ class FullNode:
                 await self.respond_compact_vdf(response, peer)
 
     async def request_compact_vdf(
-        self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSChiaConnection
+        self, request: full_node_protocol.RequestCompactVDF, peer: ws.WSHydrangeaConnection
     ) -> None:
         header_block = await self.blockchain.get_header_block_by_height(
             request.height, request.header_hash, tx_filter=False
@@ -2538,7 +2538,7 @@ class FullNode:
         await peer.send_message(msg)
 
     async def respond_compact_vdf(
-        self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSChiaConnection
+        self, request: full_node_protocol.RespondCompactVDF, peer: ws.WSHydrangeaConnection
     ) -> None:
         field_vdf = CompressibleVDFField(int(request.field_vdf))
         if not await self._can_accept_compact_proof(
@@ -2665,7 +2665,7 @@ class FullNode:
 
 
 async def node_next_block_check(
-    peer: ws.WSChiaConnection, potential_peek: uint32, blockchain: BlockchainInterface
+    peer: ws.WSHydrangeaConnection, potential_peek: uint32, blockchain: BlockchainInterface
 ) -> bool:
 
     block_response: Optional[Any] = await peer.request_block(full_node_protocol.RequestBlock(potential_peek, True))

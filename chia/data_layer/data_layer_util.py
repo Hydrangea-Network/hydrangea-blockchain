@@ -9,14 +9,14 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type, Union
 import aiosqlite as aiosqlite
 from typing_extensions import final
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint64
-from chia.util.streamable import Streamable, streamable
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.ints import uint64
+from hydrangea.util.streamable import Streamable, streamable
 
 if TYPE_CHECKING:
-    from chia.data_layer.data_store import DataStore
+    from hydrangea.data_layer.data_store import DataStore
 
 
 def internal_hash(left_hash: bytes32, right_hash: bytes32) -> bytes32:
@@ -373,7 +373,7 @@ class OfferStore:
 
 @dataclasses.dataclass(frozen=True)
 class Layer:
-    # This class is similar to chia.data_layer.data_layer_util.ProofOfInclusionLayer
+    # This class is similar to hydrangea.data_layer.data_layer_util.ProofOfInclusionLayer
     # but is being retained for now to keep the API schema definition localized here.
 
     other_hash_side: Side

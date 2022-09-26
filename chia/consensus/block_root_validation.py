@@ -2,9 +2,9 @@ from typing import Dict, List, Optional, Tuple
 
 from chia_rs import compute_merkle_set_root
 
-from chia.types.blockchain_format.coin import Coin, hash_coin_ids
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.errors import Err
+from hydrangea.types.blockchain_format.coin import Coin, hash_coin_ids
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.errors import Err
 
 
 def validate_block_merkle_roots(

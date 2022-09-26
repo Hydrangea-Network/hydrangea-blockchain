@@ -3,9 +3,9 @@ from typing import Dict, List, Optional, Sequence
 
 from blspy import AugSchemeMPL, G1Element, G2Element, GTElement
 
-from chia.types.blockchain_format.sized_bytes import bytes32, bytes48
-from chia.util.hash import std_hash
-from chia.util.lru_cache import LRUCache
+from hydrangea.types.blockchain_format.sized_bytes import bytes32, bytes48
+from hydrangea.util.hash import std_hash
+from hydrangea.util.lru_cache import LRUCache
 
 
 def get_pairings(

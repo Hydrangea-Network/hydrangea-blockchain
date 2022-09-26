@@ -3,16 +3,16 @@ from typing import Optional
 import pytest
 from clvm_tools.binutils import disassemble
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.util.ints import uint64
-from chia.wallet.cat_wallet.cat_utils import construct_cat_puzzle
-from chia.wallet.outer_puzzles import construct_puzzle, get_inner_puzzle, get_inner_solution, match_puzzle, solve_puzzle
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.util.ints import uint64
+from hydrangea.wallet.cat_wallet.cat_utils import construct_cat_puzzle
+from hydrangea.wallet.outer_puzzles import construct_puzzle, get_inner_puzzle, get_inner_solution, match_puzzle, solve_puzzle
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo, Solver
+from hydrangea.wallet.puzzles.cat_loader import CAT_MOD
+from hydrangea.wallet.uncurried_puzzle import uncurry_puzzle
 
 
 def test_cat_outer_puzzle() -> None:

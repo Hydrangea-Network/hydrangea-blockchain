@@ -5,9 +5,9 @@ from typing import List, Optional
 
 import click
 
-from chia.cmds.beta_funcs import (
+from hydrangea.cmds.beta_funcs import (
     default_beta_root_path,
-    prepare_chia_blockchain_log,
+    prepare_hydrangea_blockchain_log,
     prepare_logs,
     prepare_plotting_log,
     prompt_beta_warning,
@@ -17,12 +17,12 @@ from chia.cmds.beta_funcs import (
     validate_beta_path,
     validate_metrics_log_interval,
 )
-from chia.util.beta_metrics import metrics_log_interval_default
-from chia.util.config import lock_and_load_config, save_config
+from hydrangea.util.beta_metrics import metrics_log_interval_default
+from hydrangea.util.config import lock_and_load_config, save_config
 
 
 def print_restart_warning() -> None:
-    print("\nRestart the daemon and any running chia services for changes to take effect.")
+    print("\nRestart the daemon and any running hydrangea services for changes to take effect.")
 
 
 @click.group("beta", hidden=True)
@@ -38,7 +38,7 @@ def configure(ctx: click.Context, path: Optional[str], interval: Optional[int]) 
     root_path = ctx.obj["root_path"]
     with lock_and_load_config(root_path, "config.yaml") as config:
         if "beta" not in config:
-            ctx.exit("beta test mode is not enabled, enable it first with `chia beta enable`")
+            ctx.exit("beta test mode is not enabled, enable it first with `hydrangea beta enable`")
 
         # Adjust the path
         if path is None:
@@ -122,7 +122,7 @@ def prepare_submission_cmd(ctx: click.Context) -> None:
     with lock_and_load_config(ctx.obj["root_path"], "config.yaml") as config:
         beta_root_path = config.get("beta", {}).get("path", None)
         if beta_root_path is None:
-            ctx.exit("beta test mode not enabled. Run `chia beta enable` first.")
+            ctx.exit("beta test mode not enabled. Run `hydrangea beta enable` first.")
     beta_root_path = Path(beta_root_path)
     validate_beta_path(beta_root_path)
     available_results = sorted([path for path in beta_root_path.iterdir() if path.is_dir()])
@@ -140,9 +140,9 @@ def prepare_submission_cmd(ctx: click.Context) -> None:
     except IndexError:
         ctx.exit(f"Invalid choice: {user_input}")
     plotting_path = Path(prepare_result / "plotting")
-    chia_blockchain_path = Path(prepare_result / "chia-blockchain")
-    chia_logs = prepare_logs(plotting_path, prepare_chia_blockchain_log)
-    plotting_logs = prepare_logs(chia_blockchain_path, prepare_plotting_log)
+    hydrangea_blockchain_path = Path(prepare_result / "hydrangea-blockchain")
+    hydrangea_logs = prepare_logs(plotting_path, prepare_hydrangea_blockchain_log)
+    plotting_logs = prepare_logs(hydrangea_blockchain_path, prepare_plotting_log)
 
     submission_file_path = (
         prepare_result / f"submission_{prepare_result.name}__{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.zip"
@@ -158,11 +158,11 @@ def prepare_submission_cmd(ctx: click.Context) -> None:
         return added
 
     with zipfile.ZipFile(submission_file_path, "w", zipfile.ZIP_DEFLATED) as zip_file:
-        files_added = add_files(chia_logs) + add_files(plotting_logs)
+        files_added = add_files(hydrangea_logs) + add_files(plotting_logs)
 
     if files_added == 0:
         submission_file_path.unlink()
-        ctx.exit(f"No logs files found in {str(plotting_path)!r} and {str(chia_blockchain_path)!r}.")
+        ctx.exit(f"No logs files found in {str(plotting_path)!r} and {str(hydrangea_blockchain_path)!r}.")
 
     print(f"\nDone. You can find the prepared submission data in {submission_file_path}.")
 
@@ -173,7 +173,7 @@ def status(ctx: click.Context) -> None:
     with lock_and_load_config(ctx.obj["root_path"], "config.yaml") as config:
         beta_config = config.get("beta")
         if beta_config is None:
-            ctx.exit("beta test mode is not enabled, enable it first with `chia beta enable`")
+            ctx.exit("beta test mode is not enabled, enable it first with `hydrangea beta enable`")
 
     print(f"enabled: {beta_config['enabled']}")
     print(f"path: {beta_config['path']}")

@@ -2,11 +2,11 @@ import zlib
 
 from typing import List
 
-from chia.types.blockchain_format.program import Program
-from chia.wallet.puzzles.load_clvm import load_clvm
-from chia.wallet.puzzles import p2_delegated_puzzle_or_hidden_puzzle as standard_puzzle
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.nft_wallet.nft_puzzles import (
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.wallet.puzzles import p2_delegated_puzzle_or_hidden_puzzle as standard_puzzle
+from hydrangea.wallet.puzzles.cat_loader import CAT_MOD
+from hydrangea.wallet.nft_wallet.nft_puzzles import (
     SINGLETON_TOP_LAYER_MOD,
     NFT_STATE_LAYER_MOD,
     NFT_OWNERSHIP_LAYER,

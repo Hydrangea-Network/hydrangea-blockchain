@@ -1,11 +1,11 @@
 from typing import Optional
 
-import chia.server.ws_connection as ws
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.seeder.crawler import Crawler
-from chia.server.outbound_message import Message
-from chia.server.server import ChiaServer
-from chia.util.api_decorators import api_request, peer_required
+import hydrangea.server.ws_connection as ws
+from hydrangea.protocols import full_node_protocol, wallet_protocol
+from hydrangea.seeder.crawler import Crawler
+from hydrangea.server.outbound_message import Message
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.util.api_decorators import api_request, peer_required
 
 
 class CrawlerAPI:
@@ -21,7 +21,7 @@ class CrawlerAPI:
         return invoke
 
     @property
-    def server(self) -> ChiaServer:
+    def server(self) -> HydrangeaServer:
         assert self.crawler.server is not None
         return self.crawler.server
 
@@ -31,19 +31,19 @@ class CrawlerAPI:
 
     @peer_required
     @api_request
-    async def request_peers(self, _request: full_node_protocol.RequestPeers, peer: ws.WSChiaConnection):
+    async def request_peers(self, _request: full_node_protocol.RequestPeers, peer: ws.WSHydrangeaConnection):
         pass
 
     @peer_required
     @api_request
     async def respond_peers(
-        self, request: full_node_protocol.RespondPeers, peer: ws.WSChiaConnection
+        self, request: full_node_protocol.RespondPeers, peer: ws.WSHydrangeaConnection
     ) -> Optional[Message]:
         pass
 
     @peer_required
     @api_request
-    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSChiaConnection) -> Optional[Message]:
+    async def new_peak(self, request: full_node_protocol.NewPeak, peer: ws.WSHydrangeaConnection) -> Optional[Message]:
         await self.crawler.new_peak(request, peer)
         return None
 
@@ -54,7 +54,7 @@ class CrawlerAPI:
     @api_request
     @peer_required
     async def new_signage_point_or_end_of_sub_slot(
-        self, new_sp: full_node_protocol.NewSignagePointOrEndOfSubSlot, peer: ws.WSChiaConnection
+        self, new_sp: full_node_protocol.NewSignagePointOrEndOfSubSlot, peer: ws.WSHydrangeaConnection
     ) -> Optional[Message]:
         pass
 
@@ -66,7 +66,7 @@ class CrawlerAPI:
 
     @peer_required
     @api_request
-    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSChiaConnection):
+    async def new_compact_vdf(self, request: full_node_protocol.NewCompactVDF, peer: ws.WSHydrangeaConnection):
         pass
 
     @api_request
@@ -102,7 +102,7 @@ class CrawlerAPI:
     async def request_mempool_transactions(
         self,
         request: full_node_protocol.RequestMempoolTransactions,
-        peer: ws.WSChiaConnection,
+        peer: ws.WSHydrangeaConnection,
     ) -> Optional[Message]:
         pass
 

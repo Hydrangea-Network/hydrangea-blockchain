@@ -9,36 +9,36 @@ import pytest
 from blspy import G2Element
 from clvm.casts import int_to_bytes
 
-from chia.consensus.pot_iterations import is_overflow_block
-from chia.full_node.bundle_tools import detect_potential_template_generator
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.full_node.signage_point import SignagePoint
-from chia.protocols import full_node_protocol as fnp, full_node_protocol, wallet_protocol
-from chia.protocols import timelord_protocol
-from chia.protocols.full_node_protocol import RespondTransaction
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.wallet_protocol import SendTransaction, TransactionAck
-from chia.server.address_manager import AddressManager
-from chia.server.outbound_message import Message
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.types.blockchain_format.classgroup import ClassgroupElement
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.vdf import CompressibleVDFField, VDFProof
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.condition_with_args import ConditionWithArgs
-from chia.types.full_block import FullBlock
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.peer_info import PeerInfo, TimestampedPeerInfo
-from chia.types.spend_bundle import SpendBundle
-from chia.types.unfinished_block import UnfinishedBlock
-from chia.util.errors import Err
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint16, uint32, uint64
-from chia.util.recursive_replace import recursive_replace
-from chia.util.vdf_prover import get_vdf_info_and_proof
-from chia.wallet.transaction_record import TransactionRecord
-from chia.simulator.block_tools import get_signage_point
+from hydrangea.consensus.pot_iterations import is_overflow_block
+from hydrangea.full_node.bundle_tools import detect_potential_template_generator
+from hydrangea.full_node.full_node_api import FullNodeAPI
+from hydrangea.full_node.signage_point import SignagePoint
+from hydrangea.protocols import full_node_protocol as fnp, full_node_protocol, wallet_protocol
+from hydrangea.protocols import timelord_protocol
+from hydrangea.protocols.full_node_protocol import RespondTransaction
+from hydrangea.protocols.protocol_message_types import ProtocolMessageTypes
+from hydrangea.protocols.wallet_protocol import SendTransaction, TransactionAck
+from hydrangea.server.address_manager import AddressManager
+from hydrangea.server.outbound_message import Message
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol
+from hydrangea.types.blockchain_format.classgroup import ClassgroupElement
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.types.blockchain_format.vdf import CompressibleVDFField, VDFProof
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.condition_opcodes import ConditionOpcode
+from hydrangea.types.condition_with_args import ConditionWithArgs
+from hydrangea.types.full_block import FullBlock
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.types.peer_info import PeerInfo, TimestampedPeerInfo
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.types.unfinished_block import UnfinishedBlock
+from hydrangea.util.errors import Err
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint8, uint16, uint32, uint64
+from hydrangea.util.recursive_replace import recursive_replace
+from hydrangea.util.vdf_prover import get_vdf_info_and_proof
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.simulator.block_tools import get_signage_point
 from tests.blockchain.blockchain_test_utils import (
     _validate_and_add_block,
     _validate_and_add_block_no_error,
@@ -50,7 +50,7 @@ from tests.core.full_node.test_mempool_performance import wallet_height_at_least
 from tests.core.make_block_generator import make_spend_bundle
 from tests.core.node_height import node_height_at_least
 from tests.setup_nodes import test_constants
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval, time_out_messages
+from hydrangea.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval, time_out_messages
 
 
 async def new_transaction_not_requested(incoming, new_spend):

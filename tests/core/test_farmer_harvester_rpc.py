@@ -9,36 +9,36 @@ from os import mkdir
 from pathlib import Path
 from shutil import copy
 from typing import Any, Awaitable, Callable, Dict, List, Union, cast
-from chia.consensus.constants import ConsensusConstants
+from hydrangea.consensus.constants import ConsensusConstants
 
 import pytest
 import pytest_asyncio
 
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.farmer.farmer import Farmer
-from chia.plot_sync.receiver import Receiver
-from chia.plotting.util import add_plot_directory
-from chia.protocols import farmer_protocol
-from chia.protocols.harvester_protocol import Plot
-from chia.rpc.farmer_rpc_api import (
+from hydrangea.consensus.coinbase import create_puzzlehash_for_pk
+from hydrangea.farmer.farmer import Farmer
+from hydrangea.plot_sync.receiver import Receiver
+from hydrangea.plotting.util import add_plot_directory
+from hydrangea.protocols import farmer_protocol
+from hydrangea.protocols.harvester_protocol import Plot
+from hydrangea.rpc.farmer_rpc_api import (
     FilterItem,
     PaginatedRequestData,
     PlotInfoRequestData,
     PlotPathRequestData,
     plot_matches_filter,
 )
-from chia.rpc.farmer_rpc_client import FarmerRpcClient
-from chia.rpc.harvester_rpc_client import HarvesterRpcClient
-from chia.simulator.block_tools import get_plot_dir
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.config import load_config, lock_and_load_config, save_config
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint32, uint64
-from chia.util.misc import get_list_or_len
-from chia.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
+from hydrangea.rpc.farmer_rpc_client import FarmerRpcClient
+from hydrangea.rpc.harvester_rpc_client import HarvesterRpcClient
+from hydrangea.simulator.block_tools import get_plot_dir
+from hydrangea.simulator.time_out_assert import time_out_assert, time_out_assert_custom_interval
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.config import load_config, lock_and_load_config, save_config
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint8, uint32, uint64
+from hydrangea.util.misc import get_list_or_len
+from hydrangea.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
 from tests.plot_sync.test_delta import dummy_plot
 from tests.util.misc import assert_rpc_error
 from tests.util.rpc import validate_get_routes

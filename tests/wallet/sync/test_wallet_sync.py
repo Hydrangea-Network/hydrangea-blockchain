@@ -3,28 +3,28 @@ from typing import List, Optional, Set
 import pytest
 from colorlog import getLogger
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.full_node.full_node_api import FullNodeAPI
-from chia.full_node.weight_proof import WeightProofHandler
-from chia.protocols import full_node_protocol, wallet_protocol
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.protocols.shared_protocol import Capability
-from chia.protocols.wallet_protocol import RequestAdditions, RespondAdditions, RespondBlockHeaders, SendTransaction
-from chia.server.outbound_message import Message
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
-from chia.types.blockchain_format.program import Program
-from chia.types.peer_info import PeerInfo
-from chia.util.block_cache import BlockCache
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_weight_proof_handler import get_wp_fork_point
+from hydrangea.consensus.block_record import BlockRecord
+from hydrangea.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from hydrangea.full_node.full_node_api import FullNodeAPI
+from hydrangea.full_node.weight_proof import WeightProofHandler
+from hydrangea.protocols import full_node_protocol, wallet_protocol
+from hydrangea.protocols.protocol_message_types import ProtocolMessageTypes
+from hydrangea.protocols.shared_protocol import Capability
+from hydrangea.protocols.wallet_protocol import RequestAdditions, RespondAdditions, RespondBlockHeaders, SendTransaction
+from hydrangea.server.outbound_message import Message
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol
+from hydrangea.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.block_cache import BlockCache
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint16, uint32, uint64
+from hydrangea.wallet.nft_wallet.nft_wallet import NFTWallet
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.compute_memos import compute_memos
+from hydrangea.wallet.util.wallet_types import AmountWithPuzzlehash
+from hydrangea.wallet.wallet_coin_record import WalletCoinRecord
+from hydrangea.wallet.wallet_weight_proof_handler import get_wp_fork_point
 from tests.connection_utils import disconnect_all, disconnect_all_and_reconnect
 from tests.setup_nodes import test_constants
 from tests.util.wallet_is_synced import wallet_is_synced
@@ -1108,7 +1108,7 @@ class TestWalletSync:
         # Create a new NFT and send it to the farmer's NFT wallet
         metadata = Program.to(
             [
-                ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+                ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
                 ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
             ]
         )

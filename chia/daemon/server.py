@@ -14,29 +14,29 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO, Tuple
 
-from chia import __version__
-from chia.cmds.init_funcs import check_keys, chia_init, chia_full_version_str
-from chia.cmds.passphrase_funcs import default_passphrase, using_default_passphrase
-from chia.daemon.keychain_server import KeychainServer, keychain_commands
-from chia.daemon.windows_signal import kill
-from chia.plotters.plotters import get_available_plotters
-from chia.plotting.util import add_plot_directory
-from chia.server.server import ssl_context_for_root, ssl_context_for_server
-from chia.ssl.create_ssl import get_mozilla_ca_crt
-from chia.util.beta_metrics import BetaMetricsLogger
-from chia.util.chia_logging import initialize_service_logging
-from chia.util.config import load_config
-from chia.util.errors import KeychainRequiresMigration, KeychainCurrentPassphraseIsInvalid
-from chia.util.json_util import dict_to_json_str
-from chia.util.keychain import (
+from hydrangea import __version__
+from hydrangea.cmds.init_funcs import check_keys, hydrangea_init, hydrangea_full_version_str
+from hydrangea.cmds.passphrase_funcs import default_passphrase, using_default_passphrase
+from hydrangea.daemon.keychain_server import KeychainServer, keychain_commands
+from hydrangea.daemon.windows_signal import kill
+from hydrangea.plotters.plotters import get_available_plotters
+from hydrangea.plotting.util import add_plot_directory
+from hydrangea.server.server import ssl_context_for_root, ssl_context_for_server
+from hydrangea.ssl.create_ssl import get_mozilla_ca_crt
+from hydrangea.util.beta_metrics import BetaMetricsLogger
+from hydrangea.util.hydrangea_logging import initialize_service_logging
+from hydrangea.util.config import load_config
+from hydrangea.util.errors import KeychainRequiresMigration, KeychainCurrentPassphraseIsInvalid
+from hydrangea.util.json_util import dict_to_json_str
+from hydrangea.util.keychain import (
     Keychain,
     passphrase_requirements,
     supports_os_passphrase_storage,
 )
-from chia.util.lock import Lockfile, LockfileError
-from chia.util.service_groups import validate_service
-from chia.util.setproctitle import setproctitle
-from chia.util.ws_message import WsRpcMessage, create_payload, format_response
+from hydrangea.util.lock import Lockfile, LockfileError
+from hydrangea.util.service_groups import validate_service
+from hydrangea.util.setproctitle import setproctitle
+from hydrangea.util.ws_message import WsRpcMessage, create_payload, format_response
 
 io_pool_exc = ThreadPoolExecutor()
 
@@ -44,7 +44,7 @@ try:
     from aiohttp import ClientSession, WSMsgType, web
     from aiohttp.web_ws import WebSocketResponse
 except ModuleNotFoundError:
-    print("Error: Make sure to run . ./activate from the project folder before starting Chia.")
+    print("Error: Make sure to run . ./activate from the project folder before starting Hydrangea.")
     quit()
 
 
@@ -83,19 +83,19 @@ class PlotEvent(str, Enum):
 # determine if application is a script file or frozen exe
 if getattr(sys, "frozen", False):
     name_map = {
-        "chia": "chia",
-        "chia_data_layer": "start_data_layer",
-        "chia_data_layer_http": "start_data_layer_http",
-        "chia_wallet": "start_wallet",
-        "chia_full_node": "start_full_node",
-        "chia_harvester": "start_harvester",
-        "chia_farmer": "start_farmer",
-        "chia_introducer": "start_introducer",
-        "chia_timelord": "start_timelord",
-        "chia_timelord_launcher": "timelord_launcher",
-        "chia_full_node_simulator": "start_simulator",
-        "chia_seeder": "start_seeder",
-        "chia_crawler": "start_crawler",
+        "hydrangea": "hydrangea",
+        "hydrangea_data_layer": "start_data_layer",
+        "hydrangea_data_layer_http": "start_data_layer_http",
+        "hydrangea_wallet": "start_wallet",
+        "hydrangea_full_node": "start_full_node",
+        "hydrangea_harvester": "start_harvester",
+        "hydrangea_farmer": "start_farmer",
+        "hydrangea_introducer": "start_introducer",
+        "hydrangea_timelord": "start_timelord",
+        "hydrangea_timelord_launcher": "timelord_launcher",
+        "hydrangea_full_node_simulator": "start_simulator",
+        "hydrangea_seeder": "start_seeder",
+        "hydrangea_crawler": "start_crawler",
     }
 
     def executable_for_service(service_name: str) -> str:
@@ -165,7 +165,7 @@ class WebSocketServer:
             self.log.warning(
                 (
                     "Deprecation Warning: Your version of SSL (%s) does not support TLS1.3. "
-                    "A future version of Chia will require TLS1.3."
+                    "A future version of Hydrangea will require TLS1.3."
                 ),
                 ssl.OPENSSL_VERSION,
             )
@@ -882,7 +882,7 @@ class WebSocketServer:
 
     def _build_plotting_command_args(self, request: Any, ignoreCount: bool, index: int) -> List[str]:
         plotter: str = request.get("plotter", "chiapos")
-        command_args: List[str] = ["chia", "plotters", plotter]
+        command_args: List[str] = ["hydrangea", "plotters", plotter]
 
         command_args.extend(self._common_plotting_command_args(request, ignoreCount))
 
@@ -1190,7 +1190,7 @@ class WebSocketServer:
         if self.websocket_runner is not None:
             await self.websocket_runner.cleanup()
         self.shutdown_event.set()
-        log.info("chia daemon exiting")
+        log.info("hydrangea daemon exiting")
 
     async def register_service(self, websocket: WebSocketResponse, request: Dict[str, Any]) -> Dict[str, Any]:
         self.log.info(f"Register service {request}")
@@ -1247,8 +1247,8 @@ def plotter_log_path(root_path: Path, id: str):
 
 
 def launch_plotter(root_path: Path, service_name: str, service_array: List[str], id: str):
-    # we need to pass on the possibly altered CHIA_ROOT
-    os.environ["CHIA_ROOT"] = str(root_path)
+    # we need to pass on the possibly altered HYDRANGEA_ROOT
+    os.environ["HYDRANGEA_ROOT"] = str(root_path)
     service_executable = executable_for_service(service_array[0])
 
     # Swap service name with name of executable
@@ -1293,12 +1293,12 @@ def launch_service(root_path: Path, service_command) -> Tuple[subprocess.Popen, 
     """
     Launch a child process.
     """
-    # set up CHIA_ROOT
+    # set up HYDRANGEA_ROOT
     # invoke correct script
     # save away PID
 
-    # we need to pass on the possibly altered CHIA_ROOT
-    os.environ["CHIA_ROOT"] = str(root_path)
+    # we need to pass on the possibly altered HYDRANGEA_ROOT
+    os.environ["HYDRANGEA_ROOT"] = str(root_path)
 
     # Insert proper e
     service_array = service_command.split()
@@ -1310,7 +1310,7 @@ def launch_service(root_path: Path, service_command) -> Tuple[subprocess.Popen, 
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-    log.debug(f"Launching service {service_array} with CHIA_ROOT: {os.environ['CHIA_ROOT']}")
+    log.debug(f"Launching service {service_array} with HYDRANGEA_ROOT: {os.environ['HYDRANGEA_ROOT']}")
 
     # CREATE_NEW_PROCESS_GROUP allows graceful shutdown on windows, by CTRL_BREAK_EVENT signal
     if sys.platform == "win32" or sys.platform == "cygwin":
@@ -1385,11 +1385,11 @@ def is_running(services: Dict[str, subprocess.Popen], service_name: str) -> bool
 
 
 async def async_run_daemon(root_path: Path, wait_for_unlock: bool = False) -> int:
-    # When wait_for_unlock is true, we want to skip the check_keys() call in chia_init
+    # When wait_for_unlock is true, we want to skip the check_keys() call in hydrangea_init
     # since it might be necessary to wait for the GUI to unlock the keyring first.
-    chia_init(root_path, should_check_keys=(not wait_for_unlock))
+    hydrangea_init(root_path, should_check_keys=(not wait_for_unlock))
     config = load_config(root_path, "config.yaml")
-    setproctitle("chia_daemon")
+    setproctitle("hydrangea_daemon")
     initialize_service_logging("daemon", config)
     crt_path = root_path / config["daemon_ssl"]["private_crt"]
     key_path = root_path / config["daemon_ssl"]["private_key"]
@@ -1409,7 +1409,7 @@ async def async_run_daemon(root_path: Path, wait_for_unlock: bool = False) -> in
     sys.stdout.flush()
     try:
         with Lockfile.create(daemon_launch_lock_path(root_path), timeout=1):
-            log.info(f"chia-blockchain version: {chia_full_version_str()}")
+            log.info(f"hydrangea-blockchain version: {hydrangea_full_version_str()}")
 
             beta_metrics: Optional[BetaMetricsLogger] = None
             if config.get("beta", {}).get("enabled", False):
@@ -1448,8 +1448,8 @@ def run_daemon(root_path: Path, wait_for_unlock: bool = False) -> int:
 
 
 def main() -> int:
-    from chia.util.default_root import DEFAULT_ROOT_PATH
-    from chia.util.keychain import Keychain
+    from hydrangea.util.default_root import DEFAULT_ROOT_PATH
+    from hydrangea.util.keychain import Keychain
 
     wait_for_unlock = "--wait-for-unlock" in sys.argv[1:] and Keychain.is_keyring_locked()
     return run_daemon(DEFAULT_ROOT_PATH, wait_for_unlock)

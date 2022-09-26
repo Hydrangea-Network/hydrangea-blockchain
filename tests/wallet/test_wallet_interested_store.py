@@ -1,10 +1,10 @@
 from secrets import token_bytes
 import pytest
 
-from chia.types.blockchain_format.coin import Coin
-from chia.util.ints import uint64
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.util.ints import uint64
 
-from chia.wallet.wallet_interested_store import WalletInterestedStore
+from hydrangea.wallet.wallet_interested_store import WalletInterestedStore
 from tests.util.db_connection import DBConnection
 
 

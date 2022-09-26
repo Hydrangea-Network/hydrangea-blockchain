@@ -4,16 +4,16 @@ import sys
 from multiprocessing import freeze_support
 from typing import Dict, Optional
 
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.rpc.crawler_rpc_api import CrawlerRpcApi
-from chia.seeder.crawler import Crawler
-from chia.seeder.crawler_api import CrawlerAPI
-from chia.server.outbound_message import NodeType
-from chia.server.start_service import RpcInfo, Service, async_run
-from chia.util.chia_logging import initialize_service_logging
-from chia.util.config import load_config, load_config_cli
-from chia.util.default_root import DEFAULT_ROOT_PATH
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.consensus.default_constants import DEFAULT_CONSTANTS
+from hydrangea.rpc.crawler_rpc_api import CrawlerRpcApi
+from hydrangea.seeder.crawler import Crawler
+from hydrangea.seeder.crawler_api import CrawlerAPI
+from hydrangea.server.outbound_message import NodeType
+from hydrangea.server.start_service import RpcInfo, Service, async_run
+from hydrangea.util.hydrangea_logging import initialize_service_logging
+from hydrangea.util.config import load_config, load_config_cli
+from hydrangea.util.default_root import DEFAULT_ROOT_PATH
 
 # See: https://bugs.python.org/issue29288
 "".encode("idna")

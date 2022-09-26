@@ -4,20 +4,20 @@ from multiprocessing import freeze_support
 import sys
 from typing import Dict, Optional
 
-from chia.consensus.constants import ConsensusConstants
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
-from chia.rpc.wallet_rpc_api import WalletRpcApi
-from chia.server.outbound_message import NodeType
-from chia.server.start_service import RpcInfo, Service, async_run
-from chia.types.peer_info import PeerInfo
-from chia.util.chia_logging import initialize_service_logging
-from chia.util.config import load_config_cli, load_config
-from chia.util.default_root import DEFAULT_ROOT_PATH
-from chia.util.keychain import Keychain
-from chia.wallet.wallet_node import WalletNode
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.consensus.default_constants import DEFAULT_CONSTANTS
+from hydrangea.rpc.wallet_rpc_api import WalletRpcApi
+from hydrangea.server.outbound_message import NodeType
+from hydrangea.server.start_service import RpcInfo, Service, async_run
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.hydrangea_logging import initialize_service_logging
+from hydrangea.util.config import load_config_cli, load_config
+from hydrangea.util.default_root import DEFAULT_ROOT_PATH
+from hydrangea.util.keychain import Keychain
+from hydrangea.wallet.wallet_node import WalletNode
 
 # See: https://bugs.python.org/issue29288
-from chia.wallet.wallet_node_api import WalletNodeAPI
+from hydrangea.wallet.wallet_node_api import WalletNodeAPI
 
 "".encode("idna")
 
@@ -91,7 +91,7 @@ async def async_main() -> int:
     # This is simulator
     local_test = service_config["testing"]
     if local_test is True:
-        from chia.simulator.block_tools import test_constants
+        from hydrangea.simulator.block_tools import test_constants
 
         constants = test_constants
         current = service_config["database_path"]
@@ -109,8 +109,8 @@ async def async_main() -> int:
 
 def main() -> int:
     freeze_support()
-    if os.getenv("CHIA_INSTRUMENT_WALLET", 0) != 0:
-        from chia.util.task_timing import start_task_instrumentation, stop_task_instrumentation
+    if os.getenv("HYDRANGEA_INSTRUMENT_WALLET", 0) != 0:
+        from hydrangea.util.task_timing import start_task_instrumentation, stop_task_instrumentation
         import atexit
 
         start_task_instrumentation()

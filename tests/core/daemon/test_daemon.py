@@ -7,17 +7,17 @@ import pytest
 from dataclasses import dataclass, replace
 from typing import Any, Dict, List, Optional, Type, Union, cast
 
-from chia.daemon.keychain_server import DeleteLabelRequest, SetLabelRequest
-from chia.daemon.server import WebSocketServer, service_plotter
-from chia.server.outbound_message import NodeType
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint16
-from chia.util.keychain import KeyData
-from chia.daemon.keychain_server import GetKeyRequest, GetKeyResponse, GetKeysResponse
-from chia.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE
-from chia.util.ws_message import create_payload
+from hydrangea.daemon.keychain_server import DeleteLabelRequest, SetLabelRequest
+from hydrangea.daemon.server import WebSocketServer, service_plotter
+from hydrangea.server.outbound_message import NodeType
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.ints import uint16
+from hydrangea.util.keychain import KeyData
+from hydrangea.daemon.keychain_server import GetKeyRequest, GetKeyResponse, GetKeysResponse
+from hydrangea.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE
+from hydrangea.util.ws_message import create_payload
 from tests.core.node_height import node_height_at_least
-from chia.simulator.time_out_assert import time_out_assert_custom_interval, time_out_assert
+from hydrangea.simulator.time_out_assert import time_out_assert_custom_interval, time_out_assert
 
 
 # Simple class that responds to a poll() call used by WebSocketServer.is_running()
@@ -228,7 +228,7 @@ async def test_daemon_simulation(self_hostname, daemon_simulation):
 
     read_handler = asyncio.create_task(reader(ws, message_queue))
     data = {}
-    payload = create_payload("get_blockchain_state", data, service_name, "chia_full_node")
+    payload = create_payload("get_blockchain_state", data, service_name, "hydrangea_full_node")
     await ws.send_str(payload)
 
     await asyncio.sleep(5)

@@ -9,14 +9,14 @@ from typing import Dict, ItemsView, KeysView, List, Optional, Tuple, ValuesView
 from blspy import G1Element
 from chiapos import DiskProver
 
-from chia.plotting.util import parse_plot_info
-from chia.types.blockchain_format.proof_of_space import ProofOfSpace
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint16, uint64
-from chia.util.misc import VersionedBlob
-from chia.util.streamable import Streamable, streamable
-from chia.wallet.derive_keys import master_sk_to_local_sk
-from chia.wallet.derive_chives_keys import chives_master_sk_to_local_sk
+from hydrangea.plotting.util import parse_plot_info
+from hydrangea.types.blockchain_format.proof_of_space import ProofOfSpace
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint16, uint64
+from hydrangea.util.misc import VersionedBlob
+from hydrangea.util.streamable import Streamable, streamable
+from hydrangea.wallet.derive_keys import master_sk_to_local_sk
+from hydrangea.wallet.derive_chives_keys import chives_master_sk_to_local_sk
 
 log = logging.getLogger(__name__)
 
@@ -149,7 +149,7 @@ class Cache:
                     )
                     # TODO, drop the below entry dropping after few versions or whenever we force a cache recreation.
                     #       it's here to filter invalid cache entries coming from bladebit RAM plotting.
-                    #       Related: - https://github.com/Chia-Network/chia-blockchain/issues/13084
+                    #       Related: - https://github.com/Chia-Network/hydrangea-blockchain/issues/13084
                     #                - https://github.com/Chia-Network/chiapos/pull/337
                     k = new_entry.prover.get_size()
                     if k not in estimated_c2_sizes:

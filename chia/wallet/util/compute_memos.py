@@ -2,12 +2,12 @@ from typing import List, Dict
 
 from clvm.casts import int_from_bytes
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import INFINITE_COST
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.spend_bundle import SpendBundle
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import INFINITE_COST
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.condition_opcodes import ConditionOpcode
+from hydrangea.types.spend_bundle import SpendBundle
 
 
 def compute_memos_for_spend(coin_spend: CoinSpend) -> Dict[bytes32, List[bytes]]:

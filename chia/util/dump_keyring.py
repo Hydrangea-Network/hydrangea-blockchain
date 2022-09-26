@@ -4,10 +4,10 @@ import click
 import colorama
 import yaml
 
-from chia.cmds.passphrase_funcs import prompt_for_passphrase, read_passphrase_from_file
-from chia.util.default_root import DEFAULT_KEYS_ROOT_PATH
-from chia.util.file_keyring import FileKeyringContent
-from chia.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE, KeyringWrapper
+from hydrangea.cmds.passphrase_funcs import prompt_for_passphrase, read_passphrase_from_file
+from hydrangea.util.default_root import DEFAULT_KEYS_ROOT_PATH
+from hydrangea.util.file_keyring import FileKeyringContent
+from hydrangea.util.keyring_wrapper import DEFAULT_PASSPHRASE_IF_NO_MASTER_PASSPHRASE, KeyringWrapper
 from cryptography.exceptions import InvalidTag
 from io import TextIOWrapper
 from pathlib import Path

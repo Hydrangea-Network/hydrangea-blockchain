@@ -7,10 +7,10 @@ from typing import Dict, List, Optional, Tuple, Union
 from blspy import G1Element, PrivateKey
 from chiapos import DiskProver
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.config import load_config, lock_and_load_config, save_config
-from chia.util.ints import uint32
-from chia.util.streamable import Streamable, streamable
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.config import load_config, lock_and_load_config, save_config
+from hydrangea.util.ints import uint32
+from hydrangea.util.streamable import Streamable, streamable
 
 log = logging.getLogger(__name__)
 

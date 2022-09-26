@@ -8,8 +8,8 @@ from typing import Dict, List, Optional, OrderedDict, Set, Tuple
 
 import typing_extensions
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32, uint128
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint32, uint128
 
 log = logging.getLogger(__name__)
 

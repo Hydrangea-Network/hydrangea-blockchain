@@ -7,7 +7,7 @@ import tracemalloc
 from datetime import datetime
 from typing import Dict, List, Optional, Set
 
-from chia.util.path import path_from_root
+from hydrangea.util.path import path_from_root
 
 
 async def mem_profile_task(root_path: pathlib.Path, service: str, log: logging.Logger) -> None:

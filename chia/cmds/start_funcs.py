@@ -7,16 +7,16 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from chia.cmds.keys_funcs import migrate_keys
-from chia.cmds.passphrase_funcs import get_current_passphrase
-from chia.daemon.client import DaemonProxy, connect_to_daemon_and_validate
-from chia.util.errors import KeychainMaxUnlockAttempts
-from chia.util.keychain import Keychain
-from chia.util.service_groups import services_for_groups
+from hydrangea.cmds.keys_funcs import migrate_keys
+from hydrangea.cmds.passphrase_funcs import get_current_passphrase
+from hydrangea.daemon.client import DaemonProxy, connect_to_daemon_and_validate
+from hydrangea.util.errors import KeychainMaxUnlockAttempts
+from hydrangea.util.keychain import Keychain
+from hydrangea.util.service_groups import services_for_groups
 
 
 def launch_start_daemon(root_path: Path) -> subprocess.Popen:
-    os.environ["CHIA_ROOT"] = str(root_path)
+    os.environ["HYDRANGEA_ROOT"] = str(root_path)
     # TODO: use startupinfo=subprocess.DETACHED_PROCESS on windows
     process = subprocess.Popen([sys.argv[0], "run_daemon", "--wait-for-unlock"], stdout=subprocess.PIPE)
     return process
@@ -60,7 +60,7 @@ async def async_start(
         return None
 
     if daemon is None:
-        print("Failed to create the chia daemon")
+        print("Failed to create the hydrangea daemon")
         return None
 
     if force_keyring_migration:

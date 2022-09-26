@@ -1,11 +1,11 @@
 from typing import List
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.spend_bundle_conditions import Spend, SpendBundleConditions
-from chia.util.generator_tools import tx_removals_and_additions
-from chia.util.hash import std_hash
-from chia.util.ints import uint32, uint64
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.spend_bundle_conditions import Spend, SpendBundleConditions
+from hydrangea.util.generator_tools import tx_removals_and_additions
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint32, uint64
 
 coin_ids = [std_hash(i.to_bytes(4, "big")) for i in range(10)]
 phs = [std_hash(i.to_bytes(4, "big")) for i in range(10)]

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any, List, Tuple
 
 import pkg_resources
-from chia.util.ssl_check import DEFAULT_PERMISSIONS_CERT_FILE, DEFAULT_PERMISSIONS_KEY_FILE
+from hydrangea.util.ssl_check import DEFAULT_PERMISSIONS_CERT_FILE, DEFAULT_PERMISSIONS_KEY_FILE
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -13,9 +13,9 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.x509.oid import NameOID
 
 
-def get_chia_ca_crt_key() -> Tuple[Any, Any]:
-    crt = pkg_resources.resource_string(__name__, "chia_ca.crt")
-    key = pkg_resources.resource_string(__name__, "chia_ca.key")
+def get_hydrangea_ca_crt_key() -> Tuple[Any, Any]:
+    crt = pkg_resources.resource_string(__name__, "hydrangea_ca.crt")
+    key = pkg_resources.resource_string(__name__, "hydrangea_ca.key")
     return crt, key
 
 
@@ -56,8 +56,8 @@ def generate_ca_signed_cert(ca_crt: bytes, ca_key: bytes, cert_out: Path, key_ou
     cert_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
     new_subject = x509.Name(
         [
-            x509.NameAttribute(NameOID.COMMON_NAME, "Chia"),
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Chia"),
+            x509.NameAttribute(NameOID.COMMON_NAME, "Hydrangea"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Hydrangea"),
             x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, "Organic Farming Division"),
         ]
     )
@@ -91,8 +91,8 @@ def make_ca_cert(cert_path: Path, key_path: Path):
     root_key = rsa.generate_private_key(public_exponent=65537, key_size=2048, backend=default_backend())
     subject = issuer = x509.Name(
         [
-            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Chia"),
-            x509.NameAttribute(NameOID.COMMON_NAME, "Chia CA"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Hydrangea"),
+            x509.NameAttribute(NameOID.COMMON_NAME, "Hydrangea CA"),
             x509.NameAttribute(NameOID.ORGANIZATIONAL_UNIT_NAME, "Organic Farming Division"),
         ]
     )
@@ -119,7 +119,7 @@ def make_ca_cert(cert_path: Path, key_path: Path):
 
 
 def main():
-    return make_ca_cert(Path("./chia_ca.crt"), Path("./chia_ca.key"))
+    return make_ca_cert(Path("./hydrangea_ca.crt"), Path("./hydrangea_ca.key"))
 
 
 if __name__ == "__main__":

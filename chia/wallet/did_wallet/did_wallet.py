@@ -8,32 +8,32 @@ from typing import Dict, Optional, List, Any, Set, Tuple, TYPE_CHECKING
 from blspy import AugSchemeMPL, G1Element, G2Element
 from secrets import token_bytes
 
-from chia.protocols import wallet_protocol
-from chia.protocols.wallet_protocol import CoinState
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.spend_bundle import SpendBundle
-from chia.util.hash import std_hash
-from chia.util.ints import uint64, uint32, uint8, uint128
-from chia.wallet.util.transaction_type import TransactionType
-from chia.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
-from chia.wallet.did_wallet.did_info import DIDInfo
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.did_wallet import did_wallet_puzzles
-from chia.wallet.derive_keys import master_sk_to_wallet_sk_unhardened
-from chia.wallet.coin_selection import select_coins
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from hydrangea.protocols import wallet_protocol
+from hydrangea.protocols.wallet_protocol import CoinState
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.announcement import Announcement
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint64, uint32, uint8, uint128
+from hydrangea.wallet.util.transaction_type import TransactionType
+from hydrangea.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
+from hydrangea.wallet.did_wallet.did_info import DIDInfo
+from hydrangea.wallet.lineage_proof import LineageProof
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.wallet_types import WalletType
+from hydrangea.wallet.util.compute_memos import compute_memos
+from hydrangea.wallet.wallet import Wallet
+from hydrangea.wallet.wallet_coin_record import WalletCoinRecord
+from hydrangea.wallet.wallet_info import WalletInfo
+from hydrangea.wallet.derivation_record import DerivationRecord
+from hydrangea.wallet.did_wallet import did_wallet_puzzles
+from hydrangea.wallet.derive_keys import master_sk_to_wallet_sk_unhardened
+from hydrangea.wallet.coin_selection import select_coins
+from hydrangea.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     puzzle_for_pk,
     puzzle_hash_for_pk,
     DEFAULT_HIDDEN_PUZZLE_HASH,
@@ -344,7 +344,7 @@ class DIDWallet:
         return coins
 
     # This will be used in the recovery case where we don't have the parent info already
-    async def coin_added(self, coin: Coin, _: uint32, peer: WSChiaConnection):
+    async def coin_added(self, coin: Coin, _: uint32, peer: WSHydrangeaConnection):
         """Notification from wallet state manager that wallet has been received."""
 
         parent = self.get_parent_for_coin(coin)
@@ -437,7 +437,7 @@ class DIDWallet:
             did_wallet_puzzles.metadata_to_program(json.loads(self.did_info.metadata)),
         )
         wallet_node = self.wallet_state_manager.wallet_node
-        peer: WSChiaConnection = wallet_node.get_full_node_peer()
+        peer: WSHydrangeaConnection = wallet_node.get_full_node_peer()
         if peer is None:
             raise ValueError("Could not find any peers to request puzzle and solution from")
 
@@ -489,16 +489,16 @@ class DIDWallet:
     async def create_tandem_xhg_tx(
         self, fee: uint64, announcement_to_assert: Optional[Announcement] = None
     ) -> TransactionRecord:
-        chia_coins = await self.standard_wallet.select_coins(fee)
-        chia_tx = await self.standard_wallet.generate_signed_transaction(
+        hydrangea_coins = await self.standard_wallet.select_coins(fee)
+        hydrangea_tx = await self.standard_wallet.generate_signed_transaction(
             uint64(0),
             (await self.standard_wallet.get_new_puzzlehash()),
             fee=fee,
-            coins=chia_coins,
+            coins=hydrangea_coins,
             coin_announcements_to_consume={announcement_to_assert} if announcement_to_assert is not None else None,
         )
-        assert chia_tx.spend_bundle is not None
-        return chia_tx
+        assert hydrangea_tx.spend_bundle is not None
+        return hydrangea_tx
 
     def puzzle_for_pk(self, pubkey: G1Element) -> Program:
         if self.did_info.origin_coin is not None:
@@ -587,14 +587,14 @@ class DIDWallet:
         spend_bundle = await self.sign(unsigned_spend_bundle)
         if fee > 0:
             announcement_to_make = coin.name()
-            chia_tx = await self.create_tandem_xhg_tx(fee, Announcement(coin.name(), announcement_to_make))
+            hydrangea_tx = await self.create_tandem_xhg_tx(fee, Announcement(coin.name(), announcement_to_make))
         else:
             announcement_to_make = None
-            chia_tx = None
-        if chia_tx is not None and chia_tx.spend_bundle is not None:
-            spend_bundle = SpendBundle.aggregate([spend_bundle, chia_tx.spend_bundle])
-            chia_tx = dataclasses.replace(chia_tx, spend_bundle=None)
-            await self.wallet_state_manager.add_pending_transaction(chia_tx)
+            hydrangea_tx = None
+        if hydrangea_tx is not None and hydrangea_tx.spend_bundle is not None:
+            spend_bundle = SpendBundle.aggregate([spend_bundle, hydrangea_tx.spend_bundle])
+            hydrangea_tx = dataclasses.replace(hydrangea_tx, spend_bundle=None)
+            await self.wallet_state_manager.add_pending_transaction(hydrangea_tx)
         did_record = TransactionRecord(
             confirmed_at_height=uint32(0),
             created_at_time=uint64(int(time.time())),
@@ -682,13 +682,13 @@ class DIDWallet:
         spend_bundle = await self.sign(unsigned_spend_bundle)
         if fee > 0:
             announcement_to_make = coin.name()
-            chia_tx = await self.create_tandem_xhg_tx(fee, Announcement(coin.name(), announcement_to_make))
+            hydrangea_tx = await self.create_tandem_xhg_tx(fee, Announcement(coin.name(), announcement_to_make))
         else:
-            chia_tx = None
-        if chia_tx is not None and chia_tx.spend_bundle is not None:
-            spend_bundle = SpendBundle.aggregate([spend_bundle, chia_tx.spend_bundle])
-            chia_tx = dataclasses.replace(chia_tx, spend_bundle=None)
-            await self.wallet_state_manager.add_pending_transaction(chia_tx)
+            hydrangea_tx = None
+        if hydrangea_tx is not None and hydrangea_tx.spend_bundle is not None:
+            spend_bundle = SpendBundle.aggregate([spend_bundle, hydrangea_tx.spend_bundle])
+            hydrangea_tx = dataclasses.replace(hydrangea_tx, spend_bundle=None)
+            await self.wallet_state_manager.add_pending_transaction(hydrangea_tx)
         did_record = TransactionRecord(
             confirmed_at_height=uint32(0),
             created_at_time=uint64(int(time.time())),
@@ -1111,7 +1111,7 @@ class DIDWallet:
             pubkey, private = await self.wallet_state_manager.get_keys(puzzle_hash)
             synthetic_secret_key = calculate_synthetic_secret_key(private, DEFAULT_HIDDEN_PUZZLE_HASH)
             synthetic_pk = synthetic_secret_key.get_g1()
-            prefix = f"\x18Chia Signed Message:\n{len(message)}"
+            prefix = f"\x18Hydrangea Signed Message:\n{len(message)}"
             return synthetic_pk, AugSchemeMPL.sign(synthetic_secret_key, std_hash(prefix.encode("utf-8") + message))
         else:
             raise ValueError("Invalid inner DID puzzle.")
@@ -1402,6 +1402,6 @@ class DIDWallet:
 
 
 if TYPE_CHECKING:
-    from chia.wallet.wallet_protocol import WalletProtocol
+    from hydrangea.wallet.wallet_protocol import WalletProtocol
 
     _dummy: WalletProtocol = DIDWallet()

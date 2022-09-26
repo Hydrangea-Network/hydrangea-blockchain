@@ -10,9 +10,9 @@ from typing import Callable, Iterator, List, Optional
 import pytest
 from blspy import G1Element
 
-from chia.plotting.cache import CURRENT_VERSION, CacheDataV1
-from chia.plotting.manager import Cache, PlotManager
-from chia.plotting.util import (
+from hydrangea.plotting.cache import CURRENT_VERSION, CacheDataV1
+from hydrangea.plotting.manager import Cache, PlotManager
+from hydrangea.plotting.util import (
     PlotInfo,
     PlotRefreshEvents,
     PlotRefreshResult,
@@ -21,11 +21,11 @@ from chia.plotting.util import (
     remove_plot,
     remove_plot_directory,
 )
-from chia.simulator.block_tools import get_plot_dir
-from chia.simulator.time_out_assert import time_out_assert
-from chia.util.config import create_default_chia_config, lock_and_load_config, save_config
-from chia.util.ints import uint16, uint32
-from chia.util.misc import VersionedBlob
+from hydrangea.simulator.block_tools import get_plot_dir
+from hydrangea.simulator.time_out_assert import time_out_assert
+from hydrangea.util.config import create_default_hydrangea_config, lock_and_load_config, save_config
+from hydrangea.util.ints import uint16, uint32
+from hydrangea.util.misc import VersionedBlob
 from tests.plotting.util import get_test_plots
 
 log = logging.getLogger(__name__)
@@ -152,7 +152,7 @@ def environment(tmp_path, bt) -> Iterator[Environment]:
 
     dir_1: Directory = Directory(tmp_path / "plots" / "1", plots[0:dir_1_count])
     dir_2: Directory = Directory(tmp_path / "plots" / "2", plots[dir_1_count : dir_1_count + dir_2_count])
-    create_default_chia_config(tmp_path)
+    create_default_hydrangea_config(tmp_path)
 
     refresh_tester = PlotRefreshTester(tmp_path)
     refresh_tester.plot_manager.set_public_keys(bt.plot_manager.farmer_public_keys, bt.plot_manager.pool_public_keys)

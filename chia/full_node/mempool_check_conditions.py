@@ -1,26 +1,26 @@
 import logging
 from typing import Dict, Optional, Tuple
 from chia_rs import MEMPOOL_MODE, NO_NEG_DIV, get_puzzle_and_solution_for_coin as get_puzzle_and_solution_for_coin_rust
-from chia.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.coin import Coin
 
-from chia.consensus.cost_calculator import NPCResult
-from chia.types.spend_bundle_conditions import SpendBundleConditions
-from chia.full_node.generator import setup_generator_args
-from chia.types.coin_record import CoinRecord
-from chia.types.generator_types import BlockGenerator
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.errors import Err
-from chia.util.ints import uint32, uint64, uint16
-from chia.wallet.puzzles.rom_bootstrap_generator import get_generator
-from chia.types.blockchain_format.program import SerializedProgram
-from chia.wallet.puzzles.load_clvm import load_serialized_clvm
-from chia.consensus.default_constants import DEFAULT_CONSTANTS
+from hydrangea.consensus.cost_calculator import NPCResult
+from hydrangea.types.spend_bundle_conditions import SpendBundleConditions
+from hydrangea.full_node.generator import setup_generator_args
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.generator_types import BlockGenerator
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.errors import Err
+from hydrangea.util.ints import uint32, uint64, uint16
+from hydrangea.wallet.puzzles.rom_bootstrap_generator import get_generator
+from hydrangea.types.blockchain_format.program import SerializedProgram
+from hydrangea.wallet.puzzles.load_clvm import load_serialized_clvm
+from hydrangea.consensus.default_constants import DEFAULT_CONSTANTS
 
-from chia.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.program import Program
 
 GENERATOR_MOD = get_generator()
 
-DESERIALIZE_MOD = load_serialized_clvm("chialisp_deserialisation.clvm", package_or_requirement="chia.wallet.puzzles")
+DESERIALIZE_MOD = load_serialized_clvm("chialisp_deserialisation.clvm", package_or_requirement="hydrangea.wallet.puzzles")
 
 log = logging.getLogger(__name__)
 

@@ -5,26 +5,26 @@ from concurrent.futures.process import ProcessPoolExecutor
 from multiprocessing.context import BaseContext
 from typing import IO, List, Tuple, Optional
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.constants import ConsensusConstants
-from chia.full_node.weight_proof import (
+from hydrangea.consensus.block_record import BlockRecord
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.full_node.weight_proof import (
     _validate_sub_epoch_summaries,
     validate_weight_proof_inner,
 )
-from chia.types.blockchain_format.sub_epoch_summary import SubEpochSummary
+from hydrangea.types.blockchain_format.sub_epoch_summary import SubEpochSummary
 
-from chia.types.weight_proof import (
+from hydrangea.types.weight_proof import (
     WeightProof,
 )
 
-from chia.util.ints import uint32
-from chia.util.setproctitle import getproctitle, setproctitle
+from hydrangea.util.ints import uint32
+from hydrangea.util.setproctitle import getproctitle, setproctitle
 
 log = logging.getLogger(__name__)
 
 
 def _create_shutdown_file() -> IO:
-    return tempfile.NamedTemporaryFile(prefix="chia_wallet_weight_proof_handler_executor_shutdown_trigger")
+    return tempfile.NamedTemporaryFile(prefix="hydrangea_wallet_weight_proof_handler_executor_shutdown_trigger")
 
 
 class WalletWeightProofHandler:

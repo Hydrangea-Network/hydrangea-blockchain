@@ -4,23 +4,23 @@ import pytest
 from blspy import PrivateKey, AugSchemeMPL, G2Element
 from clvm.casts import int_to_bytes
 
-from chia.clvm.spend_sim import SpendSim, SimClient
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.types.spend_bundle import SpendBundle
-from chia.util.errors import Err
-from chia.util.ints import uint64
-from chia.wallet.cat_wallet.cat_utils import (
+from hydrangea.clvm.spend_sim import SpendSim, SimClient
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.util.errors import Err
+from hydrangea.util.ints import uint64
+from hydrangea.wallet.cat_wallet.cat_utils import (
     SpendableCAT,
     construct_cat_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
 )
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.puzzles.tails import (
+from hydrangea.wallet.puzzles.cat_loader import CAT_MOD
+from hydrangea.wallet.lineage_proof import LineageProof
+from hydrangea.wallet.puzzles.tails import (
     GenesisById,
     GenesisByPuzhash,
     EverythingWithSig,

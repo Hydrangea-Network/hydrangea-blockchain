@@ -8,40 +8,40 @@ import pytest
 import pytest_asyncio
 from blspy import G2Element
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.consensus.coinbase import create_puzzlehash_for_pk
-from chia.rpc.full_node_rpc_client import FullNodeRpcClient
-from chia.rpc.wallet_rpc_client import WalletRpcClient
-from chia.server.server import ChiaServer
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.peer_info import PeerInfo
-from chia.types.spend_bundle import SpendBundle
-from chia.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
-from chia.util.config import lock_and_load_config, save_config
-from chia.util.hash import std_hash
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.trading.trade_status import TradeStatus
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.transaction_sorting import SortKey
-from chia.wallet.util.address_type import AddressType
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_node import WalletNode
-from chia.wallet.wallet_protocol import WalletProtocol
+from hydrangea.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from hydrangea.consensus.coinbase import create_puzzlehash_for_pk
+from hydrangea.rpc.full_node_rpc_client import FullNodeRpcClient
+from hydrangea.rpc.wallet_rpc_client import WalletRpcClient
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.simulator.full_node_simulator import FullNodeSimulator
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol
+from hydrangea.simulator.time_out_assert import time_out_assert
+from hydrangea.types.announcement import Announcement
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.util.bech32m import decode_puzzle_hash, encode_puzzle_hash
+from hydrangea.util.config import lock_and_load_config, save_config
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint16, uint32, uint64
+from hydrangea.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from hydrangea.wallet.cat_wallet.cat_wallet import CATWallet
+from hydrangea.wallet.derive_keys import master_sk_to_wallet_sk, master_sk_to_wallet_sk_unhardened
+from hydrangea.wallet.did_wallet.did_wallet import DIDWallet
+from hydrangea.wallet.nft_wallet.nft_wallet import NFTWallet
+from hydrangea.wallet.trading.trade_status import TradeStatus
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.transaction_sorting import SortKey
+from hydrangea.wallet.util.address_type import AddressType
+from hydrangea.wallet.util.compute_memos import compute_memos
+from hydrangea.wallet.util.wallet_types import WalletType
+from hydrangea.wallet.wallet import Wallet
+from hydrangea.wallet.wallet_node import WalletNode
+from hydrangea.wallet.wallet_protocol import WalletProtocol
 from tests.util.wallet_is_synced import wallet_is_synced
 
 log = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ class WalletBundle:
 
 @dataclasses.dataclass
 class FullNodeBundle:
-    server: ChiaServer
+    server: HydrangeaServer
     api: FullNodeSimulator
     rpc_client: FullNodeRpcClient
 
@@ -664,7 +664,7 @@ async def test_offer_endpoints(wallet_rpc_environment: WalletRpcTestEnvironment)
     await farm_transaction(full_node_api, wallet_node, spend_bundle)
     await time_out_assert(5, get_confirmed_balance, 4, wallet_2_rpc, cat_wallet_id)
 
-    # Create an offer of 5 chia for one CAT
+    # Create an offer of 5 hydrangea for one CAT
     offer, trade_record = await wallet_1_rpc.create_offer_for_ids(
         {uint32(1): -5, cat_asset_id.hex(): 1}, validate_only=True
     )
@@ -889,7 +889,7 @@ async def test_nft_endpoints(wallet_rpc_environment: WalletRpcTestEnvironment):
         None,
         None,
         "0xD4584AD463139FA8C0D9F68F4B59F185",
-        ["https://www.chia.net/img/branding/chia-logo.svg"],
+        ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"],
     )
     assert res["success"]
 

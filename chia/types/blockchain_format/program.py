@@ -8,10 +8,10 @@ from clvm.EvalError import EvalError
 from clvm.serialize import sexp_from_stream, sexp_to_stream
 from chia_rs import MEMPOOL_MODE, run_chia_program, serialized_length, run_generator, tree_hash
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.hash import std_hash
-from chia.util.byte_types import hexstr_to_bytes
-from chia.types.spend_bundle_conditions import SpendBundleConditions
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.hash import std_hash
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.types.spend_bundle_conditions import SpendBundleConditions
 
 from .tree_hash import sha256_treehash
 

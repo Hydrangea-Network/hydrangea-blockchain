@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32
-from chia.util.streamable import Streamable, streamable
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint32
+from hydrangea.util.streamable import Streamable, streamable
 
 
 @streamable

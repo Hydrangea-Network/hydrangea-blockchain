@@ -1,9 +1,9 @@
 from typing import Dict, List, Optional, Set, Tuple
 
-from chia.consensus.blockchain import StateChangeSummary
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint64
+from hydrangea.consensus.blockchain import StateChangeSummary
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint64
 
 
 def get_hints_and_subscription_coin_ids(

@@ -2,7 +2,7 @@ from decimal import Decimal
 from typing import Optional
 
 import click
-from chia.cmds.cmds_util import execute_with_wallet
+from hydrangea.cmds.cmds_util import execute_with_wallet
 
 
 MAX_CMDLINE_FEE = Decimal(0.5)

@@ -1,14 +1,14 @@
 from secrets import token_bytes
 from typing import Dict, List
 
-from chia.rpc.full_node_rpc_api import FullNodeRpcApi
-from chia.rpc.rpc_server import Endpoint, EndpointResult
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol, GetAllCoinsProtocol, ReorgProtocol
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_record import CoinRecord
-from chia.types.full_block import FullBlock
-from chia.util.bech32m import decode_puzzle_hash
-from chia.util.ints import uint32
+from hydrangea.rpc.full_node_rpc_api import FullNodeRpcApi
+from hydrangea.rpc.rpc_server import Endpoint, EndpointResult
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol, GetAllCoinsProtocol, ReorgProtocol
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.full_block import FullBlock
+from hydrangea.util.bech32m import decode_puzzle_hash
+from hydrangea.util.ints import uint32
 
 
 class SimulatorFullNodeRpcApi(FullNodeRpcApi):

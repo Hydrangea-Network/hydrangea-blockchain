@@ -5,8 +5,8 @@ from typing import List, Tuple
 
 import typing_extensions
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.db_wrapper import DBWrapper2
 import logging
 
 log = logging.getLogger(__name__)

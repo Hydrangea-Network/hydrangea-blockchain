@@ -5,9 +5,9 @@ from typing import Any, Dict, Optional
 import pytest
 from blspy import PrivateKey
 
-from chia.util.config import load_config
-from chia.util.keychain import Keychain, generate_mnemonic
-from chia.wallet.wallet_node import WalletNode
+from hydrangea.util.config import load_config
+from hydrangea.util.keychain import Keychain, generate_mnemonic
+from hydrangea.wallet.wallet_node import WalletNode
 from tests.setup_nodes import test_constants
 
 

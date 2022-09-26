@@ -9,55 +9,55 @@ from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 
 from blspy import AugSchemeMPL, G2Element, G1Element
 
-from chia.consensus.cost_calculator import NPCResult
-from chia.full_node.bundle_tools import simple_solution_generator
-from chia.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.types.generator_types import BlockGenerator
-from chia.types.spend_bundle import SpendBundle
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
-from chia.util.hash import std_hash
-from chia.util.ints import uint8, uint32, uint64, uint128
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_info import CATInfo, LegacyCATInfo
-from chia.wallet.cat_wallet.cat_utils import (
+from hydrangea.consensus.cost_calculator import NPCResult
+from hydrangea.full_node.bundle_tools import simple_solution_generator
+from hydrangea.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.announcement import Announcement
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.condition_opcodes import ConditionOpcode
+from hydrangea.types.generator_types import BlockGenerator
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.condition_tools import conditions_dict_for_solution, pkm_pairs_for_conditions_dict
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint8, uint32, uint64, uint128
+from hydrangea.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from hydrangea.wallet.cat_wallet.cat_info import CATInfo, LegacyCATInfo
+from hydrangea.wallet.cat_wallet.cat_utils import (
     SpendableCAT,
     construct_cat_puzzle,
     match_cat_puzzle,
     unsigned_spend_bundle_for_spendable_cats,
 )
-from chia.wallet.puzzles.cat_loader import CAT_MOD
-from chia.wallet.cat_wallet.lineage_store import CATLineageStore
-from chia.wallet.coin_selection import select_coins
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.outer_puzzles import AssetType
-from chia.wallet.puzzle_drivers import PuzzleInfo
-from chia.wallet.payment import Payment
-from chia.wallet.puzzles.tails import ALL_LIMITATIONS_PROGRAMS
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
+from hydrangea.wallet.puzzles.cat_loader import CAT_MOD
+from hydrangea.wallet.cat_wallet.lineage_store import CATLineageStore
+from hydrangea.wallet.coin_selection import select_coins
+from hydrangea.wallet.derivation_record import DerivationRecord
+from hydrangea.wallet.lineage_proof import LineageProof
+from hydrangea.wallet.outer_puzzles import AssetType
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo
+from hydrangea.wallet.payment import Payment
+from hydrangea.wallet.puzzles.tails import ALL_LIMITATIONS_PROGRAMS
+from hydrangea.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import (
     DEFAULT_HIDDEN_PUZZLE_HASH,
     calculate_synthetic_secret_key,
 )
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.curry_and_treehash import calculate_hash_of_quoted_mod_hash, curry_and_treehash
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.compute_memos import compute_memos
+from hydrangea.wallet.util.curry_and_treehash import calculate_hash_of_quoted_mod_hash, curry_and_treehash
+from hydrangea.wallet.util.transaction_type import TransactionType
+from hydrangea.wallet.util.wallet_types import AmountWithPuzzlehash, WalletType
+from hydrangea.wallet.wallet import Wallet
+from hydrangea.wallet.wallet_coin_record import WalletCoinRecord
+from hydrangea.wallet.wallet_info import WalletInfo
+from hydrangea.wallet.uncurried_puzzle import uncurry_puzzle
 
 if TYPE_CHECKING:
-    from chia.wallet.wallet_state_manager import WalletStateManager
+    from hydrangea.wallet.wallet_state_manager import WalletStateManager
 
 # This should probably not live in this file but it's for experimental right now
 
@@ -110,7 +110,7 @@ class CATWallet:
         self.wallet_info = await wallet_state_manager.user_store.create_wallet(name, WalletType.CAT, info_as_string)
 
         try:
-            chia_tx, spend_bundle = await ALL_LIMITATIONS_PROGRAMS[
+            hydrangea_tx, spend_bundle = await ALL_LIMITATIONS_PROGRAMS[
                 cat_tail_info["identifier"]
             ].generate_issuance_bundle(
                 self,
@@ -168,8 +168,8 @@ class CATWallet:
             name=bytes32(token_bytes()),
             memos=[],
         )
-        chia_tx = dataclasses.replace(chia_tx, spend_bundle=spend_bundle)
-        await self.standard_wallet.push_transaction(chia_tx)
+        hydrangea_tx = dataclasses.replace(hydrangea_tx, spend_bundle=spend_bundle)
+        await self.standard_wallet.push_transaction(hydrangea_tx)
         await self.standard_wallet.push_transaction(cat_record)
         return self
 
@@ -332,7 +332,7 @@ class CATWallet:
             )
         )
 
-    async def coin_added(self, coin: Coin, height: uint32, peer: WSChiaConnection) -> None:
+    async def coin_added(self, coin: Coin, height: uint32, peer: WSHydrangeaConnection) -> None:
         """Notification from wallet state manager that wallet has been received."""
         self.log.info(f"CAT wallet has been notified that {coin} was added")
 
@@ -548,21 +548,21 @@ class CATWallet:
         """
         announcement = None
         if fee > amount_to_claim:
-            chia_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
-            origin_id = list(chia_coins)[0].name()
-            chia_tx = await self.standard_wallet.generate_signed_transaction(
+            hydrangea_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
+            origin_id = list(hydrangea_coins)[0].name()
+            hydrangea_tx = await self.standard_wallet.generate_signed_transaction(
                 uint64(0),
                 (await self.standard_wallet.get_new_puzzlehash()),
                 fee=uint64(fee - amount_to_claim),
-                coins=chia_coins,
+                coins=hydrangea_coins,
                 origin_id=origin_id,  # We specify this so that we know the coin that is making the announcement
                 negative_change_allowed=False,
                 coin_announcements_to_consume={announcement_to_assert} if announcement_to_assert is not None else None,
             )
-            assert chia_tx.spend_bundle is not None
+            assert hydrangea_tx.spend_bundle is not None
 
             message = None
-            for spend in chia_tx.spend_bundle.coin_spends:
+            for spend in hydrangea_tx.spend_bundle.coin_spends:
                 if spend.coin.name() == origin_id:
                     conditions = spend.puzzle_reveal.to_program().run(spend.solution.to_program()).as_python()
                     for condition in conditions:
@@ -572,18 +572,18 @@ class CATWallet:
             assert message is not None
             announcement = Announcement(origin_id, message)
         else:
-            chia_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
-            selected_amount = sum([c.amount for c in chia_coins])
-            chia_tx = await self.standard_wallet.generate_signed_transaction(
+            hydrangea_coins = await self.standard_wallet.select_coins(fee, min_coin_amount=min_coin_amount)
+            selected_amount = sum([c.amount for c in hydrangea_coins])
+            hydrangea_tx = await self.standard_wallet.generate_signed_transaction(
                 uint64(selected_amount + amount_to_claim - fee),
                 (await self.standard_wallet.get_new_puzzlehash()),
-                coins=chia_coins,
+                coins=hydrangea_coins,
                 negative_change_allowed=True,
                 coin_announcements_to_consume={announcement_to_assert} if announcement_to_assert is not None else None,
             )
-            assert chia_tx.spend_bundle is not None
+            assert hydrangea_tx.spend_bundle is not None
 
-        return chia_tx, announcement
+        return hydrangea_tx, announcement
 
     async def generate_unsigned_spendbundle(
         self,
@@ -621,13 +621,13 @@ class CATWallet:
         assert selected_cat_amount >= starting_amount
 
         # Figure out if we need to absorb/melt some XHG as part of this
-        regular_chia_to_claim: int = 0
+        regular_hydrangea_to_claim: int = 0
         if payment_amount > starting_amount:
             fee = uint64(fee + payment_amount - starting_amount)
         elif payment_amount < starting_amount:
-            regular_chia_to_claim = payment_amount
+            regular_hydrangea_to_claim = payment_amount
 
-        need_chia_transaction = (fee > 0 or regular_chia_to_claim > 0) and (fee - regular_chia_to_claim != 0)
+        need_hydrangea_transaction = (fee > 0 or regular_hydrangea_to_claim > 0) and (fee - regular_hydrangea_to_claim != 0)
 
         # Calculate standard puzzle solutions
         change = selected_cat_amount - starting_amount
@@ -647,18 +647,18 @@ class CATWallet:
 
         # Loop through the coins we've selected and gather the information we need to spend them
         spendable_cat_list = []
-        chia_tx = None
+        hydrangea_tx = None
         first = True
         announcement: Announcement
         for coin in cat_coins:
             if first:
                 first = False
                 announcement = Announcement(coin.name(), std_hash(b"".join([c.name() for c in cat_coins])))
-                if need_chia_transaction:
-                    if fee > regular_chia_to_claim:
-                        chia_tx, _ = await self.create_tandem_xhg_tx(
+                if need_hydrangea_transaction:
+                    if fee > regular_hydrangea_to_claim:
+                        hydrangea_tx, _ = await self.create_tandem_xhg_tx(
                             fee,
-                            uint64(regular_chia_to_claim),
+                            uint64(regular_hydrangea_to_claim),
                             announcement_to_assert=announcement,
                             min_coin_amount=min_coin_amount,
                         )
@@ -668,9 +668,9 @@ class CATWallet:
                             coin_announcements_to_assert=coin_announcements_bytes,
                             puzzle_announcements_to_assert=puzzle_announcements_bytes,
                         )
-                    elif regular_chia_to_claim > fee:
-                        chia_tx, _ = await self.create_tandem_xhg_tx(
-                            fee, uint64(regular_chia_to_claim), min_coin_amount=min_coin_amount
+                    elif regular_hydrangea_to_claim > fee:
+                        hydrangea_tx, _ = await self.create_tandem_xhg_tx(
+                            fee, uint64(regular_hydrangea_to_claim), min_coin_amount=min_coin_amount
                         )
                         innersol = self.standard_wallet.make_solution(
                             primaries=primaries,
@@ -705,18 +705,18 @@ class CATWallet:
             spendable_cat_list.append(new_spendable_cat)
 
         cat_spend_bundle = unsigned_spend_bundle_for_spendable_cats(CAT_MOD, spendable_cat_list)
-        chia_spend_bundle = SpendBundle([], G2Element())
-        if chia_tx is not None and chia_tx.spend_bundle is not None:
-            chia_spend_bundle = chia_tx.spend_bundle
+        hydrangea_spend_bundle = SpendBundle([], G2Element())
+        if hydrangea_tx is not None and hydrangea_tx.spend_bundle is not None:
+            hydrangea_spend_bundle = hydrangea_tx.spend_bundle
 
         return (
             SpendBundle.aggregate(
                 [
                     cat_spend_bundle,
-                    chia_spend_bundle,
+                    hydrangea_spend_bundle,
                 ]
             ),
-            chia_tx,
+            hydrangea_tx,
         )
 
     async def generate_signed_transaction(
@@ -748,7 +748,7 @@ class CATWallet:
             max_send = await self.get_max_send_amount()
             if payment_sum > max_send:
                 raise ValueError(f"Can't send more than {max_send} in a single transaction")
-        unsigned_spend_bundle, chia_tx = await self.generate_unsigned_spendbundle(
+        unsigned_spend_bundle, hydrangea_tx = await self.generate_unsigned_spendbundle(
             payments,
             fee,
             coins=coins,
@@ -779,24 +779,24 @@ class CATWallet:
             )
         ]
 
-        if chia_tx is not None:
+        if hydrangea_tx is not None:
             tx_list.append(
                 TransactionRecord(
-                    confirmed_at_height=chia_tx.confirmed_at_height,
-                    created_at_time=chia_tx.created_at_time,
-                    to_puzzle_hash=chia_tx.to_puzzle_hash,
-                    amount=chia_tx.amount,
-                    fee_amount=chia_tx.fee_amount,
-                    confirmed=chia_tx.confirmed,
-                    sent=chia_tx.sent,
+                    confirmed_at_height=hydrangea_tx.confirmed_at_height,
+                    created_at_time=hydrangea_tx.created_at_time,
+                    to_puzzle_hash=hydrangea_tx.to_puzzle_hash,
+                    amount=hydrangea_tx.amount,
+                    fee_amount=hydrangea_tx.fee_amount,
+                    confirmed=hydrangea_tx.confirmed,
+                    sent=hydrangea_tx.sent,
                     spend_bundle=None,
-                    additions=chia_tx.additions,
-                    removals=chia_tx.removals,
-                    wallet_id=chia_tx.wallet_id,
-                    sent_to=chia_tx.sent_to,
-                    trade_id=chia_tx.trade_id,
-                    type=chia_tx.type,
-                    name=chia_tx.name,
+                    additions=hydrangea_tx.additions,
+                    removals=hydrangea_tx.removals,
+                    wallet_id=hydrangea_tx.wallet_id,
+                    sent_to=hydrangea_tx.sent_to,
+                    trade_id=hydrangea_tx.trade_id,
+                    type=hydrangea_tx.type,
+                    name=hydrangea_tx.name,
                     memos=[],
                 )
             )
@@ -844,6 +844,6 @@ class CATWallet:
 
 
 if TYPE_CHECKING:
-    from chia.wallet.wallet_protocol import WalletProtocol
+    from hydrangea.wallet.wallet_protocol import WalletProtocol
 
     _dummy: WalletProtocol = CATWallet()

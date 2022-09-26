@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from chia.rpc.rpc_client import RpcClient
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint64
+from hydrangea.rpc.rpc_client import RpcClient
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint64
 
 
 class DataLayerRpcClient(RpcClient):

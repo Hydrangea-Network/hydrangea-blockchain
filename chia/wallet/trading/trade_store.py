@@ -4,13 +4,13 @@ from typing import List, Optional, Tuple, Set
 
 import aiosqlite
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.errors import Err
-from chia.util.ints import uint8, uint32
-from chia.wallet.trade_record import TradeRecord
-from chia.wallet.trading.trade_status import TradeStatus
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.util.db_wrapper import DBWrapper2
+from hydrangea.util.errors import Err
+from hydrangea.util.ints import uint8, uint32
+from hydrangea.wallet.trade_record import TradeRecord
+from hydrangea.wallet.trading.trade_status import TradeStatus
 
 
 async def migrate_coin_of_interest(log: logging.Logger, db: aiosqlite.Connection) -> None:

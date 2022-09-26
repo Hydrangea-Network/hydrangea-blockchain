@@ -7,9 +7,9 @@ import signal
 import sys
 from typing import Any, Callable, Coroutine, Dict, Generic, List, Optional, Tuple, Type, TypeVar
 
-from chia.daemon.server import service_launch_lock_path
-from chia.util.lock import Lockfile, LockfileError
-from chia.server.ssl_context import chia_ssl_ca_paths, private_ssl_ca_paths
+from hydrangea.daemon.server import service_launch_lock_path
+from hydrangea.util.lock import Lockfile, LockfileError
+from hydrangea.server.ssl_context import hydrangea_ssl_ca_paths, private_ssl_ca_paths
 from ..protocols.shared_protocol import capabilities
 
 try:
@@ -17,14 +17,14 @@ try:
 except ImportError:
     uvloop = None
 
-from chia.cmds.init_funcs import chia_full_version_str
-from chia.rpc.rpc_server import RpcApiProtocol, RpcServiceProtocol, start_rpc_server, RpcServer
-from chia.server.outbound_message import NodeType
-from chia.server.server import ChiaServer
-from chia.server.upnp import UPnP
-from chia.types.peer_info import PeerInfo
-from chia.util.setproctitle import setproctitle
-from chia.util.ints import uint16
+from hydrangea.cmds.init_funcs import hydrangea_full_version_str
+from hydrangea.rpc.rpc_server import RpcApiProtocol, RpcServiceProtocol, start_rpc_server, RpcServer
+from hydrangea.server.outbound_message import NodeType
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.server.upnp import UPnP
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.setproctitle import setproctitle
+from hydrangea.util.ints import uint16
 
 from .reconnect_task import start_reconnect_task
 
@@ -80,13 +80,13 @@ class Service(Generic[_T_RpcServiceProtocol]):
         self.max_request_body_size = max_request_body_size
 
         self._log = logging.getLogger(service_name)
-        self._log.info(f"chia-blockchain version: {chia_full_version_str()}")
+        self._log.info(f"hydrangea-blockchain version: {hydrangea_full_version_str()}")
 
         self.service_config = self.config[service_name]
 
         self._rpc_info = rpc_info
         private_ca_crt, private_ca_key = private_ssl_ca_paths(root_path, self.config)
-        chia_ca_crt, chia_ca_key = chia_ssl_ca_paths(root_path, self.config)
+        hydrangea_ca_crt, hydrangea_ca_key = hydrangea_ssl_ca_paths(root_path, self.config)
         inbound_rlp = self.config.get("inbound_rate_limit_percent")
         outbound_rlp = self.config.get("outbound_rate_limit_percent")
         if node_type == NodeType.WALLET:
@@ -97,7 +97,7 @@ class Service(Generic[_T_RpcServiceProtocol]):
             capabilities_to_use = override_capabilities
 
         assert inbound_rlp and outbound_rlp
-        self._server = ChiaServer(
+        self._server = HydrangeaServer(
             advertised_port,
             node,
             peer_api,
@@ -110,7 +110,7 @@ class Service(Generic[_T_RpcServiceProtocol]):
             root_path,
             self.service_config,
             (private_ca_crt, private_ca_key),
-            (chia_ca_crt, chia_ca_key),
+            (hydrangea_ca_crt, hydrangea_ca_key),
             name=f"{service_name}_server",
         )
         f = getattr(node, "set_server", None)
@@ -196,7 +196,7 @@ class Service(Generic[_T_RpcServiceProtocol]):
     async def setup_process_global_state(self) -> None:
         # Being async forces this to be run from within an active event loop as is
         # needed for the signal handler setup.
-        proctitle_name = f"chia_{self._service_name}"
+        proctitle_name = f"hydrangea_{self._service_name}"
         setproctitle(proctitle_name)
 
         global main_pid
@@ -259,7 +259,7 @@ class Service(Generic[_T_RpcServiceProtocol]):
 
         self._log.info("Waiting for socket to be closed (if opened)")
 
-        self._log.info("Waiting for ChiaServer to be closed")
+        self._log.info("Waiting for HydrangeaServer to be closed")
         await self._server.await_closed()
 
         if self.rpc_server:

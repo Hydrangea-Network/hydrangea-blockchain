@@ -9,8 +9,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterator, Optional, TextIO
 
-from chia.cmds.init_funcs import chia_full_version_str
-from chia.util.config import lock_and_load_config
+from hydrangea.cmds.init_funcs import hydrangea_full_version_str
+from hydrangea.util.config import lock_and_load_config
 
 
 @contextlib.contextmanager
@@ -19,7 +19,7 @@ def get_optional_beta_plot_log_file(root_path: Path, plotter: str) -> Iterator[O
     with lock_and_load_config(root_path, "config.yaml") as config:
         if config.get("beta", {}).get("enabled", False):
             file_name = f"{plotter}_{datetime.now().strftime('%m_%d_%Y__%H_%M_%S')}.log"
-            beta_log_path = Path(config["beta"]["path"]) / chia_full_version_str() / "plotting" / file_name
+            beta_log_path = Path(config["beta"]["path"]) / hydrangea_full_version_str() / "plotting" / file_name
             beta_log_path.parent.mkdir(parents=True, exist_ok=True)
     if beta_log_path is not None:
         with open(beta_log_path, "w") as file:

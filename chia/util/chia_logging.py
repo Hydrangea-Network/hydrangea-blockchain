@@ -6,14 +6,14 @@ import colorlog
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from logging.handlers import SysLogHandler
 
-from chia.cmds.init_funcs import chia_full_version_str
-from chia.util.path import path_from_root
-from chia.util.default_root import DEFAULT_ROOT_PATH
+from hydrangea.cmds.init_funcs import hydrangea_full_version_str
+from hydrangea.util.path import path_from_root
+from hydrangea.util.default_root import DEFAULT_ROOT_PATH
 
 
 def get_beta_logging_config() -> Dict[str, Any]:
     return {
-        "log_filename": f"{chia_full_version_str()}/chia-blockchain/beta.log",
+        "log_filename": f"{hydrangea_full_version_str()}/hydrangea-blockchain/beta.log",
         "log_level": "DEBUG",
         "log_stdout": False,
         "log_maxfilesrotation": 100,

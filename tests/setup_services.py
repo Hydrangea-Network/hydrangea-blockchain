@@ -6,25 +6,25 @@ from pathlib import Path
 from secrets import token_bytes
 from typing import AsyncGenerator, List, Optional, Tuple
 
-from chia.cmds.init_funcs import init
-from chia.consensus.constants import ConsensusConstants
-from chia.daemon.server import WebSocketServer, daemon_launch_lock_path
-from chia.protocols.shared_protocol import Capability, capabilities
-from chia.server.start_farmer import create_farmer_service
-from chia.server.start_full_node import create_full_node_service
-from chia.server.start_harvester import create_harvester_service
-from chia.server.start_introducer import create_introducer_service
-from chia.server.start_timelord import create_timelord_service
-from chia.server.start_wallet import create_wallet_service
-from chia.simulator.block_tools import BlockTools
-from chia.simulator.start_simulator import create_full_node_simulator_service
-from chia.timelord.timelord_launcher import kill_processes, spawn_process
-from chia.types.peer_info import PeerInfo
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.config import lock_and_load_config, save_config
-from chia.util.ints import uint16
-from chia.util.keychain import bytes_to_mnemonic
-from chia.util.lock import Lockfile
+from hydrangea.cmds.init_funcs import init
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.daemon.server import WebSocketServer, daemon_launch_lock_path
+from hydrangea.protocols.shared_protocol import Capability, capabilities
+from hydrangea.server.start_farmer import create_farmer_service
+from hydrangea.server.start_full_node import create_full_node_service
+from hydrangea.server.start_harvester import create_harvester_service
+from hydrangea.server.start_introducer import create_introducer_service
+from hydrangea.server.start_timelord import create_timelord_service
+from hydrangea.server.start_wallet import create_wallet_service
+from hydrangea.simulator.block_tools import BlockTools
+from hydrangea.simulator.start_simulator import create_full_node_simulator_service
+from hydrangea.timelord.timelord_launcher import kill_processes, spawn_process
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.bech32m import encode_puzzle_hash
+from hydrangea.util.config import lock_and_load_config, save_config
+from hydrangea.util.ints import uint16
+from hydrangea.util.keychain import bytes_to_mnemonic
+from hydrangea.util.lock import Lockfile
 from tests.util.keyring import TempKeyring
 
 log = logging.getLogger(__name__)

@@ -25,10 +25,10 @@ from typing import (
 from blspy import G1Element, G2Element, PrivateKey
 from typing_extensions import Literal, get_args, get_origin
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.hash import std_hash
-from chia.util.ints import uint32
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint32
 
 pp = pprint.PrettyPrinter(indent=1, width=120, compact=True)
 

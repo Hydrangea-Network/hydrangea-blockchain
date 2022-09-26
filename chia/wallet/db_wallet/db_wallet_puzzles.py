@@ -1,14 +1,14 @@
 from typing import Iterator, List, Tuple, Union
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.condition_opcodes import ConditionOpcode
-from chia.util.ints import uint64
-from chia.wallet.nft_wallet.nft_puzzles import NFT_STATE_LAYER_MOD, create_nft_layer_puzzle_with_curry_params
-from chia.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.condition_opcodes import ConditionOpcode
+from hydrangea.util.ints import uint64
+from hydrangea.wallet.nft_wallet.nft_puzzles import NFT_STATE_LAYER_MOD, create_nft_layer_puzzle_with_curry_params
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
 
-# from chia.types.condition_opcodes import ConditionOpcode
-# from chia.wallet.util.merkle_tree import MerkleTree, TreeType
+# from hydrangea.types.condition_opcodes import ConditionOpcode
+# from hydrangea.wallet.util.merkle_tree import MerkleTree, TreeType
 
 ACS_MU = Program.to(11)  # returns the third argument a.k.a the full solution
 ACS_MU_PH = ACS_MU.get_tree_hash()

@@ -5,24 +5,24 @@ from typing import Any, Dict, List, Tuple
 
 import pytest
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.protocols.full_node_protocol import RespondBlock
-from chia.server.server import ChiaServer
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint16, uint32, uint64
-from chia.wallet.derive_keys import master_sk_to_wallet_sk
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.compute_memos import compute_memos
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_types import AmountWithPuzzlehash
-from chia.wallet.wallet_node import WalletNode, get_wallet_db_path
-from chia.wallet.wallet_state_manager import WalletStateManager
-from chia.simulator.block_tools import BlockTools
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from hydrangea.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from hydrangea.protocols.full_node_protocol import RespondBlock
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.simulator.full_node_simulator import FullNodeSimulator
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol, ReorgProtocol
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.ints import uint16, uint32, uint64
+from hydrangea.wallet.derive_keys import master_sk_to_wallet_sk
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.compute_memos import compute_memos
+from hydrangea.wallet.util.transaction_type import TransactionType
+from hydrangea.wallet.util.wallet_types import AmountWithPuzzlehash
+from hydrangea.wallet.wallet_node import WalletNode, get_wallet_db_path
+from hydrangea.wallet.wallet_state_manager import WalletStateManager
+from hydrangea.simulator.block_tools import BlockTools
+from hydrangea.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
 from tests.util.wallet_is_synced import wallet_is_synced
 from tests.wallet.cat_wallet.test_cat_wallet import tx_in_pool
 
@@ -35,14 +35,14 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_coinbase(
         self,
-        wallet_node_sim_and_wallet: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        wallet_node_sim_and_wallet: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
         num_blocks = 10
         full_nodes, wallets, _ = wallet_node_sim_and_wallet
         full_node_api = full_nodes[0]
-        server_1: ChiaServer = full_node_api.full_node.server
+        server_1: HydrangeaServer = full_node_api.full_node.server
         wallet_node, server_2 = wallets[0]
 
         wallet = wallet_node.wallet_state_manager.main_wallet
@@ -96,7 +96,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_make_transaction(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -159,7 +159,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_coinbase_reorg(
         self,
-        wallet_node_sim_and_wallet: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        wallet_node_sim_and_wallet: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -205,7 +205,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_send_to_three_peers(
         self,
-        three_sim_two_wallets: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        three_sim_two_wallets: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -280,7 +280,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_make_transaction_hop(
         self,
-        two_wallet_nodes_five_freeze: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes_five_freeze: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -387,7 +387,7 @@ class TestWalletSimulator:
     #     introducer, introducer_server = await node_iters[2].__anext__()
     #
     #     async def has_full_node():
-    #         outbound: List[WSChiaConnection] = wallet.server.get_outgoing_connections()
+    #         outbound: List[WSHydrangeaConnection] = wallet.server.get_outgoing_connections()
     #         for connection in outbound:
     #             if connection.connection_type is NodeType.FULL_NODE:
     #                 return True
@@ -406,7 +406,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_make_transaction_with_fee(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -481,7 +481,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_create_hit_max_send_amount(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -585,7 +585,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_prevent_fee_theft(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -678,7 +678,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_tx_reorg(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -785,13 +785,13 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_address_sliding_window(
         self,
-        wallet_node_100_pk: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        wallet_node_100_pk: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
         full_nodes, wallets, _ = wallet_node_100_pk
         full_node_api = full_nodes[0]
-        server_1: ChiaServer = full_node_api.full_node.server
+        server_1: HydrangeaServer = full_node_api.full_node.server
         wallet_node, server_2 = wallets[0]
         if trusted:
             wallet_node.config["trusted_peers"] = {server_1.node_id.hex(): server_1.node_id.hex()}
@@ -833,7 +833,7 @@ class TestWalletSimulator:
     @pytest.mark.asyncio
     async def test_wallet_transaction_options(
         self,
-        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, ChiaServer]], BlockTools],
+        two_wallet_nodes: Tuple[List[FullNodeSimulator], List[Tuple[WalletNode, HydrangeaServer]], BlockTools],
         trusted: bool,
         self_hostname: str,
     ) -> None:
@@ -898,7 +898,7 @@ class TestWalletSimulator:
 
 
 def test_get_wallet_db_path_v2_r1() -> None:
-    root_path: Path = Path("/x/y/z/.chia/mainnet").resolve()
+    root_path: Path = Path("/x/y/z/.hydrangea/mainnet").resolve()
     config: Dict[str, Any] = {
         "database_path": "wallet/db/blockchain_wallet_v2_r1_CHALLENGE_KEY.sqlite",
         "selected_network": "mainnet",
@@ -910,7 +910,7 @@ def test_get_wallet_db_path_v2_r1() -> None:
 
 
 def test_get_wallet_db_path_v2() -> None:
-    root_path: Path = Path("/x/y/z/.chia/mainnet").resolve()
+    root_path: Path = Path("/x/y/z/.hydrangea/mainnet").resolve()
     config: Dict[str, Any] = {
         "database_path": "wallet/db/blockchain_wallet_v2_CHALLENGE_KEY.sqlite",
         "selected_network": "mainnet",
@@ -922,7 +922,7 @@ def test_get_wallet_db_path_v2() -> None:
 
 
 def test_get_wallet_db_path_v1() -> None:
-    root_path: Path = Path("/x/y/z/.chia/mainnet").resolve()
+    root_path: Path = Path("/x/y/z/.hydrangea/mainnet").resolve()
     config: Dict[str, Any] = {
         "database_path": "wallet/db/blockchain_wallet_v1_CHALLENGE_KEY.sqlite",
         "selected_network": "mainnet",
@@ -934,7 +934,7 @@ def test_get_wallet_db_path_v1() -> None:
 
 
 def test_get_wallet_db_path_testnet() -> None:
-    root_path: Path = Path("/x/y/z/.chia/testnet").resolve()
+    root_path: Path = Path("/x/y/z/.hydrangea/testnet").resolve()
     config: Dict[str, Any] = {
         "database_path": "wallet/db/blockchain_wallet_v2_CHALLENGE_KEY.sqlite",
         "selected_network": "testnet",

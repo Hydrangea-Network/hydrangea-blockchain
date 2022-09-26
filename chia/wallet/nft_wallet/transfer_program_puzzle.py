@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Tuple
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint16
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.load_clvm import load_clvm
-from chia.wallet.puzzles.singleton_top_layer_v1_1 import SINGLETON_LAUNCHER_HASH, SINGLETON_MOD_HASH
-from chia.wallet.uncurried_puzzle import UncurriedPuzzle
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint16
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo, Solver
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.wallet.puzzles.singleton_top_layer_v1_1 import SINGLETON_LAUNCHER_HASH, SINGLETON_MOD_HASH
+from hydrangea.wallet.uncurried_puzzle import UncurriedPuzzle
 
 TRANSFER_PROGRAM_MOD = load_clvm("nft_ownership_transfer_program_one_way_claim_with_royalties.clvm")
 

@@ -10,15 +10,15 @@ from typing import Any, Dict
 import click
 from aiohttp import web
 
-from chia.data_layer.download_data import is_filename_valid
-from chia.server.upnp import UPnP
-from chia.util.chia_logging import initialize_logging
-from chia.util.config import load_config
-from chia.util.default_root import DEFAULT_ROOT_PATH
-from chia.util.path import path_from_root
-from chia.util.setproctitle import setproctitle
+from hydrangea.data_layer.download_data import is_filename_valid
+from hydrangea.server.upnp import UPnP
+from hydrangea.util.hydrangea_logging import initialize_logging
+from hydrangea.util.config import load_config
+from hydrangea.util.default_root import DEFAULT_ROOT_PATH
+from hydrangea.util.path import path_from_root
+from hydrangea.util.setproctitle import setproctitle
 
-# from chia.cmds.chia import monkey_patch_click
+# from hydrangea.cmds.hydrangea import monkey_patch_click
 
 
 # See: https://bugs.python.org/issue29288

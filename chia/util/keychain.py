@@ -5,7 +5,7 @@ import unicodedata
 
 from bitstring import BitArray  # pyright: reportMissingImports=false
 from blspy import AugSchemeMPL, G1Element, PrivateKey  # pyright: reportMissingImports=false
-from chia.util.errors import (
+from hydrangea.util.errors import (
     KeychainException,
     KeychainNotSet,
     KeychainKeyDataMismatch,
@@ -14,10 +14,10 @@ from chia.util.errors import (
     KeychainSecretsMissing,
     KeychainUserNotFound,
 )
-from chia.util.hash import std_hash
-from chia.util.ints import uint32
-from chia.util.keyring_wrapper import KeyringWrapper
-from chia.util.streamable import streamable, Streamable
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint32
+from hydrangea.util.keyring_wrapper import KeyringWrapper
+from hydrangea.util.streamable import streamable, Streamable
 from dataclasses import dataclass
 from hashlib import pbkdf2_hmac
 from pathlib import Path
@@ -27,8 +27,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from typing_extensions import final
 
 CURRENT_KEY_VERSION = "1.8"
-DEFAULT_USER = f"user-chia-{CURRENT_KEY_VERSION}"  # e.g. user-chia-1.8
-DEFAULT_SERVICE = f"chia-{DEFAULT_USER}"  # e.g. chia-user-chia-1.8
+DEFAULT_USER = f"user-hydrangea-{CURRENT_KEY_VERSION}"  # e.g. user-hydrangea-1.8
+DEFAULT_SERVICE = f"hydrangea-{DEFAULT_USER}"  # e.g. hydrangea-user-hydrangea-1.8
 MAX_KEYS = 100
 MIN_PASSPHRASE_LEN = 8
 

@@ -1,4 +1,4 @@
-from chia.util.ints import uint32, uint64
+from hydrangea.util.ints import uint32, uint64
 
 # 1 Hydrangea coin = 1,000,000,000,000 = 1 trillion mojo.
 _mojo_per_hydrangea = 1000000000000

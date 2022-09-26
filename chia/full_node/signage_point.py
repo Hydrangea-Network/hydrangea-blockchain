@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from chia.types.blockchain_format.vdf import VDFInfo, VDFProof
-from chia.util.streamable import Streamable, streamable
-from chia.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.blockchain_format.vdf import VDFInfo, VDFProof
+from hydrangea.util.streamable import Streamable, streamable
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
 
 
 @streamable

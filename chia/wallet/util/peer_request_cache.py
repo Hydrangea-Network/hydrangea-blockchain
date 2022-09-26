@@ -3,12 +3,12 @@ from __future__ import annotations
 import asyncio
 from typing import Any, Optional, Tuple
 
-from chia.protocols.wallet_protocol import CoinState
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.header_block import HeaderBlock
-from chia.util.hash import std_hash
-from chia.util.ints import uint32, uint64
-from chia.util.lru_cache import LRUCache
+from hydrangea.protocols.wallet_protocol import CoinState
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.header_block import HeaderBlock
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint32, uint64
+from hydrangea.util.lru_cache import LRUCache
 
 
 class PeerRequestCache:

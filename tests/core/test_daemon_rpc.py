@@ -1,7 +1,7 @@
 import pytest
 
-from chia import __version__
-from chia.daemon.client import connect_to_daemon
+from hydrangea import __version__
+from hydrangea.daemon.client import connect_to_daemon
 
 
 class TestDaemonRpc:

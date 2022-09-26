@@ -14,15 +14,15 @@ from typing import Any, Dict, List
 
 # to enable this instrumentation, set one of the environment variables:
 
-#   CHIA_INSTRUMENT_NODE=1
-#   CHIA_INSTRUMENT_WALLET=1
+#   HYDRANGEA_INSTRUMENT_NODE=1
+#   HYDRANGEA_INSTRUMENT_WALLET=1
 
 # Before starting the daemon.
 
 # When exiting, profiles will be written to the `task-profile-<pid>` directory.
 # To generate call trees, run:
 
-# python chia/util/task_timing.py task-profile-<pid>
+# python hydrangea/util/task_timing.py task-profile-<pid>
 
 
 class FrameInfo:

@@ -2,16 +2,16 @@ from typing import List, Optional
 
 import pytest
 
-from chia.consensus.block_record import BlockRecord
-from chia.consensus.blockchain import Blockchain, StateChangeSummary
-from chia.consensus.cost_calculator import NPCResult
-from chia.full_node.hint_management import get_hints_and_subscription_coin_ids
-from chia.simulator.block_tools import BlockTools
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.spend_bundle_conditions import Spend, SpendBundleConditions
-from chia.util.hash import std_hash
-from chia.util.ints import uint32, uint64
+from hydrangea.consensus.block_record import BlockRecord
+from hydrangea.consensus.blockchain import Blockchain, StateChangeSummary
+from hydrangea.consensus.cost_calculator import NPCResult
+from hydrangea.full_node.hint_management import get_hints_and_subscription_coin_ids
+from hydrangea.simulator.block_tools import BlockTools
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.spend_bundle_conditions import Spend, SpendBundleConditions
+from hydrangea.util.hash import std_hash
+from hydrangea.util.ints import uint32, uint64
 from tests.blockchain.blockchain_test_utils import _validate_and_add_block
 
 coin_ids = [std_hash(i.to_bytes(4, "big")) for i in range(10)]

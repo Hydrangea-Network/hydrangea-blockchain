@@ -1,9 +1,9 @@
 from typing import Any
 
-from chia.plot_sync.util import ErrorCodes, State
-from chia.protocols.harvester_protocol import PlotSyncIdentifier
-from chia.server.ws_connection import NodeType
-from chia.util.ints import uint64
+from hydrangea.plot_sync.util import ErrorCodes, State
+from hydrangea.protocols.harvester_protocol import PlotSyncIdentifier
+from hydrangea.server.ws_connection import NodeType
+from hydrangea.util.ints import uint64
 
 
 class PlotSyncException(Exception):

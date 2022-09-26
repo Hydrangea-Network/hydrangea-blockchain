@@ -1,13 +1,13 @@
 import re
 from typing import Optional, Tuple, List, Union
 
-from chia.full_node.generator import create_compressed_generator
-from chia.types.blockchain_format.program import SerializedProgram, Program
-from chia.types.coin_spend import CoinSpend
-from chia.types.generator_types import BlockGenerator, CompressorArg
-from chia.types.spend_bundle import SpendBundle
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.ints import uint32
+from hydrangea.full_node.generator import create_compressed_generator
+from hydrangea.types.blockchain_format.program import SerializedProgram, Program
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.generator_types import BlockGenerator, CompressorArg
+from hydrangea.types.spend_bundle import SpendBundle
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.ints import uint32
 from clvm.casts import int_to_bytes
 
 

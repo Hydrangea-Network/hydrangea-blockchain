@@ -3,7 +3,7 @@ from typing import Optional
 
 import click
 
-from chia.util.config import load_defaults_for_missing_services, lock_and_load_config, save_config, str2bool
+from hydrangea.util.config import load_defaults_for_missing_services, lock_and_load_config, save_config, str2bool
 
 
 def configure(
@@ -201,7 +201,7 @@ def configure(
             change_made = True
 
         if change_made:
-            print("Restart any running chia services for changes to take effect")
+            print("Restart any running hydrangea services for changes to take effect")
             save_config(root_path, "config.yaml", config)
 
 

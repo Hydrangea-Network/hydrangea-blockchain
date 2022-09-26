@@ -2,10 +2,10 @@ from typing import Optional
 
 from typing_extensions import Protocol
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.uncurried_puzzle import UncurriedPuzzle
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo, Solver
+from hydrangea.wallet.uncurried_puzzle import UncurriedPuzzle
 
 
 class DriverProtocol(Protocol):

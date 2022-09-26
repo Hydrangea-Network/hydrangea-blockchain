@@ -1,12 +1,12 @@
 import pytest
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint32, uint64
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.nft_wallet.nft_info import NFTCoinInfo
-from chia.wallet.wallet_nft_store import WalletNftStore
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint32, uint64
+from hydrangea.wallet.lineage_proof import LineageProof
+from hydrangea.wallet.nft_wallet.nft_info import NFTCoinInfo
+from hydrangea.wallet.wallet_nft_store import WalletNftStore
 from tests.util.db_connection import DBConnection
 
 

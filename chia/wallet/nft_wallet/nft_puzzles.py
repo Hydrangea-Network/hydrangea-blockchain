@@ -4,14 +4,14 @@ from typing import Any, Dict, List, Optional, Tuple
 from clvm.casts import int_from_bytes
 from clvm_tools.binutils import disassemble
 
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.ints import uint16, uint64
-from chia.wallet.nft_wallet.nft_info import NFTCoinInfo, NFTInfo
-from chia.wallet.nft_wallet.nft_off_chain import get_off_chain_metadata
-from chia.wallet.nft_wallet.uncurry_nft import UncurriedNFT
-from chia.wallet.puzzles.load_clvm import load_clvm
-from chia.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import solution_for_conditions
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.ints import uint16, uint64
+from hydrangea.wallet.nft_wallet.nft_info import NFTCoinInfo, NFTInfo
+from hydrangea.wallet.nft_wallet.nft_off_chain import get_off_chain_metadata
+from hydrangea.wallet.nft_wallet.uncurry_nft import UncurriedNFT
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.wallet.puzzles.p2_delegated_puzzle_or_hidden_puzzle import solution_for_conditions
 
 log = logging.getLogger(__name__)
 SINGLETON_TOP_LAYER_MOD = load_clvm("singleton_top_layer_v1_1.clvm")

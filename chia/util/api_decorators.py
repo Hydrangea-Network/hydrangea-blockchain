@@ -3,21 +3,21 @@ import logging
 from inspect import signature
 from typing import Any, Callable, Coroutine, List, Optional, Union, get_type_hints
 
-from chia.protocols.protocol_message_types import ProtocolMessageTypes
-from chia.server.outbound_message import Message
-from chia.server.ws_connection import WSChiaConnection
-from chia.util.streamable import Streamable, _T_Streamable
+from hydrangea.protocols.protocol_message_types import ProtocolMessageTypes
+from hydrangea.server.outbound_message import Message
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.util.streamable import Streamable, _T_Streamable
 
 log = logging.getLogger(__name__)
 
 converted_api_f_type = Union[
     Callable[[Union[bytes, _T_Streamable]], Coroutine[Any, Any, Optional[Message]]],
-    Callable[[Union[bytes, _T_Streamable], WSChiaConnection], Coroutine[Any, Any, Optional[Message]]],
+    Callable[[Union[bytes, _T_Streamable], WSHydrangeaConnection], Coroutine[Any, Any, Optional[Message]]],
 ]
 
 initial_api_f_type = Union[
     Callable[[Any, _T_Streamable], Coroutine[Any, Any, Optional[Message]]],
-    Callable[[Any, _T_Streamable, WSChiaConnection], Coroutine[Any, Any, Optional[Message]]],
+    Callable[[Any, _T_Streamable, WSHydrangeaConnection], Coroutine[Any, Any, Optional[Message]]],
 ]
 
 

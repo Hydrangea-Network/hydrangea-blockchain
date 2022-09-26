@@ -5,24 +5,24 @@ from typing import Any, Callable, Coroutine, Optional
 
 import pytest
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.full_node.mempool_manager import MempoolManager
-from chia.simulator.full_node_simulator import FullNodeSimulator
-from chia.simulator.simulator_protocol import FarmNewBlockProtocol
-from chia.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint16, uint32, uint64, uint128
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.outer_puzzles import create_asset_id, match_puzzle
-from chia.wallet.puzzle_drivers import PuzzleInfo
-from chia.wallet.trading.offer import Offer
-from chia.wallet.trading.trade_status import TradeStatus
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
-from chia.wallet.util.compute_memos import compute_memos
+from hydrangea.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from hydrangea.full_node.mempool_manager import MempoolManager
+from hydrangea.simulator.full_node_simulator import FullNodeSimulator
+from hydrangea.simulator.simulator_protocol import FarmNewBlockProtocol
+from hydrangea.simulator.time_out_assert import time_out_assert, time_out_assert_not_none
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.ints import uint16, uint32, uint64, uint128
+from hydrangea.wallet.cat_wallet.cat_wallet import CATWallet
+from hydrangea.wallet.did_wallet.did_wallet import DIDWallet
+from hydrangea.wallet.nft_wallet.nft_wallet import NFTWallet
+from hydrangea.wallet.outer_puzzles import create_asset_id, match_puzzle
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo
+from hydrangea.wallet.trading.offer import Offer
+from hydrangea.wallet.trading.trade_status import TradeStatus
+from hydrangea.wallet.uncurried_puzzle import uncurry_puzzle
+from hydrangea.wallet.util.compute_memos import compute_memos
 
 # from clvm_tools.binutils import disassemble
 from tests.util.wallet_is_synced import wallets_are_synced
@@ -129,7 +129,7 @@ async def test_nft_offer_sell_nft(two_wallet_nodes: Any, trusted: Any) -> None:
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -286,7 +286,7 @@ async def test_nft_offer_request_nft(two_wallet_nodes: Any, trusted: Any) -> Non
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -442,7 +442,7 @@ async def test_nft_offer_sell_did_to_did(two_wallet_nodes: Any, trusted: Any) ->
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -624,7 +624,7 @@ async def test_nft_offer_sell_nft_for_cat(two_wallet_nodes: Any, trusted: Any) -
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -818,7 +818,7 @@ async def test_nft_offer_request_nft_for_cat(two_wallet_nodes: Any, trusted: boo
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -1013,7 +1013,7 @@ async def test_nft_offer_sell_cancel(two_wallet_nodes: Any, trusted: Any) -> Non
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -1133,7 +1133,7 @@ async def test_nft_offer_sell_cancel_in_batch(two_wallet_nodes: Any, trusted: An
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )
@@ -1321,7 +1321,7 @@ async def test_complex_nft_offer(two_wallet_nodes: Any, trusted: Any) -> None:
     )
     metadata = Program.to(
         [
-            ("u", ["https://www.chia.net/img/branding/chia-logo.svg"]),
+            ("u", ["https://www.hydrangea.net/img/branding/hydrangea-logo.svg"]),
             ("h", "0xD4584AD463139FA8C0D9F68F4B59F185"),
         ]
     )

@@ -1,7 +1,7 @@
 import pytest
 
-from chia.rpc.crawler_rpc_api import CrawlerRpcApi
-from chia.seeder.crawler import Crawler
+from hydrangea.rpc.crawler_rpc_api import CrawlerRpcApi
+from hydrangea.seeder.crawler import Crawler
 
 
 class TestCrawlerRpc:

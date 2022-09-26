@@ -1,21 +1,21 @@
 from clvm_tools import binutils
 from clvm_tools.clvmc import compile_clvm_text
 
-from chia.full_node.generator import run_generator_unsafe
-from chia.full_node.mempool_check_conditions import get_name_puzzle_conditions
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.generator_types import BlockGenerator
-from chia.util.ints import uint32
-from chia.wallet.puzzles.load_clvm import load_clvm
-from chia.consensus.condition_costs import ConditionCost
-from chia.types.spend_bundle_conditions import Spend
+from hydrangea.full_node.generator import run_generator_unsafe
+from hydrangea.full_node.mempool_check_conditions import get_name_puzzle_conditions
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.generator_types import BlockGenerator
+from hydrangea.util.ints import uint32
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.consensus.condition_costs import ConditionCost
+from hydrangea.types.spend_bundle_conditions import Spend
 
 MAX_COST = int(1e15)
 COST_PER_BYTE = int(12000)
 
 
-DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="chia.wallet.puzzles")
+DESERIALIZE_MOD = load_clvm("chialisp_deserialisation.clvm", package_or_requirement="hydrangea.wallet.puzzles")
 
 
 GENERATOR_CODE = """

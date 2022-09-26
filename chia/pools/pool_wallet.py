@@ -8,8 +8,8 @@ from typing_extensions import final
 
 from blspy import PrivateKey, G2Element, G1Element
 
-from chia.pools.pool_config import PoolWalletConfig, load_pool_config, update_pool_config
-from chia.pools.pool_wallet_info import (
+from hydrangea.pools.pool_config import PoolWalletConfig, load_pool_config, update_pool_config
+from hydrangea.pools.pool_wallet_info import (
     PoolWalletInfo,
     PoolSingletonState,
     PoolState,
@@ -18,18 +18,18 @@ from chia.pools.pool_wallet_info import (
     LEAVING_POOL,
     create_pool_state,
 )
-from chia.protocols.pool_protocol import POOL_PROTOCOL_VERSION
+from hydrangea.protocols.pool_protocol import POOL_PROTOCOL_VERSION
 
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.announcement import Announcement
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.types.coin_record import CoinRecord
-from chia.types.coin_spend import CoinSpend
-from chia.types.spend_bundle import SpendBundle
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.announcement import Announcement
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.types.coin_record import CoinRecord
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.spend_bundle import SpendBundle
 
-from chia.pools.pool_puzzles import (
+from hydrangea.pools.pool_puzzles import (
     create_waiting_room_inner_puzzle,
     create_full_puzzle,
     SINGLETON_LAUNCHER,
@@ -47,18 +47,18 @@ from chia.pools.pool_puzzles import (
     get_delayed_puz_info_from_launcher_spend,
 )
 
-from chia.util.ints import uint8, uint32, uint64, uint128
-from chia.wallet.derive_keys import (
+from hydrangea.util.ints import uint8, uint32, uint64, uint128
+from hydrangea.wallet.derive_keys import (
     find_owner_sk,
 )
-from chia.wallet.sign_coin_spends import sign_coin_spends
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_coin_record import WalletCoinRecord
+from hydrangea.wallet.sign_coin_spends import sign_coin_spends
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.wallet_types import WalletType
+from hydrangea.wallet.wallet import Wallet
+from hydrangea.wallet.wallet_coin_record import WalletCoinRecord
 
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.util.transaction_type import TransactionType
+from hydrangea.wallet.wallet_info import WalletInfo
+from hydrangea.wallet.util.transaction_type import TransactionType
 
 
 @final
@@ -419,7 +419,7 @@ class PoolWallet:
     ) -> Tuple[TransactionRecord, bytes32, bytes32]:
         """
         A "plot NFT", or pool wallet, represents the idea of a set of plots that all pay to
-        the same pooling puzzle. This puzzle is a `chia singleton` that is
+        the same pooling puzzle. This puzzle is a `hydrangea singleton` that is
         parameterized with a public key controlled by the user's wallet
         (a `smart coin`). It contains an inner puzzle that can switch between
         paying block rewards to a pool, or to a user's own wallet.
@@ -982,7 +982,7 @@ class PoolWallet:
     async def get_max_send_amount(self, records: Optional[Set[WalletCoinRecord]] = None) -> uint128:
         return uint128(0)
 
-    async def coin_added(self, coin: Coin, height: uint32, peer: WSChiaConnection) -> None:
+    async def coin_added(self, coin: Coin, height: uint32, peer: WSHydrangeaConnection) -> None:
         pass
 
     async def select_coins(
@@ -1002,6 +1002,6 @@ class PoolWallet:
 
 
 if TYPE_CHECKING:
-    from chia.wallet.wallet_protocol import WalletProtocol
+    from hydrangea.wallet.wallet_protocol import WalletProtocol
 
     _dummy: WalletProtocol = cast(PoolWallet, None)

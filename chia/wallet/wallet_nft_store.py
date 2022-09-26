@@ -3,13 +3,13 @@ import logging
 from sqlite3 import Row
 from typing import List, Optional, Type, TypeVar, Union
 
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.db_wrapper import DBWrapper2, execute_fetchone
-from chia.util.ints import uint32
-from chia.wallet.lineage_proof import LineageProof
-from chia.wallet.nft_wallet.nft_info import DEFAULT_STATUS, IN_TRANSACTION_STATUS, NFTCoinInfo
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.db_wrapper import DBWrapper2, execute_fetchone
+from hydrangea.util.ints import uint32
+from hydrangea.wallet.lineage_proof import LineageProof
+from hydrangea.wallet.nft_wallet.nft_info import DEFAULT_STATUS, IN_TRANSACTION_STATUS, NFTCoinInfo
 
 log = logging.getLogger(__name__)
 _T_WalletNftStore = TypeVar("_T_WalletNftStore", bound="WalletNftStore")

@@ -7,8 +7,8 @@ import logging
 
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
-from chia.plotting.create_plots import resolve_plot_keys
-from chia.plotters.plotters_util import (
+from hydrangea.plotting.create_plots import resolve_plot_keys
+from hydrangea.plotters.plotters_util import (
     run_plotter,
     run_command,
     check_git_repository,
@@ -201,7 +201,7 @@ def install_bladebit(root_path: Path, override: bool = False, commit: Optional[s
     print("Installing bladebit plotter.")
 
     if sys.platform in ["win32", "cygwin"]:
-        print("Windows user must build bladebit manually on <chia_root>\\plotters\\bladebit")
+        print("Windows user must build bladebit manually on <hydrangea_root>\\plotters\\bladebit")
         print("Please run `git clone` on the folder then build it as instructed in README")
         raise RuntimeError("Automatic install not supported on Windows")
 
@@ -251,7 +251,7 @@ def install_bladebit(root_path: Path, override: bool = False, commit: Optional[s
             print("Unknown Linux distribution detected")
             print("Tried to build with cmake anyway but it may require manual build if it fails")
     elif sys.platform in ["darwin"]:
-        # 'brew' is a requirement for chia on macOS, so it should be available.
+        # 'brew' is a requirement for hydrangea on macOS, so it should be available.
         run_command(["brew", "install", "cmake"], "Could not install dependencies")
 
     bladebit_path: str = os.fspath(root_path.joinpath(BLADEBIT_PLOTTER_DIR))
@@ -297,7 +297,7 @@ def install_bladebit(root_path: Path, override: bool = False, commit: Optional[s
     )
 
 
-def plot_bladebit(args, chia_root_path, root_path):
+def plot_bladebit(args, hydrangea_root_path, root_path):
     (found, version_or_exception) = get_bladebit_version(root_path)
     if found is None:
         print(f"Error: {version_or_exception}")
@@ -353,7 +353,7 @@ def plot_bladebit(args, chia_root_path, root_path):
             None,
             None if args.pool_key == b"" else args.pool_key.hex(),
             None if args.contract == "" else args.contract,
-            chia_root_path,
+            hydrangea_root_path,
             log,
             args.connect_to_daemon,
         )
@@ -423,7 +423,7 @@ def plot_bladebit(args, chia_root_path, root_path):
 
     try:
         progress = progress_bladebit1 if version == 1 else progress_bladebit2
-        asyncio.run(run_plotter(chia_root_path, args.plotter, call_args, progress))
+        asyncio.run(run_plotter(hydrangea_root_path, args.plotter, call_args, progress))
     except Exception as e:
         print(f"Exception while plotting: {e} {type(e)}")
         print(f"Traceback: {traceback.format_exc()}")

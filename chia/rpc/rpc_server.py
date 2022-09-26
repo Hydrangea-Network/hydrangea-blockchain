@@ -12,17 +12,17 @@ from typing import Any, Awaitable, Callable, Dict, List, Optional
 from aiohttp import ClientConnectorError, ClientSession, ClientWebSocketResponse, WSMsgType, web
 from typing_extensions import Protocol, final
 
-from chia.rpc.util import wrap_http_handler
-from chia.server.outbound_message import NodeType
-from chia.server.server import ChiaServer, ssl_context_for_client, ssl_context_for_server
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.peer_info import PeerInfo
-from chia.util.byte_types import hexstr_to_bytes
-from chia.util.config import str2bool
-from chia.util.ints import uint16
-from chia.util.json_util import dict_to_json_str
-from chia.util.network import select_port
-from chia.util.ws_message import WsRpcMessage, create_payload, create_payload_dict, format_response, pong
+from hydrangea.rpc.util import wrap_http_handler
+from hydrangea.server.outbound_message import NodeType
+from hydrangea.server.server import HydrangeaServer, ssl_context_for_client, ssl_context_for_server
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.byte_types import hexstr_to_bytes
+from hydrangea.util.config import str2bool
+from hydrangea.util.ints import uint16
+from hydrangea.util.json_util import dict_to_json_str
+from hydrangea.util.network import select_port
+from hydrangea.util.ws_message import WsRpcMessage, create_payload, create_payload_dict, format_response, pong
 
 log = logging.getLogger(__name__)
 max_message_size = 50 * 1024 * 1024  # 50MB
@@ -53,21 +53,21 @@ class RpcServiceProtocol(Protocol):
     """
 
     @property
-    def server(self) -> ChiaServer:
+    def server(self) -> HydrangeaServer:
         """The server object that handles the common server behavior for the RPC."""
-        # a property so as to be read only which allows ChiaServer to satisfy
-        # Optional[ChiaServer]
+        # a property so as to be read only which allows HydrangeaServer to satisfy
+        # Optional[HydrangeaServer]
         ...
 
     def get_connections(self, request_node_type: Optional[NodeType]) -> List[Dict[str, Any]]:
         """Report the active connections for the service.
 
         A default implementation is available and can be called as
-        chia.rpc.rpc_server.default_get_connections()
+        hydrangea.rpc.rpc_server.default_get_connections()
         """
         ...
 
-    async def on_connect(self, peer: WSChiaConnection) -> None:
+    async def on_connect(self, peer: WSHydrangeaConnection) -> None:
         """Called when a new connection is established to the server."""
         ...
 
@@ -121,7 +121,7 @@ class RpcApiProtocol(Protocol):
         ...
 
 
-def default_get_connections(server: ChiaServer, request_node_type: Optional[NodeType]) -> List[Dict[str, Any]]:
+def default_get_connections(server: HydrangeaServer, request_node_type: Optional[NodeType]) -> List[Dict[str, Any]]:
     connections = server.get_connections(request_node_type)
     con_info = [
         {

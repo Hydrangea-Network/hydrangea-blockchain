@@ -4,8 +4,8 @@ from typing import List, Optional, Tuple
 
 from clvm.casts import int_to_bytes
 
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.hash import std_hash
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.hash import std_hash
 
 ONE = int_to_bytes(1)
 TWO = int_to_bytes(2)

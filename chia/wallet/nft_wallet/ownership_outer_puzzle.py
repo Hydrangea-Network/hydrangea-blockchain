@@ -3,11 +3,11 @@ from typing import Callable, List, Optional, Tuple, Union
 
 from clvm_tools.binutils import disassemble
 
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.wallet.puzzle_drivers import PuzzleInfo, Solver
-from chia.wallet.puzzles.load_clvm import load_clvm
-from chia.wallet.uncurried_puzzle import UncurriedPuzzle, uncurry_puzzle
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo, Solver
+from hydrangea.wallet.puzzles.load_clvm import load_clvm
+from hydrangea.wallet.uncurried_puzzle import UncurriedPuzzle, uncurry_puzzle
 
 OWNERSHIP_LAYER_MOD = load_clvm("nft_ownership_layer.clvm")
 

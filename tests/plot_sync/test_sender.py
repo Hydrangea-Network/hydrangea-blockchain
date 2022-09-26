@@ -1,12 +1,12 @@
 import pytest
 
-from chia.plot_sync.exceptions import AlreadyStartedError, InvalidConnectionTypeError
-from chia.plot_sync.sender import ExpectedResponse, Sender
-from chia.plot_sync.util import Constants
-from chia.protocols.harvester_protocol import PlotSyncIdentifier, PlotSyncResponse
-from chia.server.ws_connection import NodeType, ProtocolMessageTypes
-from chia.simulator.block_tools import BlockTools
-from chia.util.ints import int16, uint64
+from hydrangea.plot_sync.exceptions import AlreadyStartedError, InvalidConnectionTypeError
+from hydrangea.plot_sync.sender import ExpectedResponse, Sender
+from hydrangea.plot_sync.util import Constants
+from hydrangea.protocols.harvester_protocol import PlotSyncIdentifier, PlotSyncResponse
+from hydrangea.server.ws_connection import NodeType, ProtocolMessageTypes
+from hydrangea.simulator.block_tools import BlockTools
+from hydrangea.util.ints import int16, uint64
 from tests.plot_sync.util import get_dummy_connection, plot_sync_identifier
 
 

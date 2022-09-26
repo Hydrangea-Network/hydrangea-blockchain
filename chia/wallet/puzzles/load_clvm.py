@@ -7,8 +7,8 @@ import pathlib
 from typing import List
 
 import pkg_resources
-from chia.types.blockchain_format.program import Program, SerializedProgram
-from chia.util.lock import Lockfile
+from hydrangea.types.blockchain_format.program import Program, SerializedProgram
+from hydrangea.util.lock import Lockfile
 from clvm_tools_rs import compile_clvm as compile_clvm_rust
 
 

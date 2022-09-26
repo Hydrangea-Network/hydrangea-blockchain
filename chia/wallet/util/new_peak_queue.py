@@ -3,9 +3,9 @@ import dataclasses
 from enum import IntEnum
 from typing import Any, List
 
-from chia.protocols.wallet_protocol import CoinStateUpdate, NewPeakWallet
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.protocols.wallet_protocol import CoinStateUpdate, NewPeakWallet
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
 
 
 class NewPeakQueueTypes(IntEnum):
@@ -63,11 +63,11 @@ class NewPeakQueue:
         self._pending_data_process_items += 1
         await self._inner_queue.put(NewPeakItem(NewPeakQueueTypes.PUZZLE_HASH_SUBSCRIPTION, puzzle_hashes))
 
-    async def full_node_state_updated(self, coin_state_update: CoinStateUpdate, peer: WSChiaConnection):
+    async def full_node_state_updated(self, coin_state_update: CoinStateUpdate, peer: WSHydrangeaConnection):
         self._pending_data_process_items += 1
         await self._inner_queue.put(NewPeakItem(NewPeakQueueTypes.FULL_NODE_STATE_UPDATED, (coin_state_update, peer)))
 
-    async def new_peak_wallet(self, new_peak: NewPeakWallet, peer: WSChiaConnection):
+    async def new_peak_wallet(self, new_peak: NewPeakWallet, peer: WSHydrangeaConnection):
         await self._inner_queue.put(NewPeakItem(NewPeakQueueTypes.NEW_PEAK_WALLET, (new_peak, peer)))
 
     async def get(self) -> NewPeakItem:

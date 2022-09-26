@@ -12,35 +12,35 @@ from typing import Any, Callable, Dict, Iterator, List, Optional, Set, Tuple
 import aiosqlite
 from blspy import G1Element, PrivateKey
 
-from chia.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
-from chia.consensus.coinbase import farmer_parent_id, pool_parent_id
-from chia.consensus.constants import ConsensusConstants
-from chia.data_layer.data_layer_wallet import DataLayerWallet
-from chia.data_layer.dl_wallet_store import DataLayerStore
-from chia.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
-from chia.pools.pool_wallet import PoolWallet
-from chia.protocols import wallet_protocol
-from chia.protocols.wallet_protocol import CoinState
-from chia.server.server import ChiaServer
-from chia.server.ws_connection import WSChiaConnection
-from chia.types.blockchain_format.coin import Coin
-from chia.types.blockchain_format.program import Program
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.coin_spend import CoinSpend
-from chia.types.full_block import FullBlock
-from chia.types.mempool_inclusion_status import MempoolInclusionStatus
-from chia.util.bech32m import encode_puzzle_hash
-from chia.util.db_synchronous import db_synchronous_on
-from chia.util.db_wrapper import DBWrapper2
-from chia.util.errors import Err
-from chia.util.ints import uint8, uint32, uint64, uint128
-from chia.util.lru_cache import LRUCache
-from chia.util.path import path_from_root
-from chia.wallet.cat_wallet.cat_constants import DEFAULT_CATS
-from chia.wallet.cat_wallet.cat_utils import construct_cat_puzzle, match_cat_puzzle
-from chia.wallet.cat_wallet.cat_wallet import CATWallet
-from chia.wallet.derivation_record import DerivationRecord
-from chia.wallet.derive_keys import (
+from hydrangea.consensus.block_rewards import calculate_base_farmer_reward, calculate_pool_reward
+from hydrangea.consensus.coinbase import farmer_parent_id, pool_parent_id
+from hydrangea.consensus.constants import ConsensusConstants
+from hydrangea.data_layer.data_layer_wallet import DataLayerWallet
+from hydrangea.data_layer.dl_wallet_store import DataLayerStore
+from hydrangea.pools.pool_puzzles import SINGLETON_LAUNCHER_HASH, solution_to_pool_state
+from hydrangea.pools.pool_wallet import PoolWallet
+from hydrangea.protocols import wallet_protocol
+from hydrangea.protocols.wallet_protocol import CoinState
+from hydrangea.server.server import HydrangeaServer
+from hydrangea.server.ws_connection import WSHydrangeaConnection
+from hydrangea.types.blockchain_format.coin import Coin
+from hydrangea.types.blockchain_format.program import Program
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.coin_spend import CoinSpend
+from hydrangea.types.full_block import FullBlock
+from hydrangea.types.mempool_inclusion_status import MempoolInclusionStatus
+from hydrangea.util.bech32m import encode_puzzle_hash
+from hydrangea.util.db_synchronous import db_synchronous_on
+from hydrangea.util.db_wrapper import DBWrapper2
+from hydrangea.util.errors import Err
+from hydrangea.util.ints import uint8, uint32, uint64, uint128
+from hydrangea.util.lru_cache import LRUCache
+from hydrangea.util.path import path_from_root
+from hydrangea.wallet.cat_wallet.cat_constants import DEFAULT_CATS
+from hydrangea.wallet.cat_wallet.cat_utils import construct_cat_puzzle, match_cat_puzzle
+from hydrangea.wallet.cat_wallet.cat_wallet import CATWallet
+from hydrangea.wallet.derivation_record import DerivationRecord
+from hydrangea.wallet.derive_keys import (
     master_sk_to_wallet_sk,
     master_sk_to_wallet_sk_unhardened,
     master_sk_to_wallet_sk_intermediate,
@@ -48,38 +48,38 @@ from chia.wallet.derive_keys import (
     master_sk_to_wallet_sk_unhardened_intermediate,
     _derive_path_unhardened,
 )
-from chia.wallet.wallet_protocol import WalletProtocol
-from chia.wallet.did_wallet.did_wallet import DIDWallet
-from chia.wallet.did_wallet.did_wallet_puzzles import DID_INNERPUZ_MOD, create_fullpuz, match_did_puzzle
-from chia.wallet.key_val_store import KeyValStore
-from chia.wallet.nft_wallet.nft_info import NFTWalletInfo
-from chia.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs, get_new_owner_did
-from chia.wallet.nft_wallet.nft_wallet import NFTWallet
-from chia.wallet.nft_wallet.uncurry_nft import UncurriedNFT
-from chia.wallet.notification_manager import NotificationManager
-from chia.wallet.outer_puzzles import AssetType
-from chia.wallet.puzzle_drivers import PuzzleInfo
-from chia.wallet.puzzles.cat_loader import CAT_MOD, CAT_MOD_HASH
-from chia.wallet.settings.user_settings import UserSettings
-from chia.wallet.trade_manager import TradeManager
-from chia.wallet.transaction_record import TransactionRecord
-from chia.wallet.util.address_type import AddressType
-from chia.wallet.util.compute_hints import compute_coin_hints
-from chia.wallet.util.transaction_type import TransactionType
-from chia.wallet.util.wallet_sync_utils import last_change_height_cs
-from chia.wallet.util.wallet_types import WalletType
-from chia.wallet.wallet import Wallet
-from chia.wallet.wallet_blockchain import WalletBlockchain
-from chia.wallet.wallet_coin_record import WalletCoinRecord
-from chia.wallet.wallet_coin_store import WalletCoinStore
-from chia.wallet.wallet_info import WalletInfo
-from chia.wallet.wallet_interested_store import WalletInterestedStore
-from chia.wallet.wallet_nft_store import WalletNftStore
-from chia.wallet.wallet_pool_store import WalletPoolStore
-from chia.wallet.wallet_puzzle_store import WalletPuzzleStore
-from chia.wallet.wallet_transaction_store import WalletTransactionStore
-from chia.wallet.wallet_user_store import WalletUserStore
-from chia.wallet.uncurried_puzzle import uncurry_puzzle
+from hydrangea.wallet.wallet_protocol import WalletProtocol
+from hydrangea.wallet.did_wallet.did_wallet import DIDWallet
+from hydrangea.wallet.did_wallet.did_wallet_puzzles import DID_INNERPUZ_MOD, create_fullpuz, match_did_puzzle
+from hydrangea.wallet.key_val_store import KeyValStore
+from hydrangea.wallet.nft_wallet.nft_info import NFTWalletInfo
+from hydrangea.wallet.nft_wallet.nft_puzzles import get_metadata_and_phs, get_new_owner_did
+from hydrangea.wallet.nft_wallet.nft_wallet import NFTWallet
+from hydrangea.wallet.nft_wallet.uncurry_nft import UncurriedNFT
+from hydrangea.wallet.notification_manager import NotificationManager
+from hydrangea.wallet.outer_puzzles import AssetType
+from hydrangea.wallet.puzzle_drivers import PuzzleInfo
+from hydrangea.wallet.puzzles.cat_loader import CAT_MOD, CAT_MOD_HASH
+from hydrangea.wallet.settings.user_settings import UserSettings
+from hydrangea.wallet.trade_manager import TradeManager
+from hydrangea.wallet.transaction_record import TransactionRecord
+from hydrangea.wallet.util.address_type import AddressType
+from hydrangea.wallet.util.compute_hints import compute_coin_hints
+from hydrangea.wallet.util.transaction_type import TransactionType
+from hydrangea.wallet.util.wallet_sync_utils import last_change_height_cs
+from hydrangea.wallet.util.wallet_types import WalletType
+from hydrangea.wallet.wallet import Wallet
+from hydrangea.wallet.wallet_blockchain import WalletBlockchain
+from hydrangea.wallet.wallet_coin_record import WalletCoinRecord
+from hydrangea.wallet.wallet_coin_store import WalletCoinStore
+from hydrangea.wallet.wallet_info import WalletInfo
+from hydrangea.wallet.wallet_interested_store import WalletInterestedStore
+from hydrangea.wallet.wallet_nft_store import WalletNftStore
+from hydrangea.wallet.wallet_pool_store import WalletPoolStore
+from hydrangea.wallet.wallet_puzzle_store import WalletPuzzleStore
+from hydrangea.wallet.wallet_transaction_store import WalletTransactionStore
+from hydrangea.wallet.wallet_user_store import WalletUserStore
+from hydrangea.wallet.uncurried_puzzle import uncurry_puzzle
 
 
 class WalletStateManager:
@@ -121,7 +121,7 @@ class WalletStateManager:
     coin_store: WalletCoinStore
     interested_store: WalletInterestedStore
     multiprocessing_context: multiprocessing.context.BaseContext
-    server: ChiaServer
+    server: HydrangeaServer
     root_path: Path
     wallet_node: Any
     pool_store: WalletPoolStore
@@ -136,7 +136,7 @@ class WalletStateManager:
         config: Dict,
         db_path: Path,
         constants: ConsensusConstants,
-        server: ChiaServer,
+        server: HydrangeaServer,
         root_path: Path,
         wallet_node,
         name: str = None,
@@ -613,7 +613,7 @@ class WalletStateManager:
         return removals
 
     async def determine_coin_type(
-        self, peer: WSChiaConnection, coin_state: CoinState, fork_height: Optional[uint32]
+        self, peer: WSHydrangeaConnection, coin_state: CoinState, fork_height: Optional[uint32]
     ) -> Tuple[Optional[uint32], Optional[WalletType]]:
         if coin_state.created_height is not None and (
             self.is_pool_reward(uint32(coin_state.created_height), coin_state.coin)
@@ -757,7 +757,7 @@ class WalletStateManager:
         parent_coin_state: CoinState,
         coin_state: CoinState,
         coin_spend: CoinSpend,
-        peer: WSChiaConnection,
+        peer: WSHydrangeaConnection,
     ) -> Tuple[Optional[uint32], Optional[WalletType]]:
         """
         Handle the new coin when it is a DID
@@ -915,7 +915,7 @@ class WalletStateManager:
     async def new_coin_state(
         self,
         coin_states: List[CoinState],
-        peer: WSChiaConnection,
+        peer: WSHydrangeaConnection,
         fork_height: Optional[uint32],
     ) -> None:
         # TODO: add comment about what this method does
@@ -1331,7 +1331,7 @@ class WalletStateManager:
         all_unconfirmed_transaction_records: List[TransactionRecord],
         wallet_id: uint32,
         wallet_type: WalletType,
-        peer: WSChiaConnection,
+        peer: WSHydrangeaConnection,
         coin_name: bytes32,
     ) -> None:
         """

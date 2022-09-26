@@ -3,20 +3,20 @@ from dataclasses import dataclass
 from secrets import token_bytes
 from typing import Optional
 
-from chia.farmer.farmer import Farmer
-from chia.harvester.harvester import Harvester
-from chia.plot_sync.sender import Sender
-from chia.protocols.harvester_protocol import PlotSyncIdentifier
-from chia.server.start_service import Service
-from chia.server.ws_connection import Message, NodeType
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.types.peer_info import PeerInfo
-from chia.util.ints import uint64
+from hydrangea.farmer.farmer import Farmer
+from hydrangea.harvester.harvester import Harvester
+from hydrangea.plot_sync.sender import Sender
+from hydrangea.protocols.harvester_protocol import PlotSyncIdentifier
+from hydrangea.server.start_service import Service
+from hydrangea.server.ws_connection import Message, NodeType
+from hydrangea.simulator.time_out_assert import time_out_assert
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.types.peer_info import PeerInfo
+from hydrangea.util.ints import uint64
 
 
 @dataclass
-class WSChiaConnectionDummy:
+class WSHydrangeaConnectionDummy:
     connection_type: NodeType
     peer_node_id: bytes32
     peer_host: str = "localhost"
@@ -27,8 +27,8 @@ class WSChiaConnectionDummy:
         self.last_sent_message = message
 
 
-def get_dummy_connection(node_type: NodeType, peer_id: Optional[bytes32] = None) -> WSChiaConnectionDummy:
-    return WSChiaConnectionDummy(node_type, bytes32(token_bytes(32)) if peer_id is None else peer_id)
+def get_dummy_connection(node_type: NodeType, peer_id: Optional[bytes32] = None) -> WSHydrangeaConnectionDummy:
+    return WSHydrangeaConnectionDummy(node_type, bytes32(token_bytes(32)) if peer_id is None else peer_id)
 
 
 def plot_sync_identifier(current_sync_id: uint64, message_id: uint64) -> PlotSyncIdentifier:

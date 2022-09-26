@@ -11,21 +11,21 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 import pytest
 from blspy import G1Element
 
-from chia.farmer.farmer_api import Farmer
-from chia.harvester.harvester_api import Harvester
-from chia.plot_sync.receiver import Receiver
-from chia.plot_sync.sender import Sender
-from chia.plot_sync.util import Constants
-from chia.plotting.manager import PlotManager
-from chia.plotting.util import PlotInfo
-from chia.protocols.harvester_protocol import PlotSyncError, PlotSyncResponse
-from chia.server.start_service import Service
-from chia.server.ws_connection import ProtocolMessageTypes, WSChiaConnection, make_msg
-from chia.simulator.block_tools import BlockTools
-from chia.simulator.time_out_assert import time_out_assert
-from chia.types.blockchain_format.sized_bytes import bytes32
-from chia.util.generator_tools import list_to_batches
-from chia.util.ints import int16, uint64
+from hydrangea.farmer.farmer_api import Farmer
+from hydrangea.harvester.harvester_api import Harvester
+from hydrangea.plot_sync.receiver import Receiver
+from hydrangea.plot_sync.sender import Sender
+from hydrangea.plot_sync.util import Constants
+from hydrangea.plotting.manager import PlotManager
+from hydrangea.plotting.util import PlotInfo
+from hydrangea.protocols.harvester_protocol import PlotSyncError, PlotSyncResponse
+from hydrangea.server.start_service import Service
+from hydrangea.server.ws_connection import ProtocolMessageTypes, WSHydrangeaConnection, make_msg
+from hydrangea.simulator.block_tools import BlockTools
+from hydrangea.simulator.time_out_assert import time_out_assert
+from hydrangea.types.blockchain_format.sized_bytes import bytes32
+from hydrangea.util.generator_tools import list_to_batches
+from hydrangea.util.ints import int16, uint64
 from tests.plot_sync.util import start_harvester_service
 
 log = logging.getLogger(__name__)
@@ -193,7 +193,7 @@ class TestRunner:
             data.validate_plot_sync()
 
 
-async def skip_processing(self: Any, _: WSChiaConnection, message_type: ProtocolMessageTypes, message: Any) -> bool:
+async def skip_processing(self: Any, _: WSHydrangeaConnection, message_type: ProtocolMessageTypes, message: Any) -> bool:
     self.message_counter += 1
     if self.simulate_error == ErrorSimulation.DropEveryFourthMessage:
         if self.message_counter % 4 == 0:
@@ -227,7 +227,7 @@ async def skip_processing(self: Any, _: WSChiaConnection, message_type: Protocol
 
 
 async def _testable_process(
-    self: Any, peer: WSChiaConnection, message_type: ProtocolMessageTypes, message: Any
+    self: Any, peer: WSHydrangeaConnection, message_type: ProtocolMessageTypes, message: Any
 ) -> None:
     if await skip_processing(self, peer, message_type, message):
         return

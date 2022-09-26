@@ -1,14 +1,14 @@
 from typing import Any, Dict, List, Optional
 
-from chia.rpc.rpc_server import Endpoint
-from chia.timelord.timelord import Timelord
-from chia.util.ws_message import WsRpcMessage, create_payload_dict
+from hydrangea.rpc.rpc_server import Endpoint
+from hydrangea.timelord.timelord import Timelord
+from hydrangea.util.ws_message import WsRpcMessage, create_payload_dict
 
 
 class TimelordRpcApi:
     def __init__(self, timelord: Timelord):
         self.service = timelord
-        self.service_name = "chia_timelord"
+        self.service_name = "hydrangea_timelord"
 
     def get_routes(self) -> Dict[str, Endpoint]:
         return {}
