@@ -5,3 +5,4 @@
 [submodule "hydrangea-blockchain-gui"]
 	path = hydrangea-blockchain-gui
 	url = https://github.com/Hydrangea-Network/hydrangea-blockchain-gui
+        branch = renames_1_6_0
