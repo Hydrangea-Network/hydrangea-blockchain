@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Any, List, Tuple
 
 import pkg_resources
-from hydrangea.util.ssl_check import DEFAULT_PERMISSIONS_CERT_FILE, DEFAULT_PERMISSIONS_KEY_FILE
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
@@ -12,6 +11,9 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from cryptography.x509.oid import NameOID
 
+# from hydrangea.util.ssl_check import DEFAULT_PERMISSIONS_CERT_FILE, DEFAULT_PERMISSIONS_KEY_FILE
+DEFAULT_PERMISSIONS_CERT_FILE: int = 0o644
+DEFAULT_PERMISSIONS_KEY_FILE: int = 0o600
 
 def get_hydrangea_ca_crt_key() -> Tuple[Any, Any]:
     crt = pkg_resources.resource_string(__name__, "hydrangea_ca.crt")
