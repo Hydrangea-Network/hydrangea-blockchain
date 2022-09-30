@@ -93,6 +93,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
         all_targets = []
         stop_searching_for_farmer = "xch_target_address" not in config["farmer"]
         stop_searching_for_pool = "xch_target_address" not in config["pool"]
+        stop_searching_for_timelord = "xch_target_address" not in config["timelord"]
         number_of_ph_to_search = 50
         selected = config["selected_network"]
         prefix = config["network_overrides"]["config"][selected]["address_prefix"]
@@ -105,7 +106,7 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
             }
 
         for i in range(number_of_ph_to_search):
-            if stop_searching_for_farmer and stop_searching_for_pool and i > 0:
+            if stop_searching_for_farmer and stop_searching_for_pool and stop_searching_for_timelord and i > 0:
                 break
             for sk, _ in all_sks:
                 intermediate_n = intermediates[bytes(sk)]["non-observer"]
@@ -127,6 +128,10 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                     "xch_target_address"
                 ):
                     stop_searching_for_pool = True
+                if all_targets[-1] == config["timelord"].get("xch_target_address") or all_targets[-2] == config["timelord"].get(
+                    "xch_target_address"
+                ):
+                    stop_searching_for_timelord = True
 
         # Set the destinations, if necessary
         updated_target: bool = False
@@ -156,6 +161,21 @@ def check_keys(new_root: Path, keychain: Optional[Keychain] = None) -> None:
                 f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
                 f"{config['pool']['xch_target_address']} with {all_targets[0]}"
             )
+
+        if "xch_target_address" not in config["timelord"]:
+            print(
+                f"Setting the xch destination for the timelord reward ( 1% of block reward )"
+                f" to {all_targets[0]}"
+            )
+            config["timelord"]["xch_target_address"] = all_targets[0]
+            updated_target = True
+        elif config["timelord"]["xch_target_address"] not in all_targets:
+            print(
+                f"WARNING: using a farmer address which we might not have the private"
+                f" keys for. We searched the first {number_of_ph_to_search} addresses. Consider overriding "
+                f"{config['timelord']['xch_target_address']} with {all_targets[0]}"
+            )
+
         if updated_target:
             print(
                 f"To change the XCH destination addresses, edit the `xch_target_address` entries in"
