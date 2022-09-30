@@ -481,7 +481,11 @@ class Timelord:
                     # This proof is on an outdated challenge, so don't use it
                     continue
                 iters_from_sub_slot_start = cc_info.number_of_iterations + self.last_state.get_last_ip()
-                timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
+                if "xch_target_address" not in self.config:
+                    log.warning("xch_target_address missing in the config, rewards will be lost")
+                    timelord_reward_puzzle_hash: bytes32 = self.constants.GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH
+                else:
+                    timelord_reward_puzzle_hash: bytes32 = decode_puzzle_hash(self.config["xch_target_address"])
                 response = timelord_protocol.NewSignagePointVDF(
                     signage_point_index,
                     dataclasses.replace(cc_info, number_of_iterations=iters_from_sub_slot_start),
