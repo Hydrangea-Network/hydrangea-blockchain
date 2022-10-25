@@ -34,19 +34,19 @@ default_kwargs = {
     # Forks of chia should change this value to provide replay attack protection. This is set to mainnet genesis chall
     "AGG_SIG_ME_ADDITIONAL_DATA": bytes.fromhex("2022e5d91a39d65a89ace068796472616e67656120666f72207468652077696e"),
     "GENESIS_PRE_FARM_POOL_PUZZLE_HASH": bytes.fromhex(
-        "54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535"
+        "f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064"
     ),
     "GENESIS_PRE_FARM_FARMER_PUZZLE_HASH": bytes.fromhex(
-        "54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535"
+        "f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064"
     ),
     "GENESIS_PRE_FARM_STAKING_PUZZLE_HASH": bytes.fromhex(
-        "d7f3a39823da07f4f9ce58e8bc5f3094fda9081257d1622ed1a154b6a5890ae4"
+        "c757372a3b30c04a4bb2a6eafd91bd675857df2a9260741f6a709c8a4faede96"
     ),
     "GENESIS_PRE_FARM_COMMUNITY_PUZZLE_HASH": bytes.fromhex(
-        "ab6002c6c4b40616433d1aeb8efd51acc54c2e913767960cd79658f2b351c105"
+        "1ee33389d99d91bba7a59c94d1a650d89a800af50cc3722e24430805fa12dd3d"
     ),
     "GENESIS_PRE_FARM_TIMELORD_PUZZLE_HASH": bytes.fromhex(
-        "54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535"
+        "f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064"
     ),
     "MAX_VDF_WITNESS_SIZE": 64,
     # Size of mempool = 50x the size of block

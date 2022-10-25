@@ -173,7 +173,7 @@ async def test_farmer_signage_point_endpoints(harvester_farmer_environment):
         return len(await farmer_rpc_client.get_signage_points()) > 0
 
     sp = farmer_protocol.NewSignagePoint(
-        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
     )
     await farmer_api.new_signage_point(sp)
 
@@ -293,7 +293,7 @@ async def test_farmer_get_pool_state(harvester_farmer_environment, self_hostname
             pool_dict[key].insert(0, before_24h)
 
     sp = farmer_protocol.NewSignagePoint(
-        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+        std_hash(b"1"), std_hash(b"2"), std_hash(b"3"), uint64(1), uint64(1000000), uint8(2), bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
     )
     await farmer_api.new_signage_point(sp)
     client_pool_state = await farmer_rpc_client.get_pool_state()
