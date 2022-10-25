@@ -145,18 +145,18 @@ jobs:
     - name: Prepare GUI cache
       id: gui-ref
       run: |
-        gui_ref=$(git submodule status chia-blockchain-gui | sed -e 's/^ //g' -e 's/ chia-blockchain-gui.*$//g')
+        gui_ref=$(git submodule status hydrangea-blockchain-gui | sed -e 's/^ //g' -e 's/ hydrangea-blockchain-gui.*$//g')
         echo "${gui_ref}"
         echo "::set-output name=GUI_REF::${gui_ref}"
-        echo "rm -rf ./chia-blockchain-gui"
-        rm -rf ./chia-blockchain-gui
+        echo "rm -rf ./hydrangea-blockchain-gui"
+        rm -rf ./hydrangea-blockchain-gui
 
     - name: Cache GUI
       uses: actions/cache@v3
       id: cache-gui
       with:
-        path: ./chia-blockchain-gui
-        key: ${{ runner.os }}-arm64-chia-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
+        path: ./hydrangea-blockchain-gui
+        key: ${{ runner.os }}-arm64-hydrangea-blockchain-gui-${{ steps.gui-ref.outputs.GUI_REF }}
 
     - if: steps.cache-gui.outputs.cache-hit != 'true'
       name: Build GUI
@@ -268,4 +268,4 @@ jobs:
 
     - name: Remove working files to exclude from cache
       run: |
-        rm -rf ./chia-blockchain-gui/packages/gui/daemon
+        rm -rf ./hydrangea-blockchain-gui/packages/gui/daemon
