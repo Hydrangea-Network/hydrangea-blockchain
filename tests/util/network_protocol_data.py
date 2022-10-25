@@ -46,7 +46,7 @@ new_signage_point = farmer_protocol.NewSignagePoint(
     uint64(2329045448547720842),
     uint64(8265724497259558930),
     uint8(194),
-    bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+    bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
 )
 
 proof_of_space = ProofOfSpace(
@@ -283,7 +283,7 @@ foliage_block_data = FoliageBlockData(
     bytes32(bytes.fromhex("4e62d7ed145b394ce28533e4f0a7d70f339f9d4c49ee717e51e2d6480e5fcbcc")),
     ConsensusConstants.GENESIS_PRE_FARM_STAKING_PUZZLE_HASH,
     ConsensusConstants.GENESIS_PRE_FARM_COMMUNITY_PUZZLE_HASH,
-    bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+    bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
     bytes32(bytes.fromhex("d53254dcdcbfddb431c3ff89d1a785491663b51552e3847d29e36972f43b536d")),
 )
 
@@ -432,7 +432,7 @@ new_signage_point_or_end_of_subslot = full_node_protocol.NewSignagePointOrEndOfS
     bytes32(bytes.fromhex("27a16b348971e5dfb258e7a01f0b300acbecf8339476afd144e8520f1981833b")),
     uint8(102),
     bytes32(bytes.fromhex("a619471c0ba0b8b8b92b7b2cb1241c2fbb2324c4f1a20a01eb7dcc0027393a56")),
-    bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+    bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
 )
 
 request_signage_point_or_end_of_subslot = full_node_protocol.RequestSignagePointOrEndOfSubSlot(
@@ -448,7 +448,7 @@ respond_signage_point = full_node_protocol.RespondSignagePoint(
     vdf_info,
     vdf_proof,
     new_signage_point,
-    bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+    bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
 )
 
 respond_end_of_subslot = full_node_protocol.RespondEndOfSubSlot(
@@ -703,7 +703,7 @@ new_signage_point_harvester = harvester_protocol.NewSignagePointHarvester(
     uint8(148),
     bytes32(bytes.fromhex("b78c9fca155e9742df835cbe84bb7e518bee70d78b6be6e39996c0a02e0cfe4c")),
     [pool_difficulty],
-    bytes32(bytes.fromhex("54834a98b82332db67560b2ec229ecea5cff55b93a01dc49b79c061591ea1535")),
+    bytes32(bytes.fromhex("f422ebc8f2be6c3097dd3ea6caaa519e333684f6fb5a65c9cb66e330d5ba3064")),
 )
 
 new_proof_of_space = harvester_protocol.NewProofOfSpace(
