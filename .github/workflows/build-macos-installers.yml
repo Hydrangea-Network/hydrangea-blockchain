@@ -1,16 +1,19 @@
 name: 📦🚀 Build Installers - MacOS
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - 'long_lived/**'
-      - main
-      - 'release/**'
-  release:
-    types: [published]
-  pull_request:
-    branches:
-      - '**'
+    tags:
+        - '**'
+  #   branches:
+  #     - 'long_lived/**'
+  #     - main
+  #     - 'release/**'
+  # release:
+  #   types: [published]
+  # pull_request:
+  #   branches:
+  #     - '**'
 
 concurrency:
   # SHA is added to the end if on `main` to let all main workflows run
@@ -34,12 +37,12 @@ jobs:
             mac-package-name: "Chia-darwin-x64"
             glue-name: "build-macos"
             bladebit-suffix: macos-x86-64.tar.gz
-          - runs-on: [MacOS, ARM64]
-            name: m1
-            file-suffix: "-arm64"
-            mac-package-name: "Chia-darwin-arm64"
-            glue-name: "build-mac-m1"
-            bladebit-suffix: macos-arm64.tar.gz
+          # - runs-on: [MacOS, ARM64]
+          #   name: m1
+          #   file-suffix: "-arm64"
+          #   mac-package-name: "Chia-darwin-arm64"
+          #   glue-name: "build-mac-m1"
+          #   bladebit-suffix: macos-arm64.tar.gz
 
     steps:
       - uses: Chia-Network/actions/clean-workspace@main
