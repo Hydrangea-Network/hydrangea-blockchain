@@ -16,16 +16,19 @@ name: 🚨 GitHub Super Linter
 # Start the job on all push #
 #############################
 on:
-  push:
-    branches:
-      - 'long_lived/**'
-      - main
-      - 'release/**'
-  release:
-    types: [published]
-  pull_request:
-    branches:
-      - '**'
+  workflow_dispatch:
+  # push:
+  #   tags:
+  #     - '**'
+  #   branches:
+  #     - 'long_lived/**'
+  #     - main
+  #     - 'release/**'
+  # release:
+  #   types: [published]
+  # pull_request:
+  #   branches:
+  #     - '**'
 
 concurrency:
   # SHA is added to the end if on `main` to let all main workflows run
